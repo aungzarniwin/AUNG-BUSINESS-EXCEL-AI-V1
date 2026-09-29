@@ -3,850 +3,932 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>AUNG BUSINESS AI V4</title>
-
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
+<meta name="theme-color" content="#111111">
+<title>Aung Business Excel AI V1</title>
 
 <style>
 *{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
 :root{
-    --bg:#0b0d12;
-    --panel:#12151d;
-    --panel2:#171b24;
-    --border:#292e39;
-    --text:#f4f6f8;
-    --muted:#9ba3b1;
-    --accent:#d6a84f;
-    --accent2:#f0c66a;
-    --green:#45c98b;
-    --red:#ef6464;
-    --blue:#5d9cff;
+  --bg:#f4f5f7;
+  --panel:#ffffff;
+  --dark:#111111;
+  --dark2:#1b1b1b;
+  --text:#171717;
+  --muted:#777;
+  --line:#e5e5e5;
+  --gold:#c99a3d;
+  --gold2:#e6bd68;
+  --green:#238b57;
+  --red:#c94c4c;
+  --radius:14px;
 }
 
 body{
-    font-family:Inter,Arial,sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    min-height:100vh;
+  font-family:Inter,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
 }
 
 button,
 input,
 textarea,
 select{
-    font:inherit;
+  font:inherit;
 }
 
 button{
-    cursor:pointer;
+  cursor:pointer;
 }
 
 .app{
-    display:flex;
-    min-height:100vh;
+  display:flex;
+  min-height:100vh;
 }
 
 /* SIDEBAR */
 
 .sidebar{
-    width:260px;
-    background:#0e1117;
-    border-right:1px solid var(--border);
-    padding:20px 14px;
-    position:fixed;
-    left:0;
-    top:0;
-    bottom:0;
-    overflow-y:auto;
-    z-index:20;
+  width:250px;
+  background:var(--dark);
+  color:white;
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  z-index:50;
+  padding:22px 16px;
+  overflow-y:auto;
 }
 
 .brand{
-    padding:4px 10px 22px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:8px 8px 25px;
+  border-bottom:1px solid #303030;
+  margin-bottom:20px;
 }
 
-.brand-title{
-    font-size:20px;
-    font-weight:800;
-    letter-spacing:.5px;
+.brand-logo{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  background:var(--gold);
+  color:#111;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  font-size:19px;
 }
 
-.brand-sub{
-    color:var(--muted);
-    font-size:11px;
-    margin-top:5px;
+.brand h1{
+  font-size:16px;
+  line-height:1.25;
 }
 
-.nav-label{
-    font-size:10px;
-    color:#69717e;
-    text-transform:uppercase;
-    letter-spacing:1px;
-    margin:18px 10px 8px;
+.brand span{
+  display:block;
+  color:#aaa;
+  font-size:11px;
+  margin-top:3px;
+}
+
+.nav-title{
+  color:#666;
+  font-size:10px;
+  letter-spacing:1.5px;
+  margin:18px 10px 8px;
+  text-transform:uppercase;
 }
 
 .nav-btn{
-    width:100%;
-    border:0;
-    background:transparent;
-    color:#aeb5c1;
-    padding:12px 12px;
-    border-radius:10px;
-    text-align:left;
-    display:flex;
-    align-items:center;
-    gap:11px;
-    margin-bottom:4px;
-    transition:.2s;
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#bbb;
+  padding:12px 12px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  margin-bottom:4px;
+  text-align:left;
+  transition:.2s;
 }
 
 .nav-btn:hover{
-    background:#171b24;
-    color:white;
+  background:#222;
+  color:white;
 }
 
 .nav-btn.active{
-    background:linear-gradient(90deg,#282116,#191711);
-    color:#f2c96b;
-    border:1px solid #45391f;
+  background:#2a2419;
+  color:var(--gold2);
 }
 
 .nav-icon{
-    width:23px;
-    text-align:center;
+  width:22px;
+  text-align:center;
+}
+
+.sidebar-bottom{
+  margin-top:30px;
+  border-top:1px solid #303030;
+  padding-top:15px;
+}
+
+.user-card{
+  padding:11px;
+  border-radius:12px;
+  background:#1b1b1b;
+}
+
+.user-card strong{
+  font-size:13px;
+}
+
+.user-card small{
+  color:#777;
+  display:block;
+  margin-top:3px;
 }
 
 /* MAIN */
 
 .main{
-    margin-left:260px;
-    width:calc(100% - 260px);
-    min-height:100vh;
+  margin-left:250px;
+  width:calc(100% - 250px);
+  min-width:0;
 }
 
 .topbar{
-    height:64px;
-    border-bottom:1px solid var(--border);
-    background:rgba(11,13,18,.94);
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 26px;
-    position:sticky;
-    top:0;
-    z-index:10;
+  height:68px;
+  background:white;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 25px;
+  position:sticky;
+  top:0;
+  z-index:30;
 }
 
 .page-title{
-    font-size:17px;
-    font-weight:700;
+  font-size:20px;
+  font-weight:800;
 }
 
-.top-status{
-    color:var(--muted);
-    font-size:12px;
+.page-sub{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:2px;
+}
+
+.top-actions{
+  display:flex;
+  gap:8px;
+}
+
+.icon-btn{
+  border:1px solid var(--line);
+  background:white;
+  border-radius:9px;
+  padding:9px 12px;
+}
+
+.mobile-menu{
+  display:none;
 }
 
 .content{
-    padding:28px;
-    max-width:1500px;
-    margin:auto;
+  padding:24px;
+  max-width:1500px;
+  margin:auto;
 }
 
 .page{
-    display:none;
+  display:none;
 }
 
 .page.active{
-    display:block;
+  display:block;
 }
 
 /* COMMON */
 
+.grid{
+  display:grid;
+  gap:16px;
+}
+
+.grid-4{
+  grid-template-columns:repeat(4,1fr);
+}
+
+.grid-3{
+  grid-template-columns:repeat(3,1fr);
+}
+
+.grid-2{
+  grid-template-columns:repeat(2,1fr);
+}
+
 .card{
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:15px;
-    padding:20px;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:18px;
+  box-shadow:0 2px 10px rgba(0,0,0,.025);
 }
 
 .card-title{
-    font-size:15px;
-    font-weight:700;
-    margin-bottom:7px;
+  font-size:14px;
+  font-weight:800;
+  margin-bottom:5px;
 }
 
 .card-sub{
-    font-size:12px;
-    color:var(--muted);
-}
-
-.grid{
-    display:grid;
-    gap:16px;
-}
-
-.grid4{
-    grid-template-columns:repeat(4,1fr);
-}
-
-.grid3{
-    grid-template-columns:repeat(3,1fr);
-}
-
-.grid2{
-    grid-template-columns:repeat(2,1fr);
+  font-size:12px;
+  color:var(--muted);
 }
 
 .stat{
-    padding:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
 }
 
 .stat-value{
-    font-size:28px;
-    font-weight:800;
-    margin-top:10px;
+  font-size:28px;
+  font-weight:900;
+  margin-top:9px;
 }
 
 .stat-label{
-    color:var(--muted);
-    font-size:12px;
+  font-size:12px;
+  color:#777;
 }
 
-.badge{
-    display:inline-flex;
-    align-items:center;
-    padding:5px 9px;
-    border-radius:20px;
-    background:#1d222b;
-    color:#c5ccd6;
-    font-size:10px;
-}
-
-.badge.gold{
-    color:#f2c96b;
-    border:1px solid #493d24;
-    background:#1d1910;
+.stat-icon{
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  background:#f4ead7;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
 .btn{
-    border:1px solid var(--border);
-    background:#181c24;
-    color:white;
-    border-radius:9px;
-    padding:10px 14px;
-    font-size:12px;
-    transition:.2s;
+  border:0;
+  border-radius:9px;
+  padding:10px 15px;
+  font-weight:700;
+  font-size:13px;
 }
 
-.btn:hover{
-    background:#222733;
+.btn-dark{
+  background:#111;
+  color:white;
 }
 
-.btn.primary{
-    background:linear-gradient(135deg,#d5a84f,#a97c2d);
-    border-color:#d5a84f;
-    color:#17120a;
-    font-weight:800;
+.btn-gold{
+  background:var(--gold);
+  color:#111;
 }
 
-.btn.green{
-    background:#153225;
-    border-color:#275c42;
-    color:#69dca3;
+.btn-light{
+  background:#f1f1f1;
+  color:#222;
 }
 
-.btn.red{
-    background:#321919;
-    border-color:#5b2929;
-    color:#ff8989;
+.btn-danger{
+  background:#fbeaea;
+  color:#a33333;
 }
 
-.btn.small{
-    padding:7px 9px;
-    font-size:11px;
+.btn-green{
+  background:#e8f6ef;
+  color:#167044;
 }
 
-input,
-textarea,
-select{
-    width:100%;
-    background:#0e1117;
-    color:white;
-    border:1px solid var(--border);
-    border-radius:9px;
-    padding:11px 12px;
-    outline:none;
+.btn:active{
+  transform:scale(.98);
 }
 
-input:focus,
-textarea:focus,
-select:focus{
-    border-color:#665126;
+.toolbar{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  align-items:center;
 }
 
-textarea{
-    min-height:130px;
-    resize:vertical;
+.input,
+.textarea,
+.select{
+  width:100%;
+  border:1px solid #ddd;
+  border-radius:9px;
+  padding:10px 12px;
+  outline:none;
+  background:white;
 }
 
-label{
-    display:block;
-    font-size:11px;
-    color:#9ea6b3;
-    margin-bottom:6px;
+.input:focus,
+.textarea:focus,
+.select:focus{
+  border-color:var(--gold);
+}
+
+.textarea{
+  min-height:120px;
+  resize:vertical;
 }
 
 .field{
-    margin-bottom:14px;
+  margin-bottom:13px;
 }
 
-.row{
-    display:flex;
-    gap:10px;
-    align-items:center;
+.field label{
+  font-size:11px;
+  color:#666;
+  font-weight:700;
+  display:block;
+  margin-bottom:6px;
 }
 
-.wrap{
-    flex-wrap:wrap;
+.section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:15px;
 }
 
-.actions{
-    display:flex;
-    gap:9px;
-    flex-wrap:wrap;
-    margin-top:15px;
+.section-head h2{
+  font-size:17px;
 }
 
-.hero{
-    background:
-      radial-gradient(circle at 85% 20%,rgba(214,168,79,.13),transparent 35%),
-      linear-gradient(135deg,#151821,#10131a);
-    border:1px solid var(--border);
-    border-radius:18px;
-    padding:28px;
-    margin-bottom:20px;
+.badge{
+  display:inline-block;
+  font-size:10px;
+  padding:5px 8px;
+  border-radius:20px;
+  background:#f1f1f1;
+  color:#666;
 }
 
-.hero h1{
-    font-size:28px;
-    margin-bottom:8px;
-}
-
-.hero p{
-    color:var(--muted);
-    font-size:13px;
-    line-height:1.7;
+.badge-gold{
+  background:#f6ead0;
+  color:#80611f;
 }
 
 /* DASHBOARD */
 
-.quick-card{
-    min-height:150px;
+.hero{
+  background:#111;
+  color:white;
+  border-radius:18px;
+  padding:25px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  margin-bottom:18px;
 }
 
-.quick-icon{
-    font-size:27px;
-    margin-bottom:15px;
+.hero h2{
+  font-size:26px;
+  margin-bottom:7px;
 }
 
-.quick-title{
-    font-weight:700;
-    margin-bottom:5px;
+.hero p{
+  color:#aaa;
+  font-size:13px;
+  max-width:600px;
 }
 
-.quick-text{
-    color:var(--muted);
-    font-size:11px;
-    line-height:1.6;
+.hero-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
 }
 
 /* EXCEL */
 
-.upload-zone{
-    border:1px dashed #444b57;
-    border-radius:13px;
-    padding:25px;
-    text-align:center;
-    background:#10131a;
+.excel-wrap{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
 }
 
-.upload-zone input{
-    display:none;
+.excel-toolbar{
+  padding:12px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  background:#fafafa;
 }
 
-.excel-table-wrap{
-    overflow:auto;
-    border:1px solid var(--border);
-    border-radius:12px;
-    margin-top:15px;
-    max-height:550px;
+.formula-bar{
+  display:flex;
+  border-bottom:1px solid var(--line);
+  min-height:42px;
 }
 
-.excel-table{
-    border-collapse:collapse;
-    min-width:900px;
-    width:100%;
+.name-box{
+  width:75px;
+  border-right:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:700;
 }
 
-.excel-table th,
-.excel-table td{
-    border-right:1px solid #292e38;
-    border-bottom:1px solid #292e38;
-    padding:0;
+.formula-input{
+  flex:1;
+  border:0;
+  padding:10px;
+  outline:none;
 }
 
-.excel-table th{
-    background:#181c24;
-    color:#aeb5c0;
-    font-size:11px;
-    height:34px;
-    padding:0 8px;
+.sheet-container{
+  overflow:auto;
+  max-height:600px;
 }
 
-.excel-table td.row-num{
-    width:40px;
-    background:#171b22;
-    color:#737b88;
-    text-align:center;
-    font-size:10px;
+.sheet{
+  border-collapse:collapse;
+  min-width:100%;
 }
 
-.excel-table input{
-    border:0;
-    border-radius:0;
-    padding:8px;
-    min-width:120px;
-    background:#10131a;
-    font-size:11px;
+.sheet th,
+.sheet td{
+  border-right:1px solid #ddd;
+  border-bottom:1px solid #ddd;
+  min-width:120px;
+  height:35px;
+  padding:6px 8px;
+  font-size:12px;
 }
 
-.sheet-tabs{
-    display:flex;
-    gap:5px;
-    overflow:auto;
-    margin-top:15px;
+.sheet th{
+  background:#f4f4f4;
+  text-align:center;
+  font-weight:800;
+  position:sticky;
+  top:0;
+  z-index:2;
 }
 
-.sheet-tab{
-    padding:8px 12px;
-    border:1px solid var(--border);
-    border-radius:8px;
-    background:#151921;
-    color:#aab1bd;
-    font-size:11px;
-    white-space:nowrap;
+.sheet .row-num{
+  min-width:45px;
+  width:45px;
+  position:sticky;
+  left:0;
+  z-index:3;
+  background:#f4f4f4;
+  text-align:center;
 }
 
-.sheet-tab.active{
-    background:#2b2415;
-    border-color:#604d25;
-    color:#f2c96b;
+.sheet td[contenteditable="true"]{
+  outline:none;
+  background:white;
 }
 
-/* COMMAND */
-
-.command-box{
-    position:relative;
+.sheet td.selected{
+  box-shadow:inset 0 0 0 2px var(--gold);
 }
 
-.command-box textarea{
-    min-height:160px;
-    padding:16px;
-    font-size:14px;
-    line-height:1.7;
+/* WORD */
+
+.word-toolbar{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  padding:12px;
+  background:#fafafa;
+  border:1px solid var(--line);
+  border-radius:12px 12px 0 0;
 }
 
-.command-examples{
-    display:flex;
-    gap:7px;
-    flex-wrap:wrap;
-    margin-top:10px;
+.word-toolbar button,
+.word-toolbar select{
+  border:1px solid #ddd;
+  background:white;
+  border-radius:7px;
+  padding:7px 10px;
 }
 
-.example{
-    background:#171b23;
-    border:1px solid var(--border);
-    color:#aeb5c0;
-    padding:7px 9px;
-    border-radius:8px;
-    font-size:10px;
-    cursor:pointer;
+.word-page{
+  background:white;
+  max-width:850px;
+  min-height:1000px;
+  margin:0 auto;
+  padding:70px;
+  border:1px solid var(--line);
+  box-shadow:0 3px 20px rgba(0,0,0,.04);
 }
 
-.example:hover{
-    color:#f2c96b;
+.word-editor{
+  min-height:850px;
+  outline:none;
+  line-height:1.7;
+}
+
+.word-editor:empty:before{
+  content:"Start writing your document...";
+  color:#aaa;
 }
 
 /* PPT */
 
 .ppt-layout{
-    display:grid;
-    grid-template-columns:390px 1fr;
-    gap:18px;
+  display:grid;
+  grid-template-columns:300px 1fr;
+  gap:16px;
 }
 
-.ppt-control{
-    position:sticky;
-    top:84px;
-    align-self:start;
-}
-
-.ppt-command{
-    min-height:190px;
-    font-size:13px;
-    line-height:1.7;
-}
-
-.control-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
+.ppt-side{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
 
 .slide-list{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  max-height:600px;
+  overflow:auto;
 }
 
-.slide-item{
-    display:grid;
-    grid-template-columns:48px 1fr auto;
-    gap:12px;
-    align-items:center;
-    padding:13px;
-    background:#12161e;
-    border:1px solid var(--border);
-    border-radius:12px;
+.slide-thumb{
+  border:2px solid transparent;
+  background:white;
+  border-radius:10px;
+  padding:7px;
+  cursor:pointer;
 }
 
-.slide-number{
-    width:42px;
-    height:42px;
-    border-radius:9px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#1d1a13;
-    color:#f2c96b;
-    font-weight:800;
-    font-size:12px;
+.slide-thumb.active{
+  border-color:var(--gold);
 }
 
-.slide-item-title{
-    font-size:13px;
-    font-weight:700;
+.thumb-canvas{
+  aspect-ratio:16/9;
+  background:#111;
+  color:white;
+  padding:12px;
+  border-radius:5px;
+  overflow:hidden;
 }
 
-.slide-item-sub{
-    color:var(--muted);
-    font-size:10px;
-    margin-top:4px;
+.thumb-title{
+  font-size:11px;
+  font-weight:800;
 }
 
-.slide-actions{
-    display:flex;
-    gap:5px;
-    flex-wrap:wrap;
-    justify-content:flex-end;
+.thumb-content{
+  font-size:7px;
+  margin-top:8px;
+  color:#bbb;
 }
 
-.preview-area{
-    margin-top:20px;
+.ppt-stage-card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:18px;
 }
 
-.preview-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:16px;
+.ppt-stage{
+  width:min(100%,900px);
+  aspect-ratio:16/9;
+  background:#111;
+  color:white;
+  margin:auto;
+  position:relative;
+  overflow:hidden;
+  border-radius:8px;
+  padding:7%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 }
 
-.slide-preview{
-    aspect-ratio:16/9;
-    border-radius:10px;
-    overflow:hidden;
-    position:relative;
-    padding:30px;
-    border:1px solid #30343c;
-    box-shadow:0 10px 30px rgba(0,0,0,.25);
+.ppt-stage h2{
+  font-size:clamp(22px,4vw,48px);
+  line-height:1.1;
+  margin-bottom:20px;
 }
 
-.slide-preview.dark{
-    background:linear-gradient(135deg,#11151d,#202632);
-    color:white;
+.ppt-stage ul{
+  padding-left:25px;
+  color:#ddd;
 }
 
-.slide-preview.light{
-    background:#f8f8f8;
-    color:#171717;
+.ppt-stage li{
+  margin:8px 0;
+  font-size:clamp(12px,1.5vw,21px);
 }
 
-.slide-preview.gold{
-    background:linear-gradient(135deg,#17130b,#3b2a12);
-    color:#fff;
+.ppt-footer{
+  position:absolute;
+  left:7%;
+  right:7%;
+  bottom:5%;
+  display:flex;
+  justify-content:space-between;
+  font-size:10px;
+  color:#777;
 }
 
-.slide-preview.blue{
-    background:linear-gradient(135deg,#08182c,#12345a);
-    color:white;
+.slide-controls{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  margin-top:15px;
 }
 
-.preview-kicker{
-    font-size:8px;
-    text-transform:uppercase;
-    letter-spacing:1.5px;
-    opacity:.65;
-    margin-bottom:13px;
+/* AI */
+
+.ai-box{
+  background:#111;
+  color:white;
+  border-radius:16px;
+  padding:20px;
 }
 
-.preview-title{
-    font-size:21px;
-    font-weight:800;
-    line-height:1.2;
-    margin-bottom:12px;
+.ai-box h2{
+  margin-bottom:6px;
 }
 
-.preview-body{
-    font-size:10px;
-    line-height:1.7;
-    opacity:.85;
-    max-width:90%;
+.ai-box p{
+  color:#aaa;
+  font-size:12px;
 }
 
-.preview-footer{
-    position:absolute;
-    bottom:13px;
-    left:30px;
-    right:30px;
-    display:flex;
-    justify-content:space-between;
-    font-size:7px;
-    opacity:.5;
+.ai-input{
+  margin-top:15px;
+  background:#1d1d1d;
+  border:1px solid #333;
+  color:white;
 }
 
-/* EDIT MODAL */
+.ai-result{
+  margin-top:15px;
+  background:white;
+  color:#222;
+  border-radius:12px;
+  padding:15px;
+  display:none;
+}
+
+.ai-result.show{
+  display:block;
+}
+
+.ai-result h3{
+  margin-bottom:8px;
+}
+
+/* TEMPLATES */
+
+.template{
+  cursor:pointer;
+  transition:.2s;
+}
+
+.template:hover{
+  transform:translateY(-2px);
+  border-color:var(--gold);
+}
+
+.template-icon{
+  width:45px;
+  height:45px;
+  background:#f3ead8;
+  border-radius:11px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:21px;
+  margin-bottom:12px;
+}
+
+/* PROJECTS */
+
+.project-list{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+
+.project{
+  cursor:pointer;
+}
+
+.project-type{
+  font-size:10px;
+  color:#888;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.project h3{
+  margin:8px 0;
+  font-size:15px;
+}
+
+.project small{
+  color:#888;
+}
+
+/* SETTINGS */
+
+.setting-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  padding:15px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.setting-row:last-child{
+  border-bottom:0;
+}
+
+.setting-row h4{
+  font-size:13px;
+}
+
+.setting-row p{
+  font-size:11px;
+  color:#888;
+  margin-top:3px;
+}
+
+/* MODAL */
 
 .modal{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.75);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    z-index:100;
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:100;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
 }
 
 .modal.show{
-    display:flex;
+  display:flex;
 }
 
 .modal-box{
-    width:min(720px,100%);
-    max-height:90vh;
-    overflow:auto;
-    background:#141820;
-    border:1px solid var(--border);
-    border-radius:16px;
-    padding:22px;
+  background:white;
+  width:min(600px,100%);
+  max-height:90vh;
+  overflow:auto;
+  border-radius:16px;
+  padding:20px;
 }
 
-.modal-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:18px;
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
 }
 
 .close{
-    border:0;
-    background:#222630;
-    color:white;
-    width:32px;
-    height:32px;
-    border-radius:8px;
+  border:0;
+  background:#eee;
+  width:32px;
+  height:32px;
+  border-radius:50%;
 }
 
-/* PLAN */
+/* TOAST */
 
-.plan-box{
-    margin-top:18px;
+.toast{
+  position:fixed;
+  bottom:22px;
+  right:22px;
+  background:#111;
+  color:white;
+  padding:12px 17px;
+  border-radius:10px;
+  z-index:200;
+  opacity:0;
+  transform:translateY(15px);
+  pointer-events:none;
+  transition:.25s;
+  font-size:12px;
 }
 
-.plan-line{
-    padding:11px 12px;
-    background:#10131a;
-    border:1px solid var(--border);
-    border-radius:9px;
-    margin-bottom:7px;
-    display:flex;
-    gap:10px;
-    align-items:center;
-}
-
-.plan-num{
-    color:#f2c96b;
-    font-weight:800;
-    font-size:11px;
-    min-width:28px;
-}
-
-.plan-text{
-    font-size:11px;
-}
-
-/* LIBRARY */
-
-.formula-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:9px;
-}
-
-.formula-card{
-    background:#11151c;
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:12px;
-}
-
-.formula-name{
-    color:#f2c96b;
-    font-weight:700;
-    font-size:11px;
-}
-
-.formula-desc{
-    color:#8f98a5;
-    font-size:9px;
-    line-height:1.5;
-    margin-top:5px;
-}
-
-/* WORKFLOW */
-
-.workflow{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:12px;
-    margin-top:20px;
-}
-
-.workflow-step{
-    padding:18px;
-    border:1px solid var(--border);
-    border-radius:12px;
-    background:#11151c;
-}
-
-.workflow-num{
-    color:#f2c96b;
-    font-weight:800;
-    margin-bottom:10px;
+.toast.show{
+  opacity:1;
+  transform:translateY(0);
 }
 
 /* RESPONSIVE */
 
-@media(max-width:1100px){
-    .grid4{
-        grid-template-columns:repeat(2,1fr);
-    }
+@media(max-width:1000px){
+  .grid-4{
+    grid-template-columns:repeat(2,1fr);
+  }
 
-    .formula-grid{
-        grid-template-columns:repeat(3,1fr);
-    }
+  .project-list{
+    grid-template-columns:repeat(2,1fr);
+  }
 
-    .ppt-layout{
-        grid-template-columns:1fr;
-    }
+  .ppt-layout{
+    grid-template-columns:1fr;
+  }
 
-    .ppt-control{
-        position:static;
-    }
+  .slide-list{
+    flex-direction:row;
+    max-height:none;
+    overflow-x:auto;
+  }
+
+  .slide-thumb{
+    min-width:180px;
+  }
 }
 
-@media(max-width:800px){
-    .sidebar{
-        width:72px;
-        padding:14px 8px;
-    }
+@media(max-width:720px){
+  .sidebar{
+    transform:translateX(-100%);
+    transition:.25s;
+  }
 
-    .brand-title{
-        font-size:13px;
-        text-align:center;
-    }
+  .sidebar.open{
+    transform:translateX(0);
+  }
 
-    .brand-sub,
-    .nav-label,
-    .nav-btn span:not(.nav-icon){
-        display:none;
-    }
+  .main{
+    margin-left:0;
+    width:100%;
+  }
 
-    .nav-btn{
-        justify-content:center;
-    }
+  .mobile-menu{
+    display:block;
+    border:1px solid var(--line);
+    background:white;
+    border-radius:8px;
+    padding:7px 10px;
+  }
 
-    .main{
-        margin-left:72px;
-        width:calc(100% - 72px);
-    }
+  .topbar{
+    padding:0 14px;
+  }
 
-    .content{
-        padding:15px;
-    }
+  .content{
+    padding:14px;
+  }
 
-    .grid3,
-    .grid2,
-    .grid4{
-        grid-template-columns:1fr;
-    }
+  .hero{
+    flex-direction:column;
+    align-items:flex-start;
+  }
 
-    .preview-grid{
-        grid-template-columns:1fr;
-    }
+  .hero h2{
+    font-size:22px;
+  }
 
-    .formula-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
+  .grid-4,
+  .grid-3,
+  .grid-2{
+    grid-template-columns:1fr;
+  }
 
-    .workflow{
-        grid-template-columns:1fr 1fr;
-    }
+  .word-page{
+    padding:25px;
+    min-height:700px;
+  }
 
-    .topbar{
-        padding:0 15px;
-    }
+  .stat-value{
+    font-size:24px;
+  }
 
-    .hero h1{
-        font-size:22px;
-    }
-}
-
-@media(max-width:520px){
-    .workflow{
-        grid-template-columns:1fr;
-    }
-
-    .control-grid{
-        grid-template-columns:1fr;
-    }
-
-    .slide-item{
-        grid-template-columns:40px 1fr;
-    }
-
-    .slide-actions{
-        grid-column:1/-1;
-        justify-content:flex-start;
-    }
+  .name-box{
+    width:55px;
+  }
 }
 </style>
 </head>
@@ -856,790 +938,726 @@ label{
 <div class="app">
 
 <!-- SIDEBAR -->
-<aside class="sidebar">
 
-    <div class="brand">
-        <div class="brand-title">AUNG BUSINESS AI</div>
-        <div class="brand-sub">Business Productivity Suite V4</div>
+<aside class="sidebar" id="sidebar">
+
+  <div class="brand">
+    <div class="brand-logo">A</div>
+    <div>
+      <h1>Aung Business<br>Excel AI</h1>
+      <span>V1 • Business Office Suite</span>
     </div>
+  </div>
 
-    <div class="nav-label">Workspace</div>
+  <div class="nav-title">Workspace</div>
 
-    <button class="nav-btn active" data-page="dashboard">
-        <span class="nav-icon">⌂</span>
-        <span>Dashboard</span>
-    </button>
+  <button class="nav-btn active" data-page="dashboard">
+    <span class="nav-icon">⌂</span>
+    Dashboard
+  </button>
 
-    <button class="nav-btn" data-page="excel">
-        <span class="nav-icon">▦</span>
-        <span>Excel AI</span>
-    </button>
+  <button class="nav-btn" data-page="excel">
+    <span class="nav-icon">▦</span>
+    Excel AI
+  </button>
 
-    <button class="nav-btn" data-page="command">
-        <span class="nav-icon">✦</span>
-        <span>Smart Command</span>
-    </button>
+  <button class="nav-btn" data-page="word">
+    <span class="nav-icon">▤</span>
+    Word AI
+  </button>
 
-    <button class="nav-btn" data-page="powerpoint">
-        <span class="nav-icon">▣</span>
-        <span>PowerPoint AI</span>
-    </button>
+  <button class="nav-btn" data-page="powerpoint">
+    <span class="nav-icon">▣</span>
+    PowerPoint AI
+  </button>
 
-    <button class="nav-btn" data-page="word">
-        <span class="nav-icon">▤</span>
-        <span>Word AI</span>
-    </button>
+  <button class="nav-btn" data-page="assistant">
+    <span class="nav-icon">✦</span>
+    AI Assistant
+  </button>
 
-    <button class="nav-btn" data-page="workflow">
-        <span class="nav-icon">⇄</span>
-        <span>AI Workflow</span>
-    </button>
+  <div class="nav-title">Business</div>
 
-    <div class="nav-label">Tools</div>
+  <button class="nav-btn" data-page="templates">
+    <span class="nav-icon">◇</span>
+    Templates
+  </button>
 
-    <button class="nav-btn" data-page="formulas">
-        <span class="nav-icon">ƒx</span>
-        <span>Formula Library</span>
-    </button>
+  <button class="nav-btn" data-page="projects">
+    <span class="nav-icon">□</span>
+    Projects
+  </button>
 
-    <button class="nav-btn" data-page="settings">
-        <span class="nav-icon">⚙</span>
-        <span>Settings</span>
-    </button>
+  <div class="nav-title">System</div>
+
+  <button class="nav-btn" data-page="settings">
+    <span class="nav-icon">⚙</span>
+    Settings
+  </button>
+
+  <div class="sidebar-bottom">
+    <div class="user-card">
+      <strong>Aung Business Solution</strong>
+      <small>Business Productivity Platform</small>
+    </div>
+  </div>
 
 </aside>
 
+<!-- MAIN -->
+
 <main class="main">
 
-<div class="topbar">
-    <div class="page-title" id="pageTitle">Dashboard</div>
-    <div class="top-status">● Local Workspace</div>
-</div>
+<header class="topbar">
+
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="mobile-menu" onclick="toggleSidebar()">☰</button>
+
+    <div>
+      <div class="page-title" id="pageTitle">Dashboard</div>
+      <div class="page-sub" id="pageSub">
+        Business productivity workspace
+      </div>
+    </div>
+  </div>
+
+  <div class="top-actions">
+    <button class="icon-btn" onclick="saveAll()">💾 Save</button>
+    <button class="btn btn-gold" onclick="openQuickCreate()">＋ Create</button>
+  </div>
+
+</header>
 
 <div class="content">
 
 <!-- DASHBOARD -->
-<section class="page active" id="page-dashboard">
 
-    <div class="hero">
-        <span class="badge gold">AUNG BUSINESS AI V4</span>
-        <h1>Business work, powered by AI</h1>
-        <p>
-            Excel data processing, PowerPoint creation and Word document generation
-            from one business workspace
-        </p>
+<section class="page active" id="dashboard">
+
+  <div class="hero">
+
+    <div>
+      <h2>Business work, simplified</h2>
+      <p>
+        Excel, Word, PowerPoint and AI business tools
+        in one workspace
+      </p>
     </div>
 
-    <div class="grid grid4">
+    <div class="hero-actions">
+      <button class="btn btn-gold" onclick="showPage('excel')">
+        Open Excel
+      </button>
 
-        <div class="card stat">
-            <div class="stat-label">Excel Workbook</div>
-            <div class="stat-value" id="dashSheets">0</div>
-            <div class="card-sub">Sheets loaded</div>
-        </div>
-
-        <div class="card stat">
-            <div class="stat-label">Slides</div>
-            <div class="stat-value" id="dashSlides">0</div>
-            <div class="card-sub">Presentation slides</div>
-        </div>
-
-        <div class="card stat">
-            <div class="stat-label">Formulas</div>
-            <div class="stat-value">100+</div>
-            <div class="card-sub">Formula library</div>
-        </div>
-
-        <div class="card stat">
-            <div class="stat-label">Workspace</div>
-            <div class="stat-value">V4</div>
-            <div class="card-sub">Business AI Suite</div>
-        </div>
-
+      <button class="btn btn-light" onclick="showPage('powerpoint')">
+        Create PowerPoint
+      </button>
     </div>
 
-    <div style="height:18px"></div>
+  </div>
 
-    <div class="grid grid3">
+  <div class="grid grid-4">
 
-        <div class="card quick-card">
-            <div class="quick-icon">📊</div>
-            <div class="quick-title">Excel AI</div>
-            <div class="quick-text">
-                Upload an Excel file, analyze data and perform formula,
-                lookup, summary and cleaning operations
-            </div>
-            <div class="actions">
-                <button class="btn small" onclick="goPage('excel')">Open Excel</button>
-            </div>
-        </div>
-
-        <div class="card quick-card">
-            <div class="quick-icon">📽</div>
-            <div class="quick-title">PowerPoint AI</div>
-            <div class="quick-text">
-                Tell the system what presentation you want and generate
-                a complete slide structure without uploading Excel
-            </div>
-            <div class="actions">
-                <button class="btn primary small" onclick="goPage('powerpoint')">
-                    Create Presentation
-                </button>
-            </div>
-        </div>
-
-        <div class="card quick-card">
-            <div class="quick-icon">📝</div>
-            <div class="quick-title">Word AI</div>
-            <div class="quick-text">
-                Create reports, proposals, meeting minutes and business documents
-            </div>
-            <div class="actions">
-                <button class="btn small" onclick="goPage('word')">Open Word</button>
-            </div>
-        </div>
-
+    <div class="card stat">
+      <div>
+        <div class="stat-label">Excel Projects</div>
+        <div class="stat-value" id="excelCount">0</div>
+      </div>
+      <div class="stat-icon">▦</div>
     </div>
+
+    <div class="card stat">
+      <div>
+        <div class="stat-label">Word Documents</div>
+        <div class="stat-value" id="wordCount">0</div>
+      </div>
+      <div class="stat-icon">▤</div>
+    </div>
+
+    <div class="card stat">
+      <div>
+        <div class="stat-label">Presentations</div>
+        <div class="stat-value" id="pptCount">0</div>
+      </div>
+      <div class="stat-icon">▣</div>
+    </div>
+
+    <div class="card stat">
+      <div>
+        <div class="stat-label">Saved Projects</div>
+        <div class="stat-value" id="projectCount">0</div>
+      </div>
+      <div class="stat-icon">□</div>
+    </div>
+
+  </div>
+
+  <br>
+
+  <div class="grid grid-3">
+
+    <div class="card template" onclick="openTemplate('sales')">
+      <div class="template-icon">📈</div>
+      <div class="card-title">Sales Tracker</div>
+      <div class="card-sub">
+        Sales target, actual, achievement and gap
+      </div>
+    </div>
+
+    <div class="card template" onclick="openTemplate('expense')">
+      <div class="template-icon">💰</div>
+      <div class="card-title">Expense Tracker</div>
+      <div class="card-sub">
+        Monthly business expense management
+      </div>
+    </div>
+
+    <div class="card template" onclick="openTemplate('kpi')">
+      <div class="template-icon">🎯</div>
+      <div class="card-title">KPI Dashboard</div>
+      <div class="card-sub">
+        Business KPI tracking worksheet
+      </div>
+    </div>
+
+  </div>
 
 </section>
 
 
 <!-- EXCEL -->
-<section class="page" id="page-excel">
 
-    <div class="hero">
-        <span class="badge gold">EXCEL AI</span>
-        <h1>Excel Workspace</h1>
-        <p>
-            Upload an existing workbook or work directly with the built-in spreadsheet
-        </p>
+<section class="page" id="excel">
+
+  <div class="section-head">
+    <div>
+      <h2>Excel AI</h2>
+      <div class="card-sub">
+        Spreadsheet + formulas + business templates
+      </div>
     </div>
 
-    <div class="grid grid2">
+    <div class="toolbar">
+      <button class="btn btn-light" onclick="newSheet()">New</button>
+      <button class="btn btn-light" onclick="addRow()">＋ Row</button>
+      <button class="btn btn-light" onclick="addColumn()">＋ Column</button>
+      <button class="btn btn-dark" onclick="downloadCSV()">Export CSV</button>
+    </div>
+  </div>
 
-        <div class="card">
+  <div class="excel-wrap">
 
-            <div class="card-title">Upload Excel</div>
-            <div class="card-sub">
-                XLSX, XLS or CSV
-            </div>
+    <div class="excel-toolbar">
 
-            <div style="height:15px"></div>
+      <button class="btn btn-light" onclick="formatSelected('bold')">
+        <b>B</b>
+      </button>
 
-            <div class="upload-zone">
-                <label for="excelFile" style="cursor:pointer">
-                    <div style="font-size:28px;margin-bottom:8px">📁</div>
-                    <div style="font-weight:700">Choose Excel File</div>
-                    <div style="font-size:10px;color:#7e8794;margin-top:5px">
-                        Click to upload
-                    </div>
-                </label>
+      <button class="btn btn-light" onclick="formatSelected('italic')">
+        <i>I</i>
+      </button>
 
-                <input
-                    type="file"
-                    id="excelFile"
-                    accept=".xlsx,.xls,.csv"
-                    onchange="loadExcel(event)"
-                >
-            </div>
+      <button class="btn btn-light" onclick="sumSelected()">
+        Σ Sum
+      </button>
 
-            <div class="actions">
-                <button class="btn" onclick="downloadExcel()">Download XLSX</button>
-                <button class="btn" onclick="saveWorkspace()">Save Workspace</button>
-            </div>
+      <button class="btn btn-light" onclick="averageSelected()">
+        Average
+      </button>
 
-        </div>
+      <button class="btn btn-light" onclick="clearSheet()">
+        Clear
+      </button>
 
-        <div class="card">
-
-            <div class="card-title">Workbook Information</div>
-
-            <div style="height:12px"></div>
-
-            <div class="grid grid2">
-
-                <div>
-                    <div class="stat-label">File</div>
-                    <div id="excelFileName" style="margin-top:5px">No file</div>
-                </div>
-
-                <div>
-                    <div class="stat-label">Sheets</div>
-                    <div id="excelSheetCount" style="margin-top:5px">0</div>
-                </div>
-
-                <div>
-                    <div class="stat-label">Rows</div>
-                    <div id="excelRows" style="margin-top:5px">0</div>
-                </div>
-
-                <div>
-                    <div class="stat-label">Columns</div>
-                    <div id="excelCols" style="margin-top:5px">0</div>
-                </div>
-
-            </div>
-
-        </div>
+      <button class="btn btn-gold" onclick="saveExcelProject()">
+        Save Excel
+      </button>
 
     </div>
 
-    <div class="sheet-tabs" id="sheetTabs"></div>
+    <div class="formula-bar">
+      <div class="name-box" id="cellName">A1</div>
 
-    <div class="card" style="margin-top:15px">
-
-        <div class="row" style="justify-content:space-between">
-            <div>
-                <div class="card-title">Spreadsheet</div>
-                <div class="card-sub">
-                    Enter = next row · Tab = next column
-                </div>
-            </div>
-
-            <button class="btn small" onclick="addExcelRow()">
-                + Add Row
-            </button>
-        </div>
-
-        <div class="excel-table-wrap">
-            <table class="excel-table" id="excelTable"></table>
-        </div>
-
+      <input
+        class="formula-input"
+        id="formulaInput"
+        placeholder="Enter value or formula =SUM(A1:A5)"
+        onkeydown="formulaKey(event)"
+      >
     </div>
 
-</section>
-
-
-<!-- SMART COMMAND -->
-<section class="page" id="page-command">
-
-    <div class="hero">
-        <span class="badge gold">SMART COMMAND</span>
-        <h1>Tell Excel what to do</h1>
-        <p>
-            Use natural language commands to describe the Excel operation you want
-        </p>
+    <div class="sheet-container">
+      <table class="sheet" id="sheet"></table>
     </div>
 
-    <div class="card command-box">
-
-        <label>Your command</label>
-
-        <textarea
-            id="smartCommand"
-            placeholder="ဥပမာ - Column C နဲ့ D ကိုမြှောက်ပြီး Amount column ထဲမှာထည့်ပေး"
-        ></textarea>
-
-        <div class="command-examples">
-
-            <div class="example" onclick="useCommand('Column C နဲ့ D ကိုမြှောက်ပြီး Amount column ထဲမှာထည့်ပေး')">
-                C × D = Amount
-            </div>
-
-            <div class="example" onclick="useCommand('Customer အလိုက် Sales Amount စုစုပေါင်းတွက်ပေး')">
-                Customer Summary
-            </div>
-
-            <div class="example" onclick="useCommand('Duplicate Customer Name တွေရှာပေး')">
-                Find Duplicate
-            </div>
-
-            <div class="example" onclick="useCommand('Date column ကနေ Month နဲ့ Year column အသစ်လုပ်ပေး')">
-                Month / Year
-            </div>
-
-            <div class="example" onclick="useCommand('Management Summary လုပ်ပေး')">
-                Management Summary
-            </div>
-
-        </div>
-
-        <div class="actions">
-            <button class="btn primary" onclick="analyzeCommand()">
-                ✦ Analyze Command
-            </button>
-
-            <button class="btn green" onclick="applyCommand()">
-                ✓ Apply Changes
-            </button>
-        </div>
-
-    </div>
-
-    <div class="card plan-box" id="commandPlan">
-        <div class="card-title">Action Plan</div>
-        <div class="card-sub">No command analyzed yet</div>
-    </div>
-
-</section>
-
-
-<!-- POWERPOINT AI -->
-<section class="page" id="page-powerpoint">
-
-    <div class="hero">
-        <span class="badge gold">POWERPOINT AI STUDIO</span>
-        <h1>Create a presentation from your instructions</h1>
-        <p>
-            Excel file မရှိလည်းရပါတယ်။ Presentation ဘာအကြောင်း၊
-            slides ဘယ်နှစ်ခု၊ ဘယ် style၊ ဘယ် audience အတွက်ဆိုတာ ပြောလိုက်ရုံနဲ့
-            Slide Plan တည်ဆောက်ပေးနိုင်ပါတယ်
-        </p>
-    </div>
-
-    <div class="ppt-layout">
-
-        <!-- CONTROL -->
-        <div class="card ppt-control">
-
-            <div class="card-title">What do you want to create?</div>
-            <div class="card-sub">
-                Describe your presentation in natural language
-            </div>
-
-            <div style="height:12px"></div>
-
-            <textarea
-                id="pptCommand"
-                class="ppt-command"
-                placeholder="ဥပမာ -
-
-Sales Manager Monthly Meeting အတွက် 10 slides presentation လုပ်ပေး
-
-Professional corporate style ဖြစ်ရမယ်
-
-Slide 1 Title
-Slide 2 Executive Summary
-Slide 3 Sales Performance
-Slide 4 Target vs Actual
-Slide 5 Team Performance
-Slide 6 Customer Performance
-Slide 7 Key Problems
-Slide 8 Opportunities
-Slide 9 Action Plan
-Slide 10 Conclusion
-
-Text နည်းနည်းနဲ့ management presentation style လုပ်ပေး"
-            ></textarea>
-
-            <div style="height:12px"></div>
-
-            <div class="control-grid">
-
-                <div class="field">
-                    <label>Slide Count</label>
-                    <select id="pptSlideCount">
-                        <option value="6">6 Slides</option>
-                        <option value="8">8 Slides</option>
-                        <option value="10" selected>10 Slides</option>
-                        <option value="12">12 Slides</option>
-                        <option value="15">15 Slides</option>
-                        <option value="20">20 Slides</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label>Aspect Ratio</label>
-                    <select id="pptRatio">
-                        <option value="LAYOUT_WIDE" selected>16:9 Widescreen</option>
-                        <option value="LAYOUT_STANDARD">4:3 Standard</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label>Theme</label>
-                    <select id="pptTheme">
-                        <option value="dark" selected>Dark Corporate</option>
-                        <option value="gold">Premium Gold</option>
-                        <option value="light">Minimal White</option>
-                        <option value="blue">Modern Blue</option>
-                    </select>
-                </div>
-
-                <div class="field">
-                    <label>Audience</label>
-                    <select id="pptAudience">
-                        <option>Management</option>
-                        <option>Sales Team</option>
-                        <option>Customer</option>
-                        <option>Training</option>
-                        <option>Investor</option>
-                        <option>General</option>
-                    </select>
-                </div>
-
-            </div>
-
-            <div class="field">
-                <label>Presentation Tone</label>
-                <select id="pptTone">
-                    <option>Professional</option>
-                    <option>Executive</option>
-                    <option>Educational</option>
-                    <option>Persuasive</option>
-                    <option>Corporate</option>
-                </select>
-            </div>
-
-            <div class="actions">
-
-                <button
-                    class="btn primary"
-                    style="flex:1"
-                    onclick="generatePresentation()"
-                >
-                    ✦ Generate Presentation
-                </button>
-
-                <button
-                    class="btn"
-                    onclick="generateSamplePPT()"
-                >
-                    Sample
-                </button>
-
-            </div>
-
-            <div class="actions">
-
-                <button
-                    class="btn green"
-                    style="flex:1"
-                    onclick="downloadPPTX()"
-                >
-                    ↓ Download PPTX
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- SLIDE PLAN -->
-        <div>
-
-            <div class="card">
-
-                <div class="row" style="justify-content:space-between">
-
-                    <div>
-                        <div class="card-title">Presentation Plan</div>
-                        <div class="card-sub">
-                            Edit, regenerate, duplicate, delete and reorder slides
-                        </div>
-                    </div>
-
-                    <div class="badge gold" id="slideCountBadge">
-                        0 Slides
-                    </div>
-
-                </div>
-
-                <div style="height:15px"></div>
-
-                <div class="slide-list" id="slideList">
-
-                    <div
-                        style="padding:35px;text-align:center;color:#737b87;font-size:12px"
-                    >
-                        Your generated slide plan will appear here
-                    </div>
-
-                </div>
-
-                <div class="actions">
-
-                    <button
-                        class="btn"
-                        onclick="addSlide()"
-                    >
-                        + Add Slide
-                    </button>
-
-                    <button
-                        class="btn"
-                        onclick="regenerateAllSlides()"
-                    >
-                        ↻ Regenerate All
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- PREVIEW -->
-
-            <div class="card preview-area">
-
-                <div class="row" style="justify-content:space-between">
-
-                    <div>
-                        <div class="card-title">Slide Preview</div>
-                        <div class="card-sub">
-                            Presentation preview
-                        </div>
-                    </div>
-
-                    <button class="btn small" onclick="renderPreviews()">
-                        Refresh Preview
-                    </button>
-
-                </div>
-
-                <div style="height:15px"></div>
-
-                <div class="preview-grid" id="previewGrid"></div>
-
-            </div>
-
-        </div>
-
-    </div>
+  </div>
 
 </section>
 
 
 <!-- WORD -->
-<section class="page" id="page-word">
 
-    <div class="hero">
-        <span class="badge gold">WORD AI</span>
-        <h1>Business Document Studio</h1>
-        <p>Create reports, proposals, meeting minutes and business documents</p>
+<section class="page" id="word">
+
+  <div class="section-head">
+    <div>
+      <h2>Word AI</h2>
+      <div class="card-sub">
+        Business documents, reports and proposals
+      </div>
     </div>
 
-    <div class="grid grid2">
-
-        <div class="card">
-
-            <div class="card-title">Document Template</div>
-
-            <div style="height:15px"></div>
-
-            <div class="field">
-                <label>Template</label>
-                <select id="wordTemplate">
-                    <option>Management Report</option>
-                    <option>Sales Report</option>
-                    <option>Meeting Minutes</option>
-                    <option>Business Proposal</option>
-                    <option>Executive Summary</option>
-                    <option>Business Letter</option>
-                </select>
-            </div>
-
-            <div class="field">
-                <label>Title</label>
-                <input
-                    id="wordTitle"
-                    value="Business Management Report"
-                >
-            </div>
-
-            <div class="field">
-                <label>Content</label>
-                <textarea
-                    id="wordContent"
-                    placeholder="Enter your document content..."
-                ></textarea>
-            </div>
-
-            <button class="btn primary" onclick="downloadWord()">
-                Download DOCX
-            </button>
-
-        </div>
-
-        <div class="card">
-
-            <div class="card-title">Document Preview</div>
-
-            <div
-                id="wordPreview"
-                style="
-                    margin-top:15px;
-                    background:#f5f5f5;
-                    color:#222;
-                    padding:30px;
-                    min-height:420px;
-                    border-radius:8px;
-                    line-height:1.7;
-                "
-            >
-                <h2>Business Management Report</h2>
-                <p style="margin-top:15px">
-                    Your document preview will appear here
-                </p>
-            </div>
-
-        </div>
-
+    <div class="toolbar">
+      <button class="btn btn-light" onclick="newWord()">New</button>
+      <button class="btn btn-light" onclick="saveWord()">Save</button>
+      <button class="btn btn-dark" onclick="downloadWord()">Download Word</button>
     </div>
+  </div>
+
+  <div class="word-toolbar">
+
+    <select onchange="execWord('formatBlock',this.value)">
+      <option value="p">Normal</option>
+      <option value="h1">Heading 1</option>
+      <option value="h2">Heading 2</option>
+      <option value="h3">Heading 3</option>
+    </select>
+
+    <button onclick="execWord('bold')"><b>B</b></button>
+    <button onclick="execWord('italic')"><i>I</i></button>
+    <button onclick="execWord('underline')"><u>U</u></button>
+
+    <button onclick="execWord('insertUnorderedList')">• List</button>
+    <button onclick="execWord('insertOrderedList')">1. List</button>
+
+    <button onclick="execWord('justifyLeft')">Left</button>
+    <button onclick="execWord('justifyCenter')">Center</button>
+    <button onclick="execWord('justifyRight')">Right</button>
+
+    <button onclick="execWord('removeFormat')">Clear</button>
+
+  </div>
+
+  <div class="word-page">
+
+    <div
+      id="wordEditor"
+      class="word-editor"
+      contenteditable="true"
+    ></div>
+
+  </div>
 
 </section>
 
 
-<!-- WORKFLOW -->
-<section class="page" id="page-workflow">
+<!-- POWERPOINT -->
 
-    <div class="hero">
-        <span class="badge gold">AI WORKFLOW</span>
-        <h1>Connect Excel, PowerPoint and Word</h1>
-        <p>
-            Use each module independently or connect them into a business workflow
-        </p>
+<section class="page" id="powerpoint">
+
+  <div class="section-head">
+    <div>
+      <h2>PowerPoint AI</h2>
+      <div class="card-sub">
+        Create a presentation from a business topic
+      </div>
     </div>
 
-    <div class="workflow">
+    <div class="toolbar">
+      <button class="btn btn-light" onclick="newPresentation()">
+        New
+      </button>
 
-        <div class="workflow-step">
-            <div class="workflow-num">01</div>
-            <div class="card-title">Excel</div>
-            <div class="card-sub">
-                Upload and analyze business data
-            </div>
+      <button class="btn btn-dark" onclick="savePresentation()">
+        Save
+      </button>
+
+      <button class="btn btn-gold" onclick="exportPresentation()">
+        Export Slides
+      </button>
+    </div>
+  </div>
+
+  <div class="ppt-layout">
+
+    <div class="ppt-side">
+
+      <div class="card">
+
+        <div class="card-title">
+          AI Presentation Generator
         </div>
 
-        <div class="workflow-step">
-            <div class="workflow-num">02</div>
-            <div class="card-title">PowerPoint</div>
-            <div class="card-sub">
-                Turn data or instructions into slides
-            </div>
+        <div class="card-sub" style="margin-bottom:14px">
+          Enter your topic and generate a complete slide outline
         </div>
 
-        <div class="workflow-step">
-            <div class="workflow-num">03</div>
-            <div class="card-title">Word</div>
-            <div class="card-sub">
-                Create reports and documents
-            </div>
+        <div class="field">
+          <label>Presentation Topic</label>
+          <input
+            class="input"
+            id="pptTopic"
+            placeholder="e.g. FMCG Sales Strategy 2027"
+          >
         </div>
 
-        <div class="workflow-step">
-            <div class="workflow-num">04</div>
-            <div class="card-title">Export</div>
-            <div class="card-sub">
-                Download XLSX, PPTX or DOCX
-            </div>
+        <div class="field">
+          <label>Number of Slides</label>
+
+          <select class="select" id="pptSlides">
+            <option value="5">5 Slides</option>
+            <option value="7" selected>7 Slides</option>
+            <option value="10">10 Slides</option>
+            <option value="12">12 Slides</option>
+          </select>
         </div>
+
+        <div class="field">
+          <label>Audience</label>
+
+          <select class="select" id="pptAudience">
+            <option>Management</option>
+            <option>Sales Team</option>
+            <option>Customers</option>
+            <option>Business Partners</option>
+            <option>General Audience</option>
+          </select>
+        </div>
+
+        <button
+          class="btn btn-gold"
+          style="width:100%"
+          onclick="generatePresentation()"
+        >
+          ✦ Generate Presentation
+        </button>
+
+      </div>
+
+      <div class="card">
+
+        <div class="section-head">
+          <div>
+            <div class="card-title">Slides</div>
+            <div class="card-sub" id="slideCounter">
+              0 slides
+            </div>
+          </div>
+
+          <button
+            class="btn btn-light"
+            onclick="addSlide()"
+          >
+            ＋
+          </button>
+        </div>
+
+        <div class="slide-list" id="slideList"></div>
+
+      </div>
 
     </div>
 
-    <div class="card" style="margin-top:18px">
 
-        <div class="card-title">Example Business Workflow</div>
+    <div class="ppt-stage-card">
 
-        <div style="height:12px"></div>
+      <div class="toolbar" style="margin-bottom:14px">
 
-        <div class="plan-line">
-            <div class="plan-num">01</div>
-            <div class="plan-text">
-                Upload monthly sales Excel
-            </div>
+        <button
+          class="btn btn-light"
+          onclick="editCurrentSlide()"
+        >
+          Edit Slide
+        </button>
+
+        <button
+          class="btn btn-light"
+          onclick="duplicateSlide()"
+        >
+          Duplicate
+        </button>
+
+        <button
+          class="btn btn-danger"
+          onclick="deleteSlide()"
+        >
+          Delete
+        </button>
+
+      </div>
+
+      <div class="ppt-stage" id="pptStage">
+
+        <h2 id="stageTitle">
+          Your Presentation
+        </h2>
+
+        <ul id="stageContent">
+          <li>Generate a presentation to get started</li>
+        </ul>
+
+        <div class="ppt-footer">
+          <span>Aung Business Excel AI</span>
+          <span id="stageNumber">1</span>
         </div>
 
-        <div class="plan-line">
-            <div class="plan-num">02</div>
-            <div class="plan-text">
-                Analyze sales, customers and products
-            </div>
-        </div>
+      </div>
 
-        <div class="plan-line">
-            <div class="plan-num">03</div>
-            <div class="plan-text">
-                Generate Management PowerPoint
-            </div>
-        </div>
+      <div class="slide-controls">
+        <button class="btn btn-light" onclick="previousSlide()">
+          ← Previous
+        </button>
 
-        <div class="plan-line">
-            <div class="plan-num">04</div>
-            <div class="plan-text">
-                Generate Management Word Report
-            </div>
-        </div>
+        <button class="btn btn-light" onclick="nextSlide()">
+          Next →
+        </button>
+      </div>
 
     </div>
+
+  </div>
 
 </section>
 
 
-<!-- FORMULAS -->
-<section class="page" id="page-formulas">
+<!-- AI ASSISTANT -->
 
-    <div class="hero">
-        <span class="badge gold">FORMULA LIBRARY</span>
-        <h1>Excel Formula Library</h1>
-        <p>Common business formulas for analysis and reporting</p>
+<section class="page" id="assistant">
+
+  <div class="ai-box">
+
+    <h2>✦ AI Business Assistant</h2>
+
+    <p>
+      Describe what you want to create and the app will prepare
+      a business-ready structure
+    </p>
+
+    <textarea
+      id="aiPrompt"
+      class="textarea ai-input"
+      placeholder="ဥပမာ - 2027 Sales Target အတွက် PowerPoint 10 slides လုပ်ပေးပါ&#10;&#10;ဥပမာ - FMCG Sales Team အတွက် KPI Excel Table လုပ်ပေးပါ&#10;&#10;ဥပမာ - Monthly Business Report ရေးပေးပါ"
+    ></textarea>
+
+    <div style="margin-top:12px">
+      <button
+        class="btn btn-gold"
+        onclick="runAssistant()"
+      >
+        ✦ Generate
+      </button>
     </div>
 
-    <div class="formula-grid" id="formulaGrid"></div>
+    <div class="ai-result" id="aiResult"></div>
+
+  </div>
+
+  <br>
+
+  <div class="grid grid-3">
+
+    <div class="card template" onclick="setAIPrompt('FMCG Sales KPI Dashboard')">
+      <div class="template-icon">📊</div>
+      <div class="card-title">Sales KPI</div>
+      <div class="card-sub">Create a sales KPI structure</div>
+    </div>
+
+    <div class="card template" onclick="setAIPrompt('Monthly Business Report')">
+      <div class="template-icon">📄</div>
+      <div class="card-title">Business Report</div>
+      <div class="card-sub">Generate monthly report structure</div>
+    </div>
+
+    <div class="card template" onclick="setAIPrompt('2027 Business Strategy Presentation')">
+      <div class="template-icon">📽️</div>
+      <div class="card-title">Business Strategy PPT</div>
+      <div class="card-sub">Generate presentation structure</div>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- TEMPLATES -->
+
+<section class="page" id="templates">
+
+  <div class="section-head">
+    <div>
+      <h2>Business Templates</h2>
+      <div class="card-sub">
+        Ready-made business worksheets
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-3">
+
+    <div class="card template" onclick="openTemplate('sales')">
+      <div class="template-icon">📈</div>
+      <div class="card-title">Sales Tracker</div>
+      <div class="card-sub">
+        Target / Actual / Achievement / Gap
+      </div>
+    </div>
+
+    <div class="card template" onclick="openTemplate('expense')">
+      <div class="template-icon">💰</div>
+      <div class="card-title">Expense Tracker</div>
+      <div class="card-sub">
+        Business expense management
+      </div>
+    </div>
+
+    <div class="card template" onclick="openTemplate('inventory')">
+      <div class="template-icon">📦</div>
+      <div class="card-title">Inventory</div>
+      <div class="card-sub">
+        Product stock tracking
+      </div>
+    </div>
+
+    <div class="card template" onclick="openTemplate('kpi')">
+      <div class="template-icon">🎯</div>
+      <div class="card-title">KPI Dashboard</div>
+      <div class="card-sub">
+        Team performance metrics
+      </div>
+    </div>
+
+    <div class="card template" onclick="openTemplate('customer')">
+      <div class="template-icon">👥</div>
+      <div class="card-title">Customer List</div>
+      <div class="card-sub">
+        Customer database
+      </div>
+    </div>
+
+    <div class="card template" onclick="openTemplate('invoice')">
+      <div class="template-icon">🧾</div>
+      <div class="card-title">Invoice</div>
+      <div class="card-sub">
+        Basic business invoice
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- PROJECTS -->
+
+<section class="page" id="projects">
+
+  <div class="section-head">
+
+    <div>
+      <h2>Projects</h2>
+      <div class="card-sub">
+        Saved work on this device
+      </div>
+    </div>
+
+    <button
+      class="btn btn-danger"
+      onclick="clearProjects()"
+    >
+      Clear Projects
+    </button>
+
+  </div>
+
+  <div id="projectList" class="project-list"></div>
 
 </section>
 
 
 <!-- SETTINGS -->
-<section class="page" id="page-settings">
 
-    <div class="hero">
-        <span class="badge gold">SETTINGS</span>
-        <h1>Workspace Settings</h1>
-        <p>Configure spreadsheet behavior and optional AI connection</p>
+<section class="page" id="settings">
+
+  <div class="section-head">
+    <div>
+      <h2>Settings</h2>
+      <div class="card-sub">
+        Aung Business Excel AI preferences
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+
+    <div class="setting-row">
+
+      <div>
+        <h4>Application</h4>
+        <p>Aung Business Excel AI V1</p>
+      </div>
+
+      <span class="badge badge-gold">V1</span>
+
     </div>
 
-    <div class="card">
+    <div class="setting-row">
 
-        <div class="field">
-            <label>AI Backend Endpoint</label>
-            <input
-                id="aiEndpoint"
-                placeholder="https://your-api.example.com"
-            >
-        </div>
+      <div>
+        <h4>Language</h4>
+        <p>Interface language</p>
+      </div>
 
-        <div class="field">
-            <label>
-                <input
-                    type="checkbox"
-                    id="autoSave"
-                    checked
-                    style="width:auto;margin-right:7px"
-                >
-                Auto Save
-            </label>
-        </div>
-
-        <div class="field">
-            <label>
-                <input
-                    type="checkbox"
-                    id="enterDown"
-                    checked
-                    style="width:auto;margin-right:7px"
-                >
-                Enter moves down
-            </label>
-        </div>
-
-        <div class="field">
-            <label>
-                <input
-                    type="checkbox"
-                    id="tabRight"
-                    checked
-                    style="width:auto;margin-right:7px"
-                >
-                Tab moves right
-            </label>
-        </div>
-
-        <button class="btn primary" onclick="saveSettings()">
-            Save Settings
-        </button>
+      <select class="select" style="width:150px">
+        <option>English</option>
+        <option>Myanmar</option>
+      </select>
 
     </div>
+
+    <div class="setting-row">
+
+      <div>
+        <h4>Storage</h4>
+        <p>Data is stored locally in this browser</p>
+      </div>
+
+      <span class="badge">Local</span>
+
+    </div>
+
+    <div class="setting-row">
+
+      <div>
+        <h4>Auto Save</h4>
+        <p>Automatically save workspace changes</p>
+      </div>
+
+      <input
+        type="checkbox"
+        id="autoSave"
+        checked
+        onchange="saveSettings()"
+      >
+
+    </div>
+
+    <div class="setting-row">
+
+      <div>
+        <h4>Reset Application</h4>
+        <p>Remove all locally stored projects</p>
+      </div>
+
+      <button
+        class="btn btn-danger"
+        onclick="resetApplication()"
+      >
+        Reset
+      </button>
+
+    </div>
+
+  </div>
 
 </section>
 
@@ -1648,2411 +1666,2462 @@ Text နည်းနည်းနဲ့ management presentation style လုပ�
 </div>
 
 
+<!-- QUICK CREATE MODAL -->
+
+<div class="modal" id="quickModal">
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+      <h3>Create New</h3>
+      <button class="close" onclick="closeQuickCreate()">×</button>
+    </div>
+
+    <div class="grid grid-2">
+
+      <button
+        class="card template"
+        onclick="createFromQuick('excel')"
+      >
+        <div class="template-icon">▦</div>
+        <div class="card-title">Excel</div>
+        <div class="card-sub">Create spreadsheet</div>
+      </button>
+
+      <button
+        class="card template"
+        onclick="createFromQuick('word')"
+      >
+        <div class="template-icon">▤</div>
+        <div class="card-title">Word</div>
+        <div class="card-sub">Create document</div>
+      </button>
+
+      <button
+        class="card template"
+        onclick="createFromQuick('ppt')"
+      >
+        <div class="template-icon">▣</div>
+        <div class="card-title">PowerPoint</div>
+        <div class="card-sub">Create presentation</div>
+      </button>
+
+      <button
+        class="card template"
+        onclick="createFromQuick('ai')"
+      >
+        <div class="template-icon">✦</div>
+        <div class="card-title">AI Assistant</div>
+        <div class="card-sub">Describe what you need</div>
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
 <!-- SLIDE EDIT MODAL -->
 
 <div class="modal" id="slideModal">
 
-    <div class="modal-box">
+  <div class="modal-box">
 
-        <div class="modal-header">
+    <div class="modal-head">
+      <h3>Edit Slide</h3>
+      <button class="close" onclick="closeSlideModal()">×</button>
+    </div>
 
-            <div>
-                <div class="card-title">Edit Slide</div>
-                <div class="card-sub">
-                    Modify slide content and speaker notes
-                </div>
-            </div>
+    <div class="field">
+      <label>Slide Title</label>
+      <input class="input" id="editSlideTitle">
+    </div>
 
-            <button class="close" onclick="closeSlideModal()">×</button>
+    <div class="field">
+      <label>Bullet Points — one per line</label>
+      <textarea class="textarea" id="editSlideContent"></textarea>
+    </div>
 
-        </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px">
 
-        <div class="field">
-            <label>Slide Title</label>
-            <input id="editSlideTitle">
-        </div>
+      <button
+        class="btn btn-light"
+        onclick="closeSlideModal()"
+      >
+        Cancel
+      </button>
 
-        <div class="field">
-            <label>Subtitle / Description</label>
-            <textarea id="editSlideBody" style="min-height:110px"></textarea>
-        </div>
-
-        <div class="field">
-            <label>Slide Type</label>
-            <select id="editSlideType">
-                <option value="title">Title</option>
-                <option value="content">Content</option>
-                <option value="bullets">Bullet Points</option>
-                <option value="chart">Chart / KPI</option>
-                <option value="table">Table</option>
-                <option value="closing">Closing</option>
-            </select>
-        </div>
-
-        <div class="field">
-            <label>Speaker Notes</label>
-            <textarea id="editSlideNotes"></textarea>
-        </div>
-
-        <div class="actions">
-
-            <button class="btn primary" onclick="saveSlideEdit()">
-                Save Slide
-            </button>
-
-            <button class="btn" onclick="closeSlideModal()">
-                Cancel
-            </button>
-
-        </div>
+      <button
+        class="btn btn-gold"
+        onclick="saveSlideEdit()"
+      >
+        Save Slide
+      </button>
 
     </div>
 
+  </div>
+
 </div>
+
+
+<div class="toast" id="toast"></div>
 
 
 <script>
 
 /* =========================================================
+   AUNG BUSINESS EXCEL AI V1
+   MAIN APPLICATION
+========================================================= */
+
+
+/* -----------------------------
    GLOBAL STATE
-========================================================= */
+----------------------------- */
 
-let workbook = null;
-let currentSheet = null;
+const state = {
 
-let excelData = [
-    ["Customer","Product","Qty","Price","Amount"],
-    ["ABC","Traga",5,50000,"=C2*D2"],
-    ["XYZ","NLR",3,70000,"=C3*D3"],
-    ["DEF","Traga",7,50000,"=C4*D4"],
-    ["GHI","NLR",2,70000,"=C5*D5"]
-];
+  page: "dashboard",
 
-let sheets = {
-    "Sheet1": excelData
+  excel: {
+    rows: 15,
+    cols: 8,
+    data: {},
+    selected: "A1"
+  },
+
+  word: {
+    html: ""
+  },
+
+  ppt: {
+    title: "",
+    slides: [],
+    current: 0
+  },
+
+  projects: [],
+
+  settings: {
+    autoSave: true
+  }
+
 };
 
-let activeSheetName = "Sheet1";
 
-let commandPlan = [];
+/* -----------------------------
+   STORAGE
+----------------------------- */
 
-let slides = [];
+function loadState(){
 
-let editingSlideIndex = -1;
+  try{
 
+    const saved =
+      JSON.parse(
+        localStorage.getItem("aung_business_excel_ai_v1")
+      );
 
-/* =========================================================
-   NAVIGATION
-========================================================= */
+    if(saved){
 
-const pageNames = {
-    dashboard:"Dashboard",
-    excel:"Excel AI",
-    command:"Smart Command",
-    powerpoint:"PowerPoint AI",
-    word:"Word AI",
-    workflow:"AI Workflow",
-    formulas:"Formula Library",
-    settings:"Settings"
-};
+      Object.assign(state,saved);
 
-document.querySelectorAll(".nav-btn").forEach(btn => {
-
-    btn.addEventListener("click",()=>{
-
-        goPage(btn.dataset.page);
-
-    });
-
-});
-
-function goPage(page){
-
-    document.querySelectorAll(".page").forEach(p=>{
-        p.classList.remove("active");
-    });
-
-    document.querySelectorAll(".nav-btn").forEach(b=>{
-        b.classList.remove("active");
-    });
-
-    const target = document.getElementById("page-"+page);
-
-    if(target){
-        target.classList.add("active");
-    }
-
-    const nav = document.querySelector(
-        `.nav-btn[data-page="${page}"]`
-    );
-
-    if(nav){
-        nav.classList.add("active");
-    }
-
-    document.getElementById("pageTitle").textContent =
-        pageNames[page] || "Workspace";
-
-    if(page==="excel"){
-        renderExcel();
-    }
-
-    if(page==="powerpoint"){
-        renderSlides();
-        renderPreviews();
-    }
-
-}
-
-
-/* =========================================================
-   EXCEL
-========================================================= */
-
-function initExcel(){
-
-    workbook = {
-        SheetNames:Object.keys(sheets),
-        Sheets:{}
-    };
-
-    Object.keys(sheets).forEach(name=>{
-        workbook.Sheets[name] =
-            XLSX.utils.aoa_to_sheet(sheets[name]);
-    });
-
-    renderSheetTabs();
-    renderExcel();
-    updateExcelStats();
-
-}
-
-function renderSheetTabs(){
-
-    const el = document.getElementById("sheetTabs");
-
-    el.innerHTML = "";
-
-    Object.keys(sheets).forEach(name=>{
-
-        const btn = document.createElement("button");
-
-        btn.className =
-            "sheet-tab "+
-            (name===activeSheetName ? "active":"");
-
-        btn.textContent = name;
-
-        btn.onclick = ()=>{
-
-            activeSheetName = name;
-
-            renderSheetTabs();
-            renderExcel();
-            updateExcelStats();
-
-        };
-
-        el.appendChild(btn);
-
-    });
-
-}
-
-function renderExcel(){
-
-    const table =
-        document.getElementById("excelTable");
-
-    if(!table) return;
-
-    const data = sheets[activeSheetName] || [];
-
-    if(!data.length){
-        table.innerHTML = "";
-        return;
-    }
-
-    let html = "<thead><tr>";
-
-    html += "<th>#</th>";
-
-    const cols = data[0].length;
-
-    for(let c=0;c<cols;c++){
-
-        html += `
-            <th>${columnName(c)}</th>
-        `;
-
-    }
-
-    html += "</tr></thead><tbody>";
-
-    for(let r=0;r<data.length;r++){
-
-        html += `<tr>`;
-
-        html += `
-            <td class="row-num">${r+1}</td>
-        `;
-
-        for(let c=0;c<cols;c++){
-
-            const value =
-                data[r][c] === undefined
-                ? ""
-                : data[r][c];
-
-            html += `
-                <td>
-                    <input
-                        value="${escapeAttr(value)}"
-                        data-row="${r}"
-                        data-col="${c}"
-                    >
-                </td>
-            `;
-
-        }
-
-        html += "</tr>";
-
-    }
-
-    html += "</tbody>";
-
-    table.innerHTML = html;
-
-    table.querySelectorAll("input").forEach(input=>{
-
-        input.addEventListener("change",function(){
-
-            const r = Number(this.dataset.row);
-            const c = Number(this.dataset.col);
-
-            sheets[activeSheetName][r][c] =
-                this.value;
-
-            autoSave();
-
-        });
-
-        input.addEventListener("keydown",function(e){
-
-            const r = Number(this.dataset.row);
-            const c = Number(this.dataset.col);
-
-            if(e.key==="Enter" &&
-               document.getElementById("enterDown").checked){
-
-                e.preventDefault();
-
-                let nextR = r+1;
-
-                if(nextR >= sheets[activeSheetName].length){
-
-                    const cols =
-                        sheets[activeSheetName][0].length;
-
-                    sheets[activeSheetName].push(
-                        new Array(cols).fill("")
-                    );
-
-                    renderExcel();
-
-                }
-
-                const next =
-                    document.querySelector(
-                        `input[data-row="${nextR}"][data-col="${c}"]`
-                    );
-
-                if(next){
-                    next.focus();
-                    next.select();
-                }
-
-            }
-
-            if(e.key==="Tab" &&
-               document.getElementById("tabRight").checked){
-
-                e.preventDefault();
-
-                let nextC = c+1;
-                let nextR = r;
-
-                const row =
-                    sheets[activeSheetName][r];
-
-                if(nextC >= row.length){
-
-                    nextC = 0;
-                    nextR++;
-
-                    if(nextR >= sheets[activeSheetName].length){
-
-                        sheets[activeSheetName].push(
-                            new Array(row.length).fill("")
-                        );
-
-                    }
-
-                }
-
-                renderExcel();
-
-                const next =
-                    document.querySelector(
-                        `input[data-row="${nextR}"][data-col="${nextC}"]`
-                    );
-
-                if(next){
-                    next.focus();
-                    next.select();
-                }
-
-            }
-
-            if(e.key==="ArrowDown"){
-
-                e.preventDefault();
-
-                const next =
-                    document.querySelector(
-                        `input[data-row="${r+1}"][data-col="${c}"]`
-                    );
-
-                if(next){
-                    next.focus();
-                }
-
-            }
-
-            if(e.key==="ArrowUp"){
-
-                e.preventDefault();
-
-                const next =
-                    document.querySelector(
-                        `input[data-row="${r-1}"][data-col="${c}"]`
-                    );
-
-                if(next){
-                    next.focus();
-                }
-
-            }
-
-        });
-
-    });
-
-}
-
-function columnName(index){
-
-    let name = "";
-
-    index++;
-
-    while(index>0){
-
-        const rem = (index-1)%26;
-
-        name =
-            String.fromCharCode(65+rem)+name;
-
-        index =
-            Math.floor((index-1)/26);
-
-    }
-
-    return name;
-
-}
-
-function addExcelRow(){
-
-    const cols =
-        sheets[activeSheetName][0].length;
-
-    sheets[activeSheetName].push(
-        new Array(cols).fill("")
-    );
-
-    renderExcel();
-    updateExcelStats();
-    autoSave();
-
-}
-
-function loadExcel(event){
-
-    const file =
-        event.target.files[0];
-
-    if(!file) return;
-
-    document.getElementById("excelFileName").textContent =
-        file.name;
-
-    const reader =
-        new FileReader();
-
-    reader.onload = function(e){
-
-        const data =
-            new Uint8Array(e.target.result);
-
-        workbook =
-            XLSX.read(data,{type:"array"});
-
-        sheets = {};
-
-        workbook.SheetNames.forEach(name=>{
-
-            sheets[name] =
-                XLSX.utils.sheet_to_json(
-                    workbook.Sheets[name],
-                    {
-                        header:1,
-                        defval:""
-                    }
-                );
-
-        });
-
-        activeSheetName =
-            workbook.SheetNames[0];
-
-        renderSheetTabs();
-        renderExcel();
-        updateExcelStats();
-        updateDashboard();
-
-    };
-
-    reader.readAsArrayBuffer(file);
-
-}
-
-function downloadExcel(){
-
-    const wb =
-        XLSX.utils.book_new();
-
-    Object.keys(sheets).forEach(name=>{
-
-        const ws =
-            XLSX.utils.aoa_to_sheet(sheets[name]);
-
-        XLSX.utils.book_append_sheet(
-            wb,
-            ws,
-            name.substring(0,31)
+      state.excel =
+        Object.assign(
+          {
+            rows:15,
+            cols:8,
+            data:{},
+            selected:"A1"
+          },
+          saved.excel || {}
         );
 
-    });
+      state.word =
+        Object.assign(
+          {html:""},
+          saved.word || {}
+        );
 
-    XLSX.writeFile(
-        wb,
-        "AUNG_BUSINESS_AI.xlsx"
-    );
+      state.ppt =
+        Object.assign(
+          {
+            title:"",
+            slides:[],
+            current:0
+          },
+          saved.ppt || {}
+        );
+
+      state.projects =
+        saved.projects || [];
+
+      state.settings =
+        Object.assign(
+          {autoSave:true},
+          saved.settings || {}
+        );
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+  }
 
 }
 
-function updateExcelStats(){
 
-    const data =
-        sheets[activeSheetName] || [];
+function saveAll(){
 
-    document.getElementById("excelSheetCount").textContent =
-        Object.keys(sheets).length;
+  try{
 
-    document.getElementById("excelRows").textContent =
-        Math.max(0,data.length-1);
+    const editor =
+      document.getElementById("wordEditor");
 
-    document.getElementById("excelCols").textContent =
-        data[0] ? data[0].length : 0;
-
-    document.getElementById("dashSheets").textContent =
-        Object.keys(sheets).length;
-
-}
-
-function saveWorkspace(){
+    if(editor){
+      state.word.html = editor.innerHTML;
+    }
 
     localStorage.setItem(
-        "aung_business_excel",
-        JSON.stringify(sheets)
+      "aung_business_excel_ai_v1",
+      JSON.stringify(state)
     );
 
-    alert("Workspace saved");
+    updateDashboard();
+    renderProjects();
+
+    toast("Saved successfully");
+
+  }catch(error){
+
+    console.error(error);
+    toast("Save error");
+
+  }
 
 }
+
 
 function autoSave(){
 
-    if(document.getElementById("autoSave").checked){
+  if(state.settings.autoSave){
 
-        localStorage.setItem(
-            "aung_business_excel",
-            JSON.stringify(sheets)
-        );
+    try{
 
-    }
+      const editor =
+        document.getElementById("wordEditor");
+
+      if(editor){
+        state.word.html = editor.innerHTML;
+      }
+
+      localStorage.setItem(
+        "aung_business_excel_ai_v1",
+        JSON.stringify(state)
+      );
+
+    }catch(e){}
+
+  }
+
+}
+
+
+/* -----------------------------
+   NAVIGATION
+----------------------------- */
+
+const pageInfo = {
+
+  dashboard:[
+    "Dashboard",
+    "Business productivity workspace"
+  ],
+
+  excel:[
+    "Excel AI",
+    "Spreadsheet and business calculations"
+  ],
+
+  word:[
+    "Word AI",
+    "Business documents and reports"
+  ],
+
+  powerpoint:[
+    "PowerPoint AI",
+    "Presentation builder"
+  ],
+
+  assistant:[
+    "AI Assistant",
+    "Business productivity assistant"
+  ],
+
+  templates:[
+    "Templates",
+    "Ready-made business tools"
+  ],
+
+  projects:[
+    "Projects",
+    "Saved projects"
+  ],
+
+  settings:[
+    "Settings",
+    "Application preferences"
+  ]
+
+};
+
+
+function showPage(page){
+
+  state.page = page;
+
+  document
+    .querySelectorAll(".page")
+    .forEach(p=>{
+      p.classList.remove("active");
+    });
+
+  const target =
+    document.getElementById(page);
+
+  if(target){
+    target.classList.add("active");
+  }
+
+  document
+    .querySelectorAll(".nav-btn")
+    .forEach(btn=>{
+      btn.classList.toggle(
+        "active",
+        btn.dataset.page === page
+      );
+    });
+
+  const info = pageInfo[page];
+
+  if(info){
+
+    document.getElementById("pageTitle").textContent =
+      info[0];
+
+    document.getElementById("pageSub").textContent =
+      info[1];
+
+  }
+
+  document
+    .getElementById("sidebar")
+    .classList.remove("open");
+
+  if(page === "excel"){
+    renderSheet();
+  }
+
+  if(page === "word"){
+    loadWordEditor();
+  }
+
+  if(page === "powerpoint"){
+    renderSlides();
+    renderCurrentSlide();
+  }
+
+  if(page === "projects"){
+    renderProjects();
+  }
+
+}
+
+
+document
+  .querySelectorAll(".nav-btn")
+  .forEach(btn=>{
+
+    btn.addEventListener(
+      "click",
+      ()=>{
+        showPage(btn.dataset.page);
+      }
+    );
+
+  });
+
+
+function toggleSidebar(){
+
+  document
+    .getElementById("sidebar")
+    .classList.toggle("open");
+
+}
+
+
+/* -----------------------------
+   DASHBOARD
+----------------------------- */
+
+function updateDashboard(){
+
+  const projects =
+    state.projects || [];
+
+  document.getElementById("excelCount").textContent =
+    projects.filter(p=>p.type==="Excel").length;
+
+  document.getElementById("wordCount").textContent =
+    projects.filter(p=>p.type==="Word").length;
+
+  document.getElementById("pptCount").textContent =
+    projects.filter(p=>p.type==="PowerPoint").length;
+
+  document.getElementById("projectCount").textContent =
+    projects.length;
 
 }
 
 
 /* =========================================================
-   SMART COMMAND
+   EXCEL ENGINE
 ========================================================= */
 
-function useCommand(text){
+function columnName(num){
 
-    document.getElementById("smartCommand").value =
-        text;
+  let name = "";
 
-    goPage("command");
+  while(num > 0){
 
-}
+    let rem = (num - 1) % 26;
 
-function analyzeCommand(){
+    name =
+      String.fromCharCode(65 + rem) + name;
 
-    const command =
-        document.getElementById("smartCommand")
-        .value
-        .trim()
-        .toLowerCase();
+    num =
+      Math.floor((num - 1) / 26);
 
-    if(!command){
+  }
 
-        alert("Command ထည့်ပါ");
-
-        return;
-
-    }
-
-    commandPlan = [];
-
-    if(
-        command.includes("မြှောက်") ||
-        command.includes("multiply") ||
-        command.includes("amount")
-    ){
-
-        commandPlan.push({
-            action:"formula",
-            title:"Calculate Amount",
-            detail:"Create Amount formula using Qty × Price"
-        });
-
-    }
-
-    if(
-        command.includes("customer") &&
-        (
-            command.includes("စု") ||
-            command.includes("summary") ||
-            command.includes("total")
-        )
-    ){
-
-        commandPlan.push({
-            action:"summary",
-            title:"Customer Sales Summary",
-            detail:"Group records by Customer and calculate total amount"
-        });
-
-    }
-
-    if(
-        command.includes("duplicate") ||
-        command.includes("ထပ်")
-    ){
-
-        commandPlan.push({
-            action:"duplicate",
-            title:"Find Duplicate Records",
-            detail:"Detect duplicate customer or record values"
-        });
-
-    }
-
-    if(
-        command.includes("month") ||
-        command.includes("year") ||
-        command.includes("date")
-    ){
-
-        commandPlan.push({
-            action:"date",
-            title:"Create Date Analysis Columns",
-            detail:"Generate Month and Year fields from Date"
-        });
-
-    }
-
-    if(
-        command.includes("management") ||
-        command.includes("management summary")
-    ){
-
-        commandPlan.push({
-            action:"management",
-            title:"Management Summary",
-            detail:"Create executive-level summary metrics"
-        });
-
-    }
-
-    if(!commandPlan.length){
-
-        commandPlan.push({
-            action:"review",
-            title:"Analyze Requested Operation",
-            detail:"Review workbook structure and determine required Excel operation"
-        });
-
-    }
-
-    renderCommandPlan();
+  return name;
 
 }
 
-function renderCommandPlan(){
 
-    const box =
-        document.getElementById("commandPlan");
+function cellKey(row,col){
 
-    let html = `
-        <div class="card-title">Action Plan</div>
-        <div class="card-sub">
-            Planned Excel operations
-        </div>
-        <div style="height:12px"></div>
-    `;
+  return columnName(col) + row;
 
-    commandPlan.forEach((item,i)=>{
+}
 
-        html += `
-            <div class="plan-line">
-                <div class="plan-num">${i+1}</div>
-                <div>
-                    <div class="plan-text">
-                        ${escapeHtml(item.title)}
-                    </div>
-                    <div style="font-size:9px;color:#777f8b;margin-top:3px">
-                        ${escapeHtml(item.detail)}
-                    </div>
-                </div>
-            </div>
-        `;
+
+function renderSheet(){
+
+  const table =
+    document.getElementById("sheet");
+
+  if(!table) return;
+
+  let html = "<thead><tr>";
+
+  html += '<th class="row-num">#</th>';
+
+  for(let c=1;c<=state.excel.cols;c++){
+
+    html +=
+      "<th>" +
+      columnName(c) +
+      "</th>";
+
+  }
+
+  html += "</tr></thead><tbody>";
+
+  for(let r=1;r<=state.excel.rows;r++){
+
+    html += "<tr>";
+
+    html +=
+      '<th class="row-num">' +
+      r +
+      "</th>";
+
+    for(let c=1;c<=state.excel.cols;c++){
+
+      const key =
+        cellKey(r,c);
+
+      const value =
+        state.excel.data[key] || "";
+
+      const selected =
+        state.excel.selected === key
+          ? " selected"
+          : "";
+
+      html +=
+        '<td contenteditable="true" ' +
+        'class="' + selected + '" ' +
+        'data-cell="' + key + '">' +
+        escapeHTML(
+          displayCellValue(value)
+        ) +
+        "</td>";
+
+    }
+
+    html += "</tr>";
+
+  }
+
+  html += "</tbody>";
+
+  table.innerHTML = html;
+
+
+  table
+    .querySelectorAll("td")
+    .forEach(cell=>{
+
+      cell.addEventListener(
+        "click",
+        ()=>{
+          selectCell(cell.dataset.cell);
+        }
+      );
+
+      cell.addEventListener(
+        "input",
+        ()=>{
+          state.excel.data[cell.dataset.cell] =
+            cell.innerText;
+
+          autoSave();
+        }
+      );
+
+      cell.addEventListener(
+        "blur",
+        ()=>{
+          autoSave();
+        }
+      );
 
     });
 
-    box.innerHTML = html;
+  updateFormulaBar();
 
 }
 
-function applyCommand(){
 
-    if(!commandPlan.length){
+function displayCellValue(value){
 
-        analyzeCommand();
+  if(
+    typeof value !== "string" ||
+    !value.startsWith("=")
+  ){
 
-    }
+    return value;
 
-    commandPlan.forEach(item=>{
+  }
 
-        if(item.action==="formula"){
+  return calculateFormula(value);
 
-            const data =
-                sheets[activeSheetName];
+}
 
-            if(data.length<1) return;
 
-            let headers =
-                data[0].map(x=>String(x).toLowerCase());
+function selectCell(key){
 
-            let qty =
-                headers.findIndex(x=>
-                    x.includes("qty") ||
-                    x.includes("quantity")
-                );
+  state.excel.selected = key;
 
-            let price =
-                headers.findIndex(x=>
-                    x.includes("price")
-                );
-
-            let amount =
-                headers.findIndex(x=>
-                    x.includes("amount")
-                );
-
-            if(qty===-1) qty=2;
-            if(price===-1) price=3;
-            if(amount===-1){
-
-                amount=data[0].length;
-
-                data[0].push("Amount");
-
-            }
-
-            for(let r=1;r<data.length;r++){
-
-                data[r][amount] =
-                    `=${columnName(qty)}${r+1}*${columnName(price)}${r+1}`;
-
-            }
-
-        }
-
-        if(item.action==="duplicate"){
-
-            alert("Duplicate analysis prepared. Use the workbook to review repeated records");
-
-        }
-
-        if(item.action==="date"){
-
-            const data =
-                sheets[activeSheetName];
-
-            if(data.length){
-
-                data[0].push("Month");
-                data[0].push("Year");
-
-                let dateIndex =
-                    data[0].findIndex(x=>
-                        String(x).toLowerCase().includes("date")
-                    );
-
-                if(dateIndex>=0){
-
-                    for(let r=1;r<data.length;r++){
-
-                        const d =
-                            new Date(data[r][dateIndex]);
-
-                        if(!isNaN(d)){
-
-                            data[r].push(
-                                d.toLocaleString("en-US",{month:"long"})
-                            );
-
-                            data[r].push(
-                                d.getFullYear()
-                            );
-
-                        }else{
-
-                            data[r].push("");
-                            data[r].push("");
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }
-
-        if(item.action==="management"){
-
-            createManagementSheet();
-
-        }
-
+  document
+    .querySelectorAll(".sheet td")
+    .forEach(td=>{
+      td.classList.toggle(
+        "selected",
+        td.dataset.cell === key
+      );
     });
 
-    renderExcel();
-    updateExcelStats();
-    autoSave();
-
-    alert("Changes applied");
+  updateFormulaBar();
 
 }
 
-function createManagementSheet(){
 
-    const data =
-        sheets[activeSheetName];
+function updateFormulaBar(){
 
-    if(!data || data.length<2) return;
+  const key =
+    state.excel.selected;
 
-    let amountIndex =
-        data[0].findIndex(x=>
-            String(x).toLowerCase().includes("amount")
+  document.getElementById("cellName").textContent =
+    key;
+
+  document.getElementById("formulaInput").value =
+    state.excel.data[key] || "";
+
+}
+
+
+function formulaKey(event){
+
+  if(event.key !== "Enter"){
+    return;
+  }
+
+  const key =
+    state.excel.selected;
+
+  state.excel.data[key] =
+    event.target.value;
+
+  renderSheet();
+
+  toast("Cell updated");
+
+}
+
+
+function addRow(){
+
+  state.excel.rows++;
+
+  renderSheet();
+
+}
+
+
+function addColumn(){
+
+  state.excel.cols++;
+
+  renderSheet();
+
+}
+
+
+function newSheet(){
+
+  if(
+    !confirm("Create a new blank Excel sheet?")
+  ){
+    return;
+  }
+
+  state.excel = {
+    rows:15,
+    cols:8,
+    data:{},
+    selected:"A1"
+  };
+
+  renderSheet();
+
+  toast("New Excel sheet created");
+
+}
+
+
+function clearSheet(){
+
+  if(
+    !confirm("Clear all spreadsheet data?")
+  ){
+    return;
+  }
+
+  state.excel.data = {};
+
+  renderSheet();
+
+  toast("Sheet cleared");
+
+}
+
+
+function formatSelected(type){
+
+  const key =
+    state.excel.selected;
+
+  const cell =
+    document.querySelector(
+      '[data-cell="' + key + '"]'
+    );
+
+  if(!cell) return;
+
+  if(type === "bold"){
+
+    cell.style.fontWeight =
+      cell.style.fontWeight === "700"
+        ? "400"
+        : "700";
+
+  }
+
+  if(type === "italic"){
+
+    cell.style.fontStyle =
+      cell.style.fontStyle === "italic"
+        ? "normal"
+        : "italic";
+
+  }
+
+}
+
+
+function getNumericValues(){
+
+  return Object
+    .values(state.excel.data)
+    .map(v=>{
+
+      const n =
+        parseFloat(
+          String(v).replace(/,/g,"")
         );
 
-    let total=0;
+      return isNaN(n) ? null : n;
 
-    if(amountIndex>=0){
+    })
+    .filter(v=>v !== null);
 
-        for(let i=1;i<data.length;i++){
+}
 
-            let n =
-                Number(
-                    String(data[i][amountIndex])
-                    .replace(/,/g,"")
-                );
 
-            if(!isNaN(n)) total+=n;
+function sumSelected(){
+
+  const values =
+    getNumericValues();
+
+  const sum =
+    values.reduce(
+      (a,b)=>a+b,
+      0
+    );
+
+  const key =
+    state.excel.selected;
+
+  state.excel.data[key] =
+    String(sum);
+
+  renderSheet();
+
+  toast("Sum inserted");
+
+}
+
+
+function averageSelected(){
+
+  const values =
+    getNumericValues();
+
+  if(!values.length){
+
+    toast("No numeric data found");
+    return;
+
+  }
+
+  const avg =
+    values.reduce(
+      (a,b)=>a+b,
+      0
+    ) / values.length;
+
+  state.excel.data[
+    state.excel.selected
+  ] =
+    avg.toFixed(2);
+
+  renderSheet();
+
+  toast("Average inserted");
+
+}
+
+
+function calculateFormula(formula){
+
+  try{
+
+    let f =
+      formula
+        .toUpperCase()
+        .replace(/\s/g,"");
+
+    const match =
+      f.match(
+        /^=(SUM|AVERAGE|MIN|MAX)\(([A-Z]+)(\d+):([A-Z]+)(\d+)\)$/
+      );
+
+    if(match){
+
+      const fn =
+        match[1];
+
+      const startCol =
+        letterToNumber(match[2]);
+
+      const startRow =
+        parseInt(match[3]);
+
+      const endCol =
+        letterToNumber(match[4]);
+
+      const endRow =
+        parseInt(match[5]);
+
+      const nums = [];
+
+      for(
+        let r=startRow;
+        r<=endRow;
+        r++
+      ){
+
+        for(
+          let c=startCol;
+          c<=endCol;
+          c++
+        ){
+
+          const value =
+            state.excel.data[
+              cellKey(r,c)
+            ];
+
+          const n =
+            parseFloat(
+              String(value || "")
+              .replace(/,/g,"")
+            );
+
+          if(!isNaN(n)){
+            nums.push(n);
+          }
 
         }
 
+      }
+
+      if(!nums.length){
+        return 0;
+      }
+
+      if(fn==="SUM"){
+        return nums.reduce((a,b)=>a+b,0);
+      }
+
+      if(fn==="AVERAGE"){
+        return (
+          nums.reduce((a,b)=>a+b,0)
+          / nums.length
+        ).toFixed(2);
+      }
+
+      if(fn==="MIN"){
+        return Math.min(...nums);
+      }
+
+      if(fn==="MAX"){
+        return Math.max(...nums);
+      }
+
     }
 
-    sheets["Management Summary"] = [
+    return formula;
 
-        ["Metric","Value"],
+  }catch(error){
 
-        ["Source Sheet",activeSheetName],
+    return "#ERROR";
 
-        ["Total Records",data.length-1],
+  }
 
-        ["Total Sales",total],
+}
 
-        ["Generated By","AUNG BUSINESS AI"]
 
-    ];
+function letterToNumber(letters){
+
+  let n=0;
+
+  for(
+    let i=0;
+    i<letters.length;
+    i++
+  ){
+
+    n =
+      n * 26 +
+      letters.charCodeAt(i) -
+      64;
+
+  }
+
+  return n;
+
+}
+
+
+function downloadCSV(){
+
+  let csv = "";
+
+  for(let r=1;r<=state.excel.rows;r++){
+
+    let row=[];
+
+    for(let c=1;c<=state.excel.cols;c++){
+
+      const value =
+        state.excel.data[
+          cellKey(r,c)
+        ] || "";
+
+      row.push(
+        '"' +
+        String(value)
+          .replace(/"/g,'""') +
+        '"'
+      );
+
+    }
+
+    csv += row.join(",") + "\n";
+
+  }
+
+  downloadFile(
+    csv,
+    "aung-business-excel.csv",
+    "text/csv"
+  );
+
+  toast("CSV exported");
+
+}
+
+
+function saveExcelProject(){
+
+  state.projects.push({
+
+    id:Date.now(),
+
+    type:"Excel",
+
+    name:"Excel Project " +
+      new Date().toLocaleDateString(),
+
+    created:new Date().toISOString(),
+
+    data:JSON.parse(
+      JSON.stringify(state.excel)
+    )
+
+  });
+
+  saveAll();
+
+  toast("Excel project saved");
 
 }
 
 
 /* =========================================================
-   POWERPOINT AI
+   WORD ENGINE
+========================================================= */
+
+function loadWordEditor(){
+
+  const editor =
+    document.getElementById("wordEditor");
+
+  if(!editor) return;
+
+  if(
+    state.word.html &&
+    editor.innerHTML !== state.word.html
+  ){
+
+    editor.innerHTML =
+      state.word.html;
+
+  }
+
+}
+
+
+function execWord(command,value=null){
+
+  document.execCommand(
+    command,
+    false,
+    value
+  );
+
+  document
+    .getElementById("wordEditor")
+    .focus();
+
+  autoSave();
+
+}
+
+
+function newWord(){
+
+  if(
+    !confirm("Create a new Word document?")
+  ){
+    return;
+  }
+
+  state.word.html = "";
+
+  document
+    .getElementById("wordEditor")
+    .innerHTML = "";
+
+  toast("New document created");
+
+}
+
+
+function saveWord(){
+
+  state.word.html =
+    document
+      .getElementById("wordEditor")
+      .innerHTML;
+
+  state.projects.push({
+
+    id:Date.now(),
+
+    type:"Word",
+
+    name:"Business Document " +
+      new Date().toLocaleDateString(),
+
+    created:new Date().toISOString(),
+
+    html:state.word.html
+
+  });
+
+  saveAll();
+
+  toast("Word document saved");
+
+}
+
+
+function downloadWord(){
+
+  const html =
+    document
+      .getElementById("wordEditor")
+      .innerHTML;
+
+  const documentHTML = `
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Business Document</title>
+
+<style>
+body{
+  font-family:Arial,sans-serif;
+  line-height:1.7;
+  margin:60px;
+}
+</style>
+
+</head>
+
+<body>
+
+${html}
+
+</body>
+</html>
+
+`;
+
+  downloadFile(
+    documentHTML,
+    "aung-business-document.doc",
+    "application/msword"
+  );
+
+  toast("Word document exported");
+
+}
+
+
+/* =========================================================
+   POWERPOINT ENGINE
 ========================================================= */
 
 function generatePresentation(){
 
-    const command =
-        document.getElementById("pptCommand")
+  const topic =
+    document
+      .getElementById("pptTopic")
+      .value
+      .trim();
+
+  const count =
+    parseInt(
+      document
+        .getElementById("pptSlides")
         .value
-        .trim();
+    );
 
-    if(!command){
+  const audience =
+    document
+      .getElementById("pptAudience")
+      .value;
 
-        alert("PowerPoint ဘာလုပ်ချင်တယ်ဆိုတာ ရေးပါ");
+  if(!topic){
 
-        return;
+    toast("Please enter presentation topic");
+    return;
 
-    }
+  }
 
-    let count =
-        Number(
-            document.getElementById("pptSlideCount").value
-        );
+  const titles = [
 
-    const match =
-        command.match(/(\d+)\s*(slides?|slide|ပိုင်း|ခု)/i);
+    topic,
 
-    if(match){
+    "Executive Summary",
 
-        const parsed =
-            Number(match[1]);
+    "Current Situation",
 
-        if(parsed>=3 && parsed<=30){
+    "Key Challenges",
 
-            count=parsed;
+    "Strategy & Action Plan",
 
-            document.getElementById("pptSlideCount").value =
-                String(
-                    [6,8,10,12,15,20].includes(parsed)
-                    ? parsed
-                    : 10
-                );
+    "KPI & Measurement",
 
-        }
+    "Next Steps",
 
-    }
+    "Expected Results",
 
-    const theme =
-        document.getElementById("pptTheme").value;
+    "Risk & Mitigation",
 
-    const audience =
-        document.getElementById("pptAudience").value;
+    "Conclusion",
 
-    const tone =
-        document.getElementById("pptTone").value;
+    "Recommendations",
 
-    const requestedTitles =
-        parseRequestedSlides(command);
+    "Thank You"
 
-    slides = [];
+  ];
 
-    if(requestedTitles.length){
+  const contents = [
 
-        requestedTitles
-            .slice(0,count)
-            .forEach((title,i)=>{
+    [
+      "Business Presentation",
+      audience,
+      new Date().getFullYear()
+    ],
 
-                slides.push(
-                    createSlideFromTitle(
-                        title,
-                        i,
-                        theme,
-                        audience,
-                        tone
-                    )
-                );
+    [
+      "Business objective",
+      "Key priorities",
+      "Expected outcome"
+    ],
 
-            });
+    [
+      "Current performance",
+      "Market situation",
+      "Customer situation"
+    ],
 
-    }
+    [
+      "Major business challenges",
+      "Execution gaps",
+      "Opportunities"
+    ],
 
-    while(slides.length<count){
+    [
+      "Strategic priorities",
+      "Key actions",
+      "Ownership and timeline"
+    ],
 
-        slides.push(
-            createDefaultSlide(
-                slides.length,
-                count,
-                command,
-                theme,
-                audience,
-                tone
-            )
-        );
+    [
+      "Primary KPIs",
+      "Target vs Actual",
+      "Review cadence"
+    ],
 
-    }
+    [
+      "Immediate actions",
+      "30 / 60 / 90 day plan",
+      "Management follow-up"
+    ],
 
-    renderSlides();
-    renderPreviews();
-    updateDashboard();
+    [
+      "Business impact",
+      "Revenue opportunity",
+      "Expected improvement"
+    ],
 
-}
+    [
+      "Key risks",
+      "Preventive actions",
+      "Contingency plan"
+    ],
 
-function parseRequestedSlides(command){
+    [
+      "Key messages",
+      "Business priorities",
+      "Closing statement"
+    ],
 
-    const lines =
-        command
-        .split(/\n/)
-        .map(x=>x.trim())
-        .filter(Boolean);
+    [
+      "Management decisions",
+      "Required resources",
+      "Recommended actions"
+    ],
 
-    const result = [];
+    [
+      "Thank you",
+      "Questions & Discussion"
+    ]
 
-    lines.forEach(line=>{
+  ];
 
-        const clean =
-            line
-            .replace(/^slide\s*\d+\s*[:.)-]?\s*/i,"")
-            .replace(/^\d+\s*[:.)-]\s*/,"")
-            .trim();
+  state.ppt = {
 
-        if(
-            clean.length>=3 &&
-            clean.length<=100 &&
-            !clean.includes("လုပ်ပေး") &&
-            !clean.includes("professional") &&
-            !clean.includes("style ဖြစ်") &&
-            !clean.includes("style လုပ်")
-        ){
+    title:topic,
 
-            result.push(clean);
+    current:0,
 
-        }
+    slides:[]
+
+  };
+
+  for(
+    let i=0;
+    i<count;
+    i++
+  ){
+
+    state.ppt.slides.push({
+
+      id:Date.now()+i,
+
+      title:
+        i === 0
+          ? topic
+          : titles[i],
+
+      content:
+        contents[i] || [
+          "Key business point",
+          "Supporting information",
+          "Action"
+        ]
 
     });
 
-    return result.slice(0,30);
+  }
+
+  renderSlides();
+  renderCurrentSlide();
+
+  saveAll();
+
+  toast(
+    count +
+    " slides generated"
+  );
 
 }
 
-function createSlideFromTitle(
-    title,
-    index,
-    theme,
-    audience,
-    tone
-){
-
-    let type="content";
-
-    if(index===0){
-        type="title";
-    }
-
-    if(
-        title.toLowerCase().includes("target") ||
-        title.toLowerCase().includes("sales") ||
-        title.toLowerCase().includes("performance") ||
-        title.toLowerCase().includes("kpi")
-    ){
-        type="chart";
-    }
-
-    if(
-        title.toLowerCase().includes("conclusion") ||
-        title.toLowerCase().includes("thank")
-    ){
-        type="closing";
-    }
-
-    return {
-        title:title,
-        body:generateBody(title,audience,tone),
-        type:type,
-        notes:`Speaker notes for ${title}`,
-        theme:theme
-    };
-
-}
-
-function createDefaultSlide(
-    index,
-    total,
-    command,
-    theme,
-    audience,
-    tone
-){
-
-    const titles = [
-        "Title & Executive Overview",
-        "Executive Summary",
-        "Business Performance",
-        "Key Performance Indicators",
-        "Sales Performance",
-        "Customer Performance",
-        "Product Performance",
-        "Market & Opportunity",
-        "Key Challenges",
-        "Action Plan",
-        "Next Steps",
-        "Conclusion"
-    ];
-
-    let title =
-        titles[index] ||
-        `Business Review — Section ${index+1}`;
-
-    if(index===0){
-
-        return {
-            title:extractPresentationTitle(command),
-            body:`${audience} Presentation`,
-            type:"title",
-            notes:"Opening presentation and objective",
-            theme:theme
-        };
-
-    }
-
-    if(index===total-1){
-
-        return {
-            title:"Conclusion & Next Steps",
-            body:"Key takeaways, decisions and next actions",
-            type:"closing",
-            notes:"Close the presentation with clear next actions",
-            theme:theme
-        };
-
-    }
-
-    return {
-        title:title,
-        body:generateBody(title,audience,tone),
-        type:
-            title.includes("Performance") ||
-            title.includes("KPI")
-            ? "chart"
-            : "content",
-        notes:`Present ${title} to the ${audience} audience`,
-        theme:theme
-    };
-
-}
-
-function extractPresentationTitle(command){
-
-    const line =
-        command
-        .split("\n")
-        .map(x=>x.trim())
-        .find(x=>
-            x.length>5 &&
-            !/^\d+/.test(x)
-        );
-
-    if(!line){
-
-        return "Business Presentation";
-
-    }
-
-    return line
-        .replace(/slides?.*/i,"")
-        .replace(/လုပ်ပေး.*$/,"")
-        .trim()
-        .substring(0,80);
-
-}
-
-function generateBody(title,audience,tone){
-
-    const lower =
-        title.toLowerCase();
-
-    if(
-        lower.includes("summary") ||
-        lower.includes("overview")
-    ){
-
-        return [
-            "Current business situation",
-            "Key performance highlights",
-            "Major issues requiring attention",
-            "Priority decisions and next actions"
-        ].join("\n");
-
-    }
-
-    if(
-        lower.includes("performance") ||
-        lower.includes("kpi") ||
-        lower.includes("sales")
-    ){
-
-        return [
-            "Target vs actual performance",
-            "Achievement percentage",
-            "Key performance drivers",
-            "Gap and improvement opportunities"
-        ].join("\n");
-
-    }
-
-    if(
-        lower.includes("customer")
-    ){
-
-        return [
-            "Top customer contribution",
-            "Customer growth opportunities",
-            "Retention and development priorities",
-            "Key account actions"
-        ].join("\n");
-
-    }
-
-    if(
-        lower.includes("problem") ||
-        lower.includes("challenge")
-    ){
-
-        return [
-            "Major operational challenges",
-            "Root causes",
-            "Business impact",
-            "Recommended response"
-        ].join("\n");
-
-    }
-
-    if(
-        lower.includes("opportun")
-    ){
-
-        return [
-            "Market opportunity",
-            "Customer opportunity",
-            "Product opportunity",
-            "Execution priorities"
-        ].join("\n");
-
-    }
-
-    if(
-        lower.includes("action") ||
-        lower.includes("next")
-    ){
-
-        return [
-            "Priority 1 — Immediate action",
-            "Priority 2 — Short-term action",
-            "Priority 3 — Medium-term action",
-            "Owner and timing"
-        ].join("\n");
-
-    }
-
-    return [
-        `${audience} perspective`,
-        `Key information and insights`,
-        `Important business implications`,
-        `Recommended next step`
-    ].join("\n");
-
-}
-
-
-/* =========================================================
-   SLIDE RENDERING
-========================================================= */
 
 function renderSlides(){
 
-    const list =
-        document.getElementById("slideList");
+  const list =
+    document.getElementById("slideList");
 
-    if(!slides.length){
+  if(!list) return;
 
-        list.innerHTML = `
-            <div style="
-                padding:35px;
-                text-align:center;
-                color:#737b87;
-                font-size:12px
-            ">
-                Your generated slide plan will appear here
-            </div>
-        `;
+  list.innerHTML = "";
 
-        document.getElementById("slideCountBadge")
-            .textContent="0 Slides";
+  state.ppt.slides.forEach(
+    (slide,index)=>{
 
-        return;
+      const div =
+        document.createElement("div");
+
+      div.className =
+        "slide-thumb" +
+        (
+          index === state.ppt.current
+            ? " active"
+            : ""
+        );
+
+      div.innerHTML = `
+
+        <div class="thumb-canvas">
+
+          <div class="thumb-title">
+            ${escapeHTML(slide.title)}
+          </div>
+
+          <div class="thumb-content">
+            ${slide.content
+              .slice(0,4)
+              .map(x=>"• "+escapeHTML(x))
+              .join("<br>")}
+          </div>
+
+        </div>
+
+        <div style="
+          font-size:10px;
+          color:#777;
+          padding-top:5px;
+        ">
+          Slide ${index+1}
+        </div>
+
+      `;
+
+      div.onclick = ()=>{
+        state.ppt.current = index;
+        renderSlides();
+        renderCurrentSlide();
+      };
+
+      list.appendChild(div);
 
     }
+  );
 
-    document.getElementById("slideCountBadge")
-        .textContent =
-        `${slides.length} Slides`;
-
-    list.innerHTML="";
-
-    slides.forEach((slide,index)=>{
-
-        const item =
-            document.createElement("div");
-
-        item.className="slide-item";
-
-        item.innerHTML = `
-
-            <div class="slide-number">
-                ${String(index+1).padStart(2,"0")}
-            </div>
-
-            <div>
-                <div class="slide-item-title">
-                    ${escapeHtml(slide.title)}
-                </div>
-
-                <div class="slide-item-sub">
-                    ${escapeHtml(slide.type)}
-                    ·
-                    ${escapeHtml(
-                        slide.body
-                        .replace(/\n/g," ")
-                        .substring(0,100)
-                    )}
-                </div>
-            </div>
-
-            <div class="slide-actions">
-
-                <button
-                    class="btn small"
-                    onclick="editSlide(${index})"
-                >
-                    Edit
-                </button>
-
-                <button
-                    class="btn small"
-                    onclick="regenerateSlide(${index})"
-                >
-                    ↻
-                </button>
-
-                <button
-                    class="btn small"
-                    onclick="duplicateSlide(${index})"
-                >
-                    ⧉
-                </button>
-
-                <button
-                    class="btn small"
-                    onclick="moveSlide(${index},-1)"
-                >
-                    ↑
-                </button>
-
-                <button
-                    class="btn small"
-                    onclick="moveSlide(${index},1)"
-                >
-                    ↓
-                </button>
-
-                <button
-                    class="btn red small"
-                    onclick="deleteSlide(${index})"
-                >
-                    ×
-                </button>
-
-            </div>
-        `;
-
-        list.appendChild(item);
-
-    });
+  document.getElementById("slideCounter").textContent =
+    state.ppt.slides.length +
+    " slides";
 
 }
 
-function editSlide(index){
 
-    editingSlideIndex=index;
+function renderCurrentSlide(){
 
-    const slide =
-        slides[index];
+  const slide =
+    state.ppt.slides[
+      state.ppt.current
+    ];
 
-    document.getElementById("editSlideTitle").value =
-        slide.title;
+  if(!slide){
 
-    document.getElementById("editSlideBody").value =
-        slide.body;
+    document.getElementById("stageTitle").textContent =
+      "Your Presentation";
 
-    document.getElementById("editSlideType").value =
-        slide.type;
+    document.getElementById("stageContent").innerHTML =
+      "<li>Generate a presentation to get started</li>";
 
-    document.getElementById("editSlideNotes").value =
-        slide.notes;
+    return;
 
-    document.getElementById("slideModal")
-        .classList.add("show");
+  }
 
-}
+  document.getElementById("stageTitle").textContent =
+    slide.title;
 
-function saveSlideEdit(){
+  document.getElementById("stageContent").innerHTML =
+    slide.content
+      .map(
+        item =>
+          "<li>" +
+          escapeHTML(item) +
+          "</li>"
+      )
+      .join("");
 
-    if(editingSlideIndex<0) return;
-
-    slides[editingSlideIndex] = {
-
-        ...slides[editingSlideIndex],
-
-        title:
-            document.getElementById("editSlideTitle").value,
-
-        body:
-            document.getElementById("editSlideBody").value,
-
-        type:
-            document.getElementById("editSlideType").value,
-
-        notes:
-            document.getElementById("editSlideNotes").value
-
-    };
-
-    closeSlideModal();
-
-    renderSlides();
-    renderPreviews();
-    updateDashboard();
+  document.getElementById("stageNumber").textContent =
+    (
+      state.ppt.current + 1
+    ) +
+    " / " +
+    state.ppt.slides.length;
 
 }
 
-function closeSlideModal(){
-
-    document.getElementById("slideModal")
-        .classList.remove("show");
-
-    editingSlideIndex=-1;
-
-}
 
 function addSlide(){
 
-    slides.push({
+  const n =
+    state.ppt.slides.length + 1;
 
-        title:"New Slide",
+  state.ppt.slides.push({
 
-        body:
-            "Add your slide content here",
+    id:Date.now(),
 
-        type:"content",
+    title:"New Slide " + n,
 
-        notes:"Speaker notes",
+    content:[
+      "Key point",
+      "Supporting information",
+      "Action"
+    ]
 
-        theme:
-            document.getElementById("pptTheme").value
+  });
 
-    });
+  state.ppt.current =
+    state.ppt.slides.length - 1;
 
-    renderSlides();
-    renderPreviews();
-    updateDashboard();
-
-}
-
-function deleteSlide(index){
-
-    if(slides.length<=1){
-
-        alert("At least one slide is required");
-
-        return;
-
-    }
-
-    slides.splice(index,1);
-
-    renderSlides();
-    renderPreviews();
-    updateDashboard();
-
-}
-
-function duplicateSlide(index){
-
-    const copy =
-        JSON.parse(
-            JSON.stringify(slides[index])
-        );
-
-    copy.title += " — Copy";
-
-    slides.splice(index+1,0,copy);
-
-    renderSlides();
-    renderPreviews();
-    updateDashboard();
-
-}
-
-function moveSlide(index,direction){
-
-    const newIndex =
-        index+direction;
-
-    if(
-        newIndex<0 ||
-        newIndex>=slides.length
-    ) return;
-
-    const temp =
-        slides[index];
-
-    slides[index]=
-        slides[newIndex];
-
-    slides[newIndex]=temp;
-
-    renderSlides();
-    renderPreviews();
-
-}
-
-function regenerateSlide(index){
-
-    const slide =
-        slides[index];
-
-    slides[index].body =
-        generateBody(
-            slide.title,
-            document.getElementById("pptAudience").value,
-            document.getElementById("pptTone").value
-        );
-
-    slides[index].notes =
-        `Updated speaker notes for ${slide.title}`;
-
-    renderSlides();
-    renderPreviews();
-
-}
-
-function regenerateAllSlides(){
-
-    slides.forEach(slide=>{
-
-        slide.body =
-            generateBody(
-                slide.title,
-                document.getElementById("pptAudience").value,
-                document.getElementById("pptTone").value
-            );
-
-    });
-
-    renderSlides();
-    renderPreviews();
-
-}
-
-function renderPreviews(){
-
-    const grid =
-        document.getElementById("previewGrid");
-
-    if(!grid) return;
-
-    grid.innerHTML="";
-
-    slides.forEach((slide,index)=>{
-
-        const el =
-            document.createElement("div");
-
-        const theme =
-            slide.theme ||
-            document.getElementById("pptTheme").value;
-
-        el.className =
-            `slide-preview ${theme}`;
-
-        const body =
-            slide.body
-            .split("\n")
-            .map(x=>`• ${escapeHtml(x)}`)
-            .join("<br>");
-
-        el.innerHTML = `
-
-            <div class="preview-kicker">
-                AUNG BUSINESS AI · ${String(index+1).padStart(2,"0")}
-            </div>
-
-            <div class="preview-title">
-                ${escapeHtml(slide.title)}
-            </div>
-
-            <div class="preview-body">
-                ${body}
-            </div>
-
-            <div class="preview-footer">
-                <span>${escapeHtml(document.getElementById("pptAudience").value)}</span>
-                <span>${index+1} / ${slides.length}</span>
-            </div>
-        `;
-
-        grid.appendChild(el);
-
-    });
+  renderSlides();
+  renderCurrentSlide();
 
 }
 
 
-/* =========================================================
-   POWERPOINT EXPORT
-========================================================= */
+function deleteSlide(){
 
-async function downloadPPTX(){
+  if(
+    !state.ppt.slides.length
+  ){
+    return;
+  }
 
-    if(!slides.length){
+  if(
+    !confirm("Delete current slide?")
+  ){
+    return;
+  }
 
-        alert("Presentation အရင် Generate လုပ်ပါ");
+  state.ppt.slides.splice(
+    state.ppt.current,
+    1
+  );
 
-        return;
+  if(
+    state.ppt.current >=
+    state.ppt.slides.length
+  ){
 
-    }
+    state.ppt.current =
+      Math.max(
+        0,
+        state.ppt.slides.length - 1
+      );
 
-    try{
+  }
 
-        const pptx =
-            new pptxgen();
-
-        pptx.layout =
-            document.getElementById("pptRatio").value;
-
-        pptx.author =
-            "AUNG BUSINESS AI";
-
-        pptx.company =
-            "AUNG BUSINESS AI";
-
-        pptx.subject =
-            "Business Presentation";
-
-        pptx.title =
-            slides[0].title;
-
-        pptx.lang="en-US";
-
-        const theme =
-            document.getElementById("pptTheme").value;
-
-        slides.forEach((slideData,index)=>{
-
-            const slide =
-                pptx.addSlide();
-
-            applyPPTBackground(
-                slide,
-                theme
-            );
-
-            if(slideData.type==="title"){
-
-                addTitleSlide(
-                    pptx,
-                    slide,
-                    slideData,
-                    index
-                );
-
-            }else if(slideData.type==="chart"){
-
-                addChartSlide(
-                    pptx,
-                    slide,
-                    slideData,
-                    index
-                );
-
-            }else if(slideData.type==="closing"){
-
-                addClosingSlide(
-                    pptx,
-                    slide,
-                    slideData,
-                    index
-                );
-
-            }else{
-
-                addContentSlide(
-                    pptx,
-                    slide,
-                    slideData,
-                    index
-                );
-
-            }
-
-            if(slideData.notes){
-
-                try{
-
-                    slide.addNotes(
-                        slideData.notes
-                    );
-
-                }catch(err){}
-
-            }
-
-        });
-
-        await pptx.writeFile({
-            fileName:
-                "AUNG_BUSINESS_AI_PRESENTATION.pptx"
-        });
-
-    }catch(error){
-
-        console.error(error);
-
-        alert(
-            "PPTX export error: "+
-            error.message
-        );
-
-    }
+  renderSlides();
+  renderCurrentSlide();
 
 }
 
-function applyPPTBackground(slide,theme){
 
-    if(theme==="light"){
+function duplicateSlide(){
 
-        slide.background = {
-            color:"F7F7F7"
-        };
-
-        return;
-
-    }
-
-    if(theme==="gold"){
-
-        slide.background = {
-            color:"17130B"
-        };
-
-        return;
-
-    }
-
-    if(theme==="blue"){
-
-        slide.background = {
-            color:"08182C"
-        };
-
-        return;
-
-    }
-
-    slide.background = {
-        color:"10141C"
-    };
-
-}
-
-function addTitleSlide(
-    pptx,
-    slide,
-    data,
-    index
-){
-
-    slide.addText(
-        "AUNG BUSINESS AI",
-        {
-            x:.7,
-            y:.55,
-            w:5,
-            h:.3,
-            fontFace:"Aptos",
-            fontSize:10,
-            bold:true,
-            color:"D6A84F",
-            charSpacing:2
-        }
-    );
-
-    slide.addText(
-        data.title,
-        {
-            x:.7,
-            y:2.0,
-            w:11.8,
-            h:1.2,
-            fontFace:"Aptos Display",
-            fontSize:30,
-            bold:true,
-            color:"FFFFFF",
-            margin:0,
-            breakLine:false
-        }
-    );
-
-    slide.addText(
-        data.body.replace(/\n/g," · "),
-        {
-            x:.7,
-            y:3.45,
-            w:10,
-            h:.8,
-            fontSize:16,
-            color:"B8C0CC",
-            margin:0
-        }
-    );
-
-    addFooter(
-        slide,
-        index,
-        "AUNG BUSINESS AI"
-    );
-
-}
-
-function addContentSlide(
-    pptx,
-    slide,
-    data,
-    index
-){
-
-    slide.addText(
-        `0${index+1}`.slice(-2),
-        {
-            x:.65,
-            y:.55,
-            w:.55,
-            h:.3,
-            fontSize:11,
-            bold:true,
-            color:"D6A84F",
-            margin:0
-        }
-    );
-
-    slide.addText(
-        data.title,
-        {
-            x:1.25,
-            y:.5,
-            w:10.7,
-            h:.55,
-            fontSize:25,
-            bold:true,
-            color:"FFFFFF",
-            margin:0
-        }
-    );
-
-    const lines =
-        data.body
-        .split("\n")
-        .filter(Boolean);
-
-    let y=1.45;
-
-    lines.forEach((line,i)=>{
-
-        slide.addShape(
-            pptx.ShapeType.ellipse,
-            {
-                x:.85,
-                y:y+.08,
-                w:.10,
-                h:.10,
-                fill:{
-                    color:"D6A84F"
-                },
-                line:{
-                    color:"D6A84F"
-                }
-            }
-        );
-
-        slide.addText(
-            line.replace(/^[-•]\s*/,""),
-            {
-                x:1.1,
-                y:y,
-                w:10.3,
-                h:.45,
-                fontSize:16,
-                color:"DCE1E8",
-                margin:0
-            }
-        );
-
-        y+=.72;
-
-    });
-
-    addFooter(
-        slide,
-        index,
-        "AUNG BUSINESS AI"
-    );
-
-}
-
-function addChartSlide(
-    pptx,
-    slide,
-    data,
-    index
-){
-
-    slide.addText(
-        data.title,
-        {
-            x:.7,
-            y:.5,
-            w:11,
-            h:.6,
-            fontSize:25,
-            bold:true,
-            color:"FFFFFF",
-            margin:0
-        }
-    );
-
-    const chartData = [
-
-        {
-            name:"Performance",
-            labels:["Target","Actual","Gap"],
-            values:[100,77,23]
-        }
-
+  const slide =
+    state.ppt.slides[
+      state.ppt.current
     ];
 
-    try{
+  if(!slide) return;
 
-        slide.addChart(
-            pptx.ChartType.bar,
-            chartData,
-            {
-                x:.8,
-                y:1.45,
-                w:7.3,
-                h:4.7,
-                catAxisLabelFontSize:11,
-                valAxisLabelFontSize:10,
-                showLegend:false,
-                showTitle:false,
-                showValue:true,
-                chartColors:["D6A84F"],
-                valAxisMinVal:0,
-                valAxisMaxVal:100
-            }
-        );
+  state.ppt.slides.splice(
+    state.ppt.current + 1,
+    0,
+    {
+      id:Date.now(),
+      title:slide.title + " Copy",
+      content:[...slide.content]
+    }
+  );
 
-    }catch(error){
+  state.ppt.current++;
 
-        slide.addText(
-            "Target     100%",
-            {
-                x:1,
-                y:2,
-                w:5,
-                h:.5,
-                fontSize:20,
-                color:"FFFFFF"
-            }
-        );
+  renderSlides();
+  renderCurrentSlide();
 
-        slide.addText(
-            "Actual       77%",
-            {
-                x:1,
-                y:2.8,
-                w:5,
-                h:.5,
-                fontSize:20,
-                color:"D6A84F"
-            }
-        );
+}
+
+
+function previousSlide(){
+
+  if(
+    state.ppt.current > 0
+  ){
+
+    state.ppt.current--;
+
+    renderSlides();
+    renderCurrentSlide();
+
+  }
+
+}
+
+
+function nextSlide(){
+
+  if(
+    state.ppt.current <
+    state.ppt.slides.length - 1
+  ){
+
+    state.ppt.current++;
+
+    renderSlides();
+    renderCurrentSlide();
+
+  }
+
+}
+
+
+function editCurrentSlide(){
+
+  const slide =
+    state.ppt.slides[
+      state.ppt.current
+    ];
+
+  if(!slide){
+
+    toast("No slide selected");
+    return;
+
+  }
+
+  document.getElementById(
+    "editSlideTitle"
+  ).value = slide.title;
+
+  document.getElementById(
+    "editSlideContent"
+  ).value =
+    slide.content.join("\n");
+
+  document
+    .getElementById("slideModal")
+    .classList.add("show");
+
+}
+
+
+function closeSlideModal(){
+
+  document
+    .getElementById("slideModal")
+    .classList.remove("show");
+
+}
+
+
+function saveSlideEdit(){
+
+  const slide =
+    state.ppt.slides[
+      state.ppt.current
+    ];
+
+  if(!slide) return;
+
+  slide.title =
+    document
+      .getElementById("editSlideTitle")
+      .value
+      .trim() ||
+    "Untitled Slide";
+
+  slide.content =
+    document
+      .getElementById("editSlideContent")
+      .value
+      .split("\n")
+      .map(x=>x.trim())
+      .filter(Boolean);
+
+  renderSlides();
+  renderCurrentSlide();
+
+  closeSlideModal();
+
+  autoSave();
+
+  toast("Slide updated");
+
+}
+
+
+function newPresentation(){
+
+  if(
+    !confirm(
+      "Create a new PowerPoint presentation?"
+    )
+  ){
+    return;
+  }
+
+  state.ppt = {
+
+    title:"",
+
+    current:0,
+
+    slides:[]
+
+  };
+
+  renderSlides();
+  renderCurrentSlide();
+
+  toast("New presentation created");
+
+}
+
+
+function savePresentation(){
+
+  if(
+    !state.ppt.slides.length
+  ){
+
+    toast("No slides to save");
+    return;
+
+  }
+
+  state.projects.push({
+
+    id:Date.now(),
+
+    type:"PowerPoint",
+
+    name:
+      state.ppt.title ||
+      "Business Presentation",
+
+    created:
+      new Date().toISOString(),
+
+    data:
+      JSON.parse(
+        JSON.stringify(state.ppt)
+      )
+
+  });
+
+  saveAll();
+
+  toast("PowerPoint saved");
+
+}
+
+
+function exportPresentation(){
+
+  if(
+    !state.ppt.slides.length
+  ){
+
+    toast("No slides to export");
+    return;
+
+  }
+
+  let html = `
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+${escapeHTML(
+  state.ppt.title ||
+  "Business Presentation"
+)}
+</title>
+
+<style>
+
+body{
+  margin:0;
+  background:#222;
+  font-family:Arial,sans-serif;
+}
+
+.slide{
+  width:1280px;
+  height:720px;
+  background:#111;
+  color:white;
+  margin:30px auto;
+  padding:90px;
+  box-sizing:border-box;
+  position:relative;
+  page-break-after:always;
+}
+
+h1{
+  font-size:58px;
+}
+
+h2{
+  font-size:50px;
+}
+
+li{
+  font-size:28px;
+  margin:20px 0;
+  color:#ddd;
+}
+
+.footer{
+  position:absolute;
+  bottom:30px;
+  left:90px;
+  right:90px;
+  display:flex;
+  justify-content:space-between;
+  color:#777;
+  font-size:14px;
+}
+
+@media print{
+
+  body{
+    background:white;
+  }
+
+  .slide{
+    margin:0;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+`;
+
+  state.ppt.slides.forEach(
+    (slide,index)=>{
+
+      html += `
+
+<div class="slide">
+
+  <h2>
+    ${escapeHTML(slide.title)}
+  </h2>
+
+  <ul>
+
+    ${slide.content
+      .map(
+        item =>
+          "<li>" +
+          escapeHTML(item) +
+          "</li>"
+      )
+      .join("")}
+
+  </ul>
+
+  <div class="footer">
+
+    <span>
+      Aung Business Excel AI
+    </span>
+
+    <span>
+      ${index+1} / ${state.ppt.slides.length}
+    </span>
+
+  </div>
+
+</div>
+
+`;
 
     }
+  );
 
-    slide.addText(
-        data.body
-        .split("\n")
-        .map(x=>"• "+x)
-        .join("\n"),
-        {
-            x:8.5,
-            y:1.6,
-            w:3.4,
-            h:3.7,
-            fontSize:13,
-            color:"DCE1E8",
-            breakLine:false,
-            valign:"mid",
-            margin:.05
-        }
-    );
+  html += `
 
-    addFooter(
-        slide,
-        index,
-        "Performance Analysis"
-    );
+</body>
+</html>
 
-}
+`;
 
-function addClosingSlide(
-    pptx,
-    slide,
-    data,
-    index
-){
+  downloadFile(
+    html,
+    "aung-business-presentation.html",
+    "text/html"
+  );
 
-    slide.addText(
-        data.title,
-        {
-            x:.8,
-            y:1.8,
-            w:11,
-            h:.9,
-            fontSize:30,
-            bold:true,
-            color:"FFFFFF",
-            align:"center",
-            margin:0
-        }
-    );
-
-    slide.addText(
-        data.body
-        .split("\n")
-        .map(x=>"• "+x)
-        .join("\n"),
-        {
-            x:2,
-            y:3,
-            w:9.3,
-            h:2,
-            fontSize:16,
-            color:"C5CCD5",
-            align:"center",
-            margin:.05
-        }
-    );
-
-    slide.addText(
-        "Thank You",
-        {
-            x:4,
-            y:5.3,
-            w:5,
-            h:.5,
-            fontSize:15,
-            bold:true,
-            color:"D6A84F",
-            align:"center"
-        }
-    );
-
-}
-
-function addFooter(
-    slide,
-    index,
-    label
-){
-
-    slide.addText(
-        label,
-        {
-            x:.7,
-            y:7.05,
-            w:5,
-            h:.2,
-            fontSize:7,
-            color:"68717F",
-            margin:0
-        }
-    );
-
-    slide.addText(
-        `${index+1}`,
-        {
-            x:11.7,
-            y:7.05,
-            w:.7,
-            h:.2,
-            fontSize:7,
-            color:"68717F",
-            align:"right",
-            margin:0
-        }
-    );
-
-}
-
-function generateSamplePPT(){
-
-    document.getElementById("pptCommand").value =
-
-`Sales Manager Monthly Business Review
-
-10 slides professional corporate presentation
-
-Slide 1 Title & Executive Overview
-Slide 2 Executive Summary
-Slide 3 Sales Performance
-Slide 4 Target vs Actual
-Slide 5 Team KPI Performance
-Slide 6 Customer Performance
-Slide 7 Key Problems
-Slide 8 Opportunities
-Slide 9 Action Plan
-Slide 10 Conclusion & Next Steps
-
-Management audience
-Executive tone
-Text နည်းနည်းနဲ့ professional presentation style လုပ်ပေး`;
-
-    generatePresentation();
+  toast(
+    "Presentation exported — open and print to PDF"
+  );
 
 }
 
 
 /* =========================================================
-   WORD
+   AI ASSISTANT
 ========================================================= */
 
-function updateWordPreview(){
+function setAIPrompt(text){
 
-    const title =
-        document.getElementById("wordTitle").value;
+  document.getElementById("aiPrompt").value =
+    text;
 
-    const content =
-        document.getElementById("wordContent").value;
+}
 
-    document.getElementById("wordPreview").innerHTML = `
 
-        <h2>${escapeHtml(title)}</h2>
+function runAssistant(){
 
-        <div style="margin-top:20px;white-space:pre-wrap">
-            ${escapeHtml(
-                content ||
-                "Your document preview will appear here"
-            )}
-        </div>
+  const prompt =
+    document
+      .getElementById("aiPrompt")
+      .value
+      .trim();
+
+  if(!prompt){
+
+    toast("Please enter your request");
+    return;
+
+  }
+
+  const lower =
+    prompt.toLowerCase();
+
+  const result =
+    document.getElementById("aiResult");
+
+  let html = "";
+
+  if(
+    lower.includes("powerpoint") ||
+    lower.includes("ppt") ||
+    lower.includes("presentation")
+  ){
+
+    html = `
+
+      <h3>PowerPoint Plan</h3>
+
+      <p>
+        I detected a presentation request
+      </p>
+
+      <br>
+
+      <strong>Recommended structure</strong>
+
+      <ol style="margin:10px 0 0 20px;line-height:1.8">
+
+        <li>Title & Objective</li>
+        <li>Executive Summary</li>
+        <li>Current Situation</li>
+        <li>Key Challenges</li>
+        <li>Strategy</li>
+        <li>KPI & Action Plan</li>
+        <li>Conclusion</li>
+
+      </ol>
+
+      <br>
+
+      <button
+        class="btn btn-gold"
+        onclick="sendToPPT()"
+      >
+        Create PowerPoint
+      </button>
 
     `;
 
+  }
+  else if(
+    lower.includes("excel") ||
+    lower.includes("kpi") ||
+    lower.includes("sales") ||
+    lower.includes("target")
+  ){
+
+    html = `
+
+      <h3>Excel Business Structure</h3>
+
+      <p>
+        Recommended worksheet:
+      </p>
+
+      <br>
+
+      <table style="
+        width:100%;
+        border-collapse:collapse;
+      ">
+
+        <tr>
+          <th style="border:1px solid #ddd;padding:7px">
+            Field
+          </th>
+
+          <th style="border:1px solid #ddd;padding:7px">
+            Purpose
+          </th>
+        </tr>
+
+        <tr>
+          <td style="border:1px solid #ddd;padding:7px">
+            Target
+          </td>
+
+          <td style="border:1px solid #ddd;padding:7px">
+            Planned business result
+          </td>
+        </tr>
+
+        <tr>
+          <td style="border:1px solid #ddd;padding:7px">
+            Actual
+          </td>
+
+          <td style="border:1px solid #ddd;padding:7px">
+            Actual result
+          </td>
+        </tr>
+
+        <tr>
+          <td style="border:1px solid #ddd;padding:7px">
+            Achievement
+          </td>
+
+          <td style="border:1px solid #ddd;padding:7px">
+            Actual / Target
+          </td>
+        </tr>
+
+        <tr>
+          <td style="border:1px solid #ddd;padding:7px">
+            Gap
+          </td>
+
+          <td style="border:1px solid #ddd;padding:7px">
+            Target - Actual
+          </td>
+        </tr>
+
+      </table>
+
+      <br>
+
+      <button
+        class="btn btn-gold"
+        onclick="showPage('excel')"
+      >
+        Open Excel
+      </button>
+
+    `;
+
+  }
+  else{
+
+    html = `
+
+      <h3>Business Assistant</h3>
+
+      <p>
+        Your request has been converted into a
+        business workflow
+      </p>
+
+      <br>
+
+      <strong>Suggested process</strong>
+
+      <ol style="margin:10px 0 0 20px;line-height:1.8">
+
+        <li>Define objective</li>
+        <li>Collect required data</li>
+        <li>Structure the information</li>
+        <li>Analyze key metrics</li>
+        <li>Create action plan</li>
+        <li>Review KPI</li>
+
+      </ol>
+
+      <br>
+
+      <p style="color:#777">
+        For V1, the assistant uses local business
+        templates. AI API integration can be added
+        in the next version
+      </p>
+
+    `;
+
+  }
+
+  result.innerHTML =
+    html;
+
+  result.classList.add("show");
+
 }
 
-document.getElementById("wordTitle")
-.addEventListener("input",updateWordPreview);
 
-document.getElementById("wordContent")
-.addEventListener("input",updateWordPreview);
+function sendToPPT(){
 
-async function downloadWord(){
+  const prompt =
+    document
+      .getElementById("aiPrompt")
+      .value
+      .trim();
 
-    const title =
-        document.getElementById("wordTitle").value ||
-        "Business Report";
+  document.getElementById("pptTopic").value =
+    prompt;
 
-    const content =
-        document.getElementById("wordContent").value ||
-        "Business document generated by AUNG BUSINESS AI";
-
-    try{
-
-        const {
-            Document,
-            Packer,
-            Paragraph,
-            HeadingLevel
-        } = docx;
-
-        const paragraphs =
-            content
-            .split("\n")
-            .map(line=>
-                new Paragraph({
-                    text:line
-                })
-            );
-
-        const doc =
-            new Document({
-
-                sections:[{
-
-                    children:[
-
-                        new Paragraph({
-                            text:title,
-                            heading:HeadingLevel.TITLE
-                        }),
-
-                        ...paragraphs
-
-                    ]
-
-                }]
-
-            });
-
-        const blob =
-            await Packer.toBlob(doc);
-
-        const url =
-            URL.createObjectURL(blob);
-
-        const a =
-            document.createElement("a");
-
-        a.href=url;
-
-        a.download=
-            "AUNG_BUSINESS_AI_DOCUMENT.docx";
-
-        a.click();
-
-        URL.revokeObjectURL(url);
-
-    }catch(error){
-
-        alert(
-            "DOCX export error: "+
-            error.message
-        );
-
-    }
+  showPage("powerpoint");
 
 }
 
 
 /* =========================================================
-   FORMULA LIBRARY
+   TEMPLATES
 ========================================================= */
 
-const formulas = [
+function openTemplate(type){
 
-["SUM","Add numbers"],
-["SUMIF","Conditional sum"],
-["SUMIFS","Multiple condition sum"],
-["SUMPRODUCT","Multiply and sum arrays"],
-["SUBTOTAL","Subtotal calculations"],
-["AVERAGE","Average"],
-["AVERAGEIF","Conditional average"],
-["AVERAGEIFS","Multiple condition average"],
-["COUNT","Count numbers"],
-["COUNTA","Count non-empty cells"],
-["COUNTBLANK","Count empty cells"],
-["COUNTIF","Conditional count"],
-["COUNTIFS","Multiple condition count"],
-["MAX","Maximum value"],
-["MIN","Minimum value"],
-["MAXIFS","Conditional maximum"],
-["MINIFS","Conditional minimum"],
-["MEDIAN","Middle value"],
-["MODE","Most frequent value"],
-["LARGE","Nth largest value"],
-["SMALL","Nth smallest value"],
-["RANK","Rank a value"],
-["RANK.EQ","Equal rank"],
-["VLOOKUP","Vertical lookup"],
-["XLOOKUP","Modern lookup"],
-["HLOOKUP","Horizontal lookup"],
-["LOOKUP","Lookup value"],
-["INDEX","Return value by position"],
-["MATCH","Find position"],
-["XMATCH","Modern match"],
-["CHOOSE","Choose from values"],
-["OFFSET","Dynamic reference"],
-["INDIRECT","Reference from text"],
-["ROW","Return row number"],
-["COLUMN","Return column number"],
-["ROWS","Count rows"],
-["COLUMNS","Count columns"],
-["IF","Logical condition"],
-["IFS","Multiple conditions"],
-["AND","All conditions true"],
-["OR","Any condition true"],
-["NOT","Reverse logical result"],
-["XOR","Exclusive OR"],
-["IFERROR","Handle errors"],
-["IFNA","Handle #N/A"],
-["SWITCH","Multiple value selection"],
-["LEFT","Get text from left"],
-["RIGHT","Get text from right"],
-["MID","Get text from middle"],
-["LEN","Text length"],
-["TRIM","Remove extra spaces"],
-["CLEAN","Remove non-printing characters"],
-["UPPER","Uppercase"],
-["LOWER","Lowercase"],
-["PROPER","Proper case"],
-["CONCAT","Join text"],
-["CONCATENATE","Join text"],
-["TEXTJOIN","Join multiple text values"],
-["FIND","Find text position"],
-["SEARCH","Search text"],
-["SUBSTITUTE","Replace text"],
-["REPLACE","Replace characters"],
-["TEXT","Format value as text"],
-["VALUE","Convert text to number"],
-["EXACT","Compare text"],
-["CHAR","Character from code"],
-["CODE","Code from character"],
-["TODAY","Current date"],
-["NOW","Current date and time"],
-["DATE","Create date"],
-["YEAR","Year"],
-["MONTH","Month"],
-["DAY","Day"],
-["HOUR","Hour"],
-["MINUTE","Minute"],
-["SECOND","Second"],
-["DAYS","Days between dates"],
-["DATEDIF","Date difference"],
-["EDATE","Shift month"],
-["EOMONTH","End of month"],
-["WEEKDAY","Day of week"],
-["WEEKNUM","Week number"],
-["WORKDAY","Working day"],
-["NETWORKDAYS","Working days"],
-["YEARFRAC","Fractional year"],
-["ROUND","Round number"],
-["ROUNDUP","Round up"],
-["ROUNDDOWN","Round down"],
-["MROUND","Multiple rounding"],
-["CEILING","Round upward"],
-["FLOOR","Round downward"],
-["ABS","Absolute value"],
-["MOD","Remainder"],
-["QUOTIENT","Integer division"],
-["POWER","Power"],
-["SQRT","Square root"],
-["FILTER","Filter array"],
-["SORT","Sort array"],
-["SORTBY","Sort by another array"],
-["UNIQUE","Unique values"],
-["SEQUENCE","Generate sequence"],
-["TRANSPOSE","Transpose data"],
-["TAKE","Take rows or columns"],
-["DROP","Drop rows or columns"],
-["CHOOSECOLS","Choose columns"],
-["CHOOSEROWS","Choose rows"],
-["VSTACK","Stack arrays vertically"],
-["HSTACK","Stack arrays horizontally"],
-["PMT","Loan payment"],
-["PV","Present value"],
-["FV","Future value"],
-["NPV","Net present value"],
-["IRR","Internal rate of return"],
-["RATE","Interest rate"],
-["IPMT","Interest payment"],
-["PPMT","Principal payment"],
-["SLN","Straight line depreciation"],
-["ISBLANK","Check blank"],
-["ISNUMBER","Check number"],
-["ISTEXT","Check text"],
-["ISERROR","Check error"],
-["ISERR","Check error except N/A"],
-["ISNA","Check N/A"],
-["ISEVEN","Check even number"],
-["ISODD","Check odd number"],
-["TYPE","Value type"],
-["CELL","Cell information"],
-["INFO","System information"]
+  if(type==="sales"){
 
-];
+    showPage("excel");
 
-function renderFormulaLibrary(){
+    newSheet();
 
-    const grid =
-        document.getElementById("formulaGrid");
+    const rows = [
 
-    grid.innerHTML="";
+      ["Sales Rep","Target","Actual","Achievement %","Gap"],
 
-    formulas.forEach(item=>{
+      ["Mg Mg","100","85","85%","15"],
 
-        const div =
-            document.createElement("div");
+      ["Ko Ko","100","92","92%","8"],
 
-        div.className="formula-card";
+      ["Aung Aung","100","78","78%","22"],
 
-        div.innerHTML=`
+      ["Htet Htet","100","95","95%","5"]
 
-            <div class="formula-name">
-                ${item[0]}
-            </div>
+    ];
 
-            <div class="formula-desc">
-                ${item[1]}
-            </div>
+    loadTableData(rows);
 
-        `;
+  }
 
-        grid.appendChild(div);
+
+  if(type==="expense"){
+
+    showPage("excel");
+
+    newSheet();
+
+    loadTableData([
+
+      ["Date","Category","Description","Amount"],
+
+      ["01/09/2026","Transport","Fuel","50000"],
+
+      ["03/09/2026","Office","Stationery","30000"],
+
+      ["05/09/2026","Marketing","Promotion","100000"],
+
+      ["10/09/2026","Other","Miscellaneous","25000"]
+
+    ]);
+
+  }
+
+
+  if(type==="inventory"){
+
+    showPage("excel");
+
+    newSheet();
+
+    loadTableData([
+
+      ["Product","SKU","Opening","In","Out","Closing"],
+
+      ["Product A","SKU001","100","50","30","120"],
+
+      ["Product B","SKU002","80","30","20","90"],
+
+      ["Product C","SKU003","150","20","40","130"]
+
+    ]);
+
+  }
+
+
+  if(type==="kpi"){
+
+    showPage("excel");
+
+    newSheet();
+
+    loadTableData([
+
+      ["KPI","Target","Actual","Achievement","Status"],
+
+      ["Coverage","100","92","92%","Good"],
+
+      ["Strike Rate","80%","76%","95%","Good"],
+
+      ["Productivity","20","18","90%","Good"],
+
+      ["Growth","10%","8%","80%","Review"]
+
+    ]);
+
+  }
+
+
+  if(type==="customer"){
+
+    showPage("excel");
+
+    newSheet();
+
+    loadTableData([
+
+      ["Customer ID","Customer Name","Phone","Area","Status"],
+
+      ["C001","Customer A","","Yangon","Active"],
+
+      ["C002","Customer B","","Yangon","Active"],
+
+      ["C003","Customer C","","Mandalay","Active"]
+
+    ]);
+
+  }
+
+
+  if(type==="invoice"){
+
+    showPage("excel");
+
+    newSheet();
+
+    loadTableData([
+
+      ["Invoice No","Date","Customer","Description","Qty","Unit Price","Amount"],
+
+      ["INV001","29/09/2026","Customer A","Product A","10","50000","500000"],
+
+      ["INV002","29/09/2026","Customer B","Product B","5","80000","400000"]
+
+    ]);
+
+  }
+
+}
+
+
+function loadTableData(rows){
+
+  state.excel.data = {};
+
+  state.excel.rows =
+    Math.max(
+      15,
+      rows.length + 5
+    );
+
+  state.excel.cols =
+    Math.max(
+      8,
+      Math.max(
+        ...rows.map(r=>r.length)
+      )
+    );
+
+  rows.forEach(
+    (row,rIndex)=>{
+
+      row.forEach(
+        (value,cIndex)=>{
+
+          state.excel.data[
+            cellKey(
+              rIndex+1,
+              cIndex+1
+            )
+          ] = String(value);
+
+        }
+      );
+
+    }
+  );
+
+  renderSheet();
+
+}
+
+
+/* =========================================================
+   PROJECTS
+========================================================= */
+
+function renderProjects(){
+
+  const container =
+    document.getElementById("projectList");
+
+  if(!container) return;
+
+  container.innerHTML = "";
+
+  if(!state.projects.length){
+
+    container.innerHTML = `
+
+      <div class="card">
+
+        <div class="card-title">
+          No saved projects
+        </div>
+
+        <div class="card-sub">
+          Create and save Excel, Word or PowerPoint
+          projects to see them here
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+  state.projects
+    .slice()
+    .reverse()
+    .forEach(project=>{
+
+      const div =
+        document.createElement("div");
+
+      div.className =
+        "card project";
+
+      div.innerHTML = `
+
+        <div class="project-type">
+          ${escapeHTML(project.type)}
+        </div>
+
+        <h3>
+          ${escapeHTML(project.name)}
+        </h3>
+
+        <small>
+          ${new Date(project.created)
+            .toLocaleString()}
+        </small>
+
+        <div style="
+          display:flex;
+          gap:7px;
+          margin-top:14px;
+        ">
+
+          <button
+            class="btn btn-light"
+            onclick="loadProject(${project.id})"
+          >
+            Open
+          </button>
+
+          <button
+            class="btn btn-danger"
+            onclick="deleteProject(${project.id})"
+          >
+            Delete
+          </button>
+
+        </div>
+
+      `;
+
+      container.appendChild(div);
 
     });
+
+}
+
+
+function loadProject(id){
+
+  const project =
+    state.projects.find(
+      p=>p.id===id
+    );
+
+  if(!project) return;
+
+  if(project.type==="Excel"){
+
+    state.excel =
+      JSON.parse(
+        JSON.stringify(project.data)
+      );
+
+    showPage("excel");
+
+  }
+
+  if(project.type==="Word"){
+
+    state.word.html =
+      project.html || "";
+
+    showPage("word");
+
+    loadWordEditor();
+
+  }
+
+  if(project.type==="PowerPoint"){
+
+    state.ppt =
+      JSON.parse(
+        JSON.stringify(project.data)
+      );
+
+    showPage("powerpoint");
+
+    renderSlides();
+    renderCurrentSlide();
+
+  }
+
+  toast("Project opened");
+
+}
+
+
+function deleteProject(id){
+
+  state.projects =
+    state.projects.filter(
+      p=>p.id!==id
+    );
+
+  saveAll();
+
+  toast("Project deleted");
+
+}
+
+
+function clearProjects(){
+
+  if(
+    !confirm(
+      "Delete all saved projects?"
+    )
+  ){
+    return;
+  }
+
+  state.projects = [];
+
+  saveAll();
+
+  toast("Projects cleared");
+
+}
+
+
+/* =========================================================
+   QUICK CREATE
+========================================================= */
+
+function openQuickCreate(){
+
+  document
+    .getElementById("quickModal")
+    .classList.add("show");
+
+}
+
+
+function closeQuickCreate(){
+
+  document
+    .getElementById("quickModal")
+    .classList.remove("show");
+
+}
+
+
+function createFromQuick(type){
+
+  closeQuickCreate();
+
+  if(type==="excel"){
+
+    showPage("excel");
+    newSheet();
+
+  }
+
+  if(type==="word"){
+
+    showPage("word");
+    newWord();
+
+  }
+
+  if(type==="ppt"){
+
+    showPage("powerpoint");
+    newPresentation();
+
+  }
+
+  if(type==="ai"){
+
+    showPage("assistant");
+
+  }
 
 }
 
@@ -4063,234 +4132,217 @@ function renderFormulaLibrary(){
 
 function saveSettings(){
 
-    const settings={
+  state.settings.autoSave =
+    document.getElementById("autoSave").checked;
 
-        endpoint:
-            document.getElementById("aiEndpoint").value,
+  autoSave();
 
-        autoSave:
-            document.getElementById("autoSave").checked,
+  toast("Settings saved");
 
-        enterDown:
-            document.getElementById("enterDown").checked,
+}
 
-        tabRight:
-            document.getElementById("tabRight").checked
 
-    };
+function resetApplication(){
 
-    localStorage.setItem(
-        "aung_business_settings",
-        JSON.stringify(settings)
+  if(
+    !confirm(
+      "Reset Aung Business Excel AI V1? All local data will be removed."
+    )
+  ){
+    return;
+  }
+
+  localStorage.removeItem(
+    "aung_business_excel_ai_v1"
+  );
+
+  location.reload();
+
+}
+
+
+/* =========================================================
+   UTILITIES
+========================================================= */
+
+function escapeHTML(value){
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function downloadFile(
+  content,
+  filename,
+  type
+){
+
+  const blob =
+    new Blob(
+      [content],
+      {type}
     );
 
-    alert("Settings saved");
+  const url =
+    URL.createObjectURL(blob);
 
-}
+  const a =
+    document.createElement("a");
 
-function loadSettings(){
+  a.href = url;
 
-    const raw =
-        localStorage.getItem(
-            "aung_business_settings"
-        );
+  a.download = filename;
 
-    if(!raw) return;
+  document.body.appendChild(a);
 
-    try{
+  a.click();
 
-        const s=JSON.parse(raw);
+  a.remove();
 
-        document.getElementById("aiEndpoint").value =
-            s.endpoint || "";
-
-        document.getElementById("autoSave").checked =
-            s.autoSave !== false;
-
-        document.getElementById("enterDown").checked =
-            s.enterDown !== false;
-
-        document.getElementById("tabRight").checked =
-            s.tabRight !== false;
-
-    }catch(e){}
-
-}
-
-function loadWorkspace(){
-
-    const raw =
-        localStorage.getItem(
-            "aung_business_excel"
-        );
-
-    if(!raw) return;
-
-    try{
-
-        const saved =
-            JSON.parse(raw);
-
-        if(saved && typeof saved==="object"){
-
-            sheets=saved;
-
-            activeSheetName =
-                Object.keys(sheets)[0] ||
-                "Sheet1";
-
-        }
-
-    }catch(e){}
+  setTimeout(
+    ()=>URL.revokeObjectURL(url),
+    1000
+  );
 
 }
 
 
-/* =========================================================
-   DASHBOARD
-========================================================= */
+let toastTimer;
 
-function updateDashboard(){
+function toast(message){
 
-    document.getElementById("dashSheets")
-        .textContent =
-        Object.keys(sheets).length;
+  const el =
+    document.getElementById("toast");
 
-    document.getElementById("dashSlides")
-        .textContent =
-        slides.length;
+  el.textContent =
+    message;
 
-}
+  el.classList.add("show");
 
+  clearTimeout(toastTimer);
 
-/* =========================================================
-   HELPERS
-========================================================= */
-
-function escapeHtml(value){
-
-    return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-
-}
-
-function escapeAttr(value){
-
-    return escapeHtml(value);
-
-}
-
-
-/* =========================================================
-   INITIALIZE
-========================================================= */
-
-loadSettings();
-
-loadWorkspace();
-
-initExcel();
-
-renderFormulaLibrary();
-
-updateWordPreview();
-
-updateDashboard();
-
-
-/* =========================================================
-   DEFAULT POWERPOINT DEMO
-========================================================= */
-
-if(!localStorage.getItem("aung_ppt_initialized")){
-
-    slides = [
-
-        {
-            title:"Sales Manager Business Review",
-            body:"Monthly Performance Presentation",
-            type:"title",
-            notes:"Open the meeting and explain the objective",
-            theme:"dark"
-        },
-
-        {
-            title:"Executive Summary",
-            body:
-                "Current performance\n" +
-                "Key achievements\n" +
-                "Major challenges\n" +
-                "Priority actions",
-            type:"content",
-            notes:"Explain the four key points",
-            theme:"dark"
-        },
-
-        {
-            title:"Sales Performance",
-            body:
-                "Target vs actual\n" +
-                "Achievement percentage\n" +
-                "Growth drivers\n" +
-                "Performance gap",
-            type:"chart",
-            notes:"Explain monthly sales performance",
-            theme:"dark"
-        },
-
-        {
-            title:"Key Challenges",
-            body:
-                "Market challenges\n" +
-                "Execution gaps\n" +
-                "Customer issues\n" +
-                "Operational priorities",
-            type:"content",
-            notes:"Discuss the key business challenges",
-            theme:"dark"
-        },
-
-        {
-            title:"Action Plan",
-            body:
-                "Immediate actions\n" +
-                "30-day priorities\n" +
-                "Owner and timing\n" +
-                "Expected result",
-            type:"content",
-            notes:"Present the action plan",
-            theme:"dark"
-        },
-
-        {
-            title:"Conclusion & Next Steps",
-            body:
-                "Key decisions\n" +
-                "Next actions\n" +
-                "Management support required",
-            type:"closing",
-            notes:"Close the meeting",
-            theme:"dark"
-        }
-
-    ];
-
-    localStorage.setItem(
-        "aung_ppt_initialized",
-        "1"
+  toastTimer =
+    setTimeout(
+      ()=>{
+        el.classList.remove("show");
+      },
+      2200
     );
 
 }
 
-renderSlides();
 
-renderPreviews();
+/* =========================================================
+   INIT
+========================================================= */
 
-updateDashboard();
+function init(){
+
+  loadState();
+
+  const autoSave =
+    document.getElementById("autoSave");
+
+  if(autoSave){
+
+    autoSave.checked =
+      state.settings.autoSave;
+
+  }
+
+  renderSheet();
+
+  loadWordEditor();
+
+  renderSlides();
+
+  renderCurrentSlide();
+
+  updateDashboard();
+
+  renderProjects();
+
+}
+
+
+init();
+
+
+/* AUTO SAVE */
+
+setInterval(
+  ()=>{
+    autoSave();
+  },
+  10000
+);
+
+
+/* WORD AUTO SAVE */
+
+document.addEventListener(
+  "input",
+  event=>{
+
+    if(
+      event.target &&
+      event.target.id === "wordEditor"
+    ){
+
+      state.word.html =
+        event.target.innerHTML;
+
+      autoSave();
+
+    }
+
+  }
+);
+
+
+/* CLOSE MODALS */
+
+document
+  .getElementById("quickModal")
+  .addEventListener(
+    "click",
+    event=>{
+
+      if(
+        event.target.id === "quickModal"
+      ){
+
+        closeQuickCreate();
+
+      }
+
+    }
+  );
+
+
+document
+  .getElementById("slideModal")
+  .addEventListener(
+    "click",
+    event=>{
+
+      if(
+        event.target.id === "slideModal"
+      ){
+
+        closeSlideModal();
+
+      }
+
+    }
+  );
+
 
 </script>
 

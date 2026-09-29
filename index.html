@@ -1,0 +1,2420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AUNG BUSINESS EXCEL AI V1</title>
+
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --bg:#0b0f14;
+    --panel:#111821;
+    --panel2:#151e28;
+    --border:#263241;
+    --text:#f4f7fa;
+    --muted:#8f9baa;
+    --accent:#21c77a;
+    --accent2:#19a968;
+    --danger:#ef5350;
+    --warning:#ffb74d;
+    --input:#0d141c;
+}
+
+body{
+    font-family:Inter,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+}
+
+button,
+input,
+select,
+textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:250px;
+    background:#0d131a;
+    border-right:1px solid var(--border);
+    padding:18px 14px;
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    z-index:100;
+}
+
+.brand{
+    padding:10px 10px 20px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:15px;
+}
+
+.brand-title{
+    font-size:20px;
+    font-weight:800;
+    letter-spacing:.4px;
+}
+
+.brand-sub{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:5px;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.nav button{
+    width:100%;
+    text-align:left;
+    border:0;
+    background:transparent;
+    color:#aeb8c4;
+    padding:12px 13px;
+    border-radius:9px;
+    display:flex;
+    align-items:center;
+    gap:11px;
+}
+
+.nav button:hover{
+    background:#17202b;
+    color:white;
+}
+
+.nav button.active{
+    background:#163326;
+    color:#55df9b;
+}
+
+.nav-icon{
+    width:22px;
+    text-align:center;
+}
+
+/* MAIN */
+
+.main{
+    margin-left:250px;
+    width:calc(100% - 250px);
+    padding:24px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:22px;
+    gap:15px;
+}
+
+.page-title{
+    font-size:25px;
+    font-weight:800;
+}
+
+.page-sub{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:5px;
+}
+
+.top-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    border:1px solid var(--border);
+    background:#151d26;
+    color:white;
+    padding:10px 14px;
+    border-radius:8px;
+    font-weight:600;
+}
+
+.btn:hover{
+    background:#1b2733;
+}
+
+.btn-primary{
+    background:var(--accent);
+    color:#06150d;
+    border-color:var(--accent);
+}
+
+.btn-primary:hover{
+    background:#35d78c;
+}
+
+.btn-danger{
+    color:#ff7777;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+/* CARDS */
+
+.grid{
+    display:grid;
+    gap:15px;
+}
+
+.grid-4{
+    grid-template-columns:repeat(4,1fr);
+}
+
+.grid-3{
+    grid-template-columns:repeat(3,1fr);
+}
+
+.card{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px;
+}
+
+.stat-label{
+    color:var(--muted);
+    font-size:12px;
+}
+
+.stat-value{
+    font-size:27px;
+    font-weight:800;
+    margin-top:8px;
+}
+
+.stat-note{
+    color:#61dba0;
+    font-size:11px;
+    margin-top:5px;
+}
+
+.section{
+    margin-top:18px;
+}
+
+.section-title{
+    font-size:17px;
+    font-weight:800;
+    margin-bottom:12px;
+}
+
+/* FORM */
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+}
+
+.field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.field label{
+    font-size:12px;
+    color:#aeb8c4;
+}
+
+.field input,
+.field select,
+.field textarea{
+    background:var(--input);
+    border:1px solid var(--border);
+    color:white;
+    border-radius:8px;
+    padding:11px 12px;
+    outline:none;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+    border-color:var(--accent);
+}
+
+textarea{
+    min-height:110px;
+    resize:vertical;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+/* FORMULA RESULT */
+
+.formula-result{
+    background:#071b12;
+    border:1px solid #175f3e;
+    border-radius:10px;
+    padding:15px;
+    margin-top:15px;
+}
+
+.formula-code{
+    font-family:Consolas,monospace;
+    color:#59e6a1;
+    word-break:break-all;
+    font-size:15px;
+}
+
+.explain{
+    margin-top:10px;
+    color:#b9c6d1;
+    line-height:1.6;
+    font-size:13px;
+}
+
+/* FORMULA LIBRARY */
+
+.search{
+    width:100%;
+    background:var(--input);
+    border:1px solid var(--border);
+    color:white;
+    border-radius:8px;
+    padding:12px;
+    margin-bottom:12px;
+}
+
+.formula-list{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.formula-item{
+    background:#101821;
+    border:1px solid var(--border);
+    border-radius:9px;
+    padding:13px;
+}
+
+.formula-name{
+    color:#55df9b;
+    font-weight:800;
+    font-family:Consolas,monospace;
+}
+
+.formula-desc{
+    color:#9ba7b4;
+    font-size:12px;
+    margin-top:5px;
+}
+
+/* TABLE */
+
+.table-wrap{
+    overflow:auto;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:#0c1218;
+}
+
+.sheet{
+    border-collapse:collapse;
+    min-width:850px;
+    width:100%;
+}
+
+.sheet th,
+.sheet td{
+    border:1px solid #27323f;
+    min-width:130px;
+    height:38px;
+    padding:0;
+}
+
+.sheet th{
+    background:#151e28;
+    color:#98a5b2;
+    font-size:12px;
+    height:34px;
+    text-align:center;
+}
+
+.sheet td{
+    background:#0e151d;
+}
+
+.sheet td input{
+    width:100%;
+    height:100%;
+    border:0;
+    outline:0;
+    background:transparent;
+    color:white;
+    padding:8px;
+}
+
+.sheet td input:focus{
+    background:#13231c;
+    box-shadow:inset 0 0 0 1px var(--accent);
+}
+
+.row-number{
+    width:42px!important;
+    min-width:42px!important;
+    text-align:center;
+    background:#151e28!important;
+    color:#8996a3;
+    padding:0!important;
+}
+
+.toolbar{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:12px;
+}
+
+.file-input{
+    display:none;
+}
+
+/* AI */
+
+.ai-box{
+    background:#101923;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px;
+}
+
+.ai-answer{
+    margin-top:15px;
+    display:none;
+}
+
+/* SETTINGS */
+
+.setting-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.setting-row:last-child{
+    border-bottom:0;
+}
+
+/* TOAST */
+
+.toast{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    background:#17231d;
+    border:1px solid #2b6b4c;
+    color:#baffd9;
+    padding:12px 16px;
+    border-radius:8px;
+    transform:translateY(100px);
+    opacity:0;
+    transition:.25s;
+    z-index:999;
+}
+
+.toast.show{
+    transform:translateY(0);
+    opacity:1;
+}
+
+/* MOBILE */
+
+@media(max-width:1000px){
+
+    .grid-4{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .formula-list{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:700px){
+
+    .sidebar{
+        width:68px;
+        padding:12px 8px;
+    }
+
+    .brand-title{
+        font-size:0;
+    }
+
+    .brand-title::after{
+        content:"A";
+        font-size:22px;
+        color:#55df9b;
+    }
+
+    .brand-sub{
+        display:none;
+    }
+
+    .nav button{
+        justify-content:center;
+        padding:12px 5px;
+    }
+
+    .nav-text{
+        display:none;
+    }
+
+    .main{
+        margin-left:68px;
+        width:calc(100% - 68px);
+        padding:15px;
+    }
+
+    .topbar{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .grid-4,
+    .grid-3,
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .formula-list{
+        grid-template-columns:1fr;
+    }
+
+    .page-title{
+        font-size:21px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+    <div class="brand">
+        <div class="brand-title">AUNG BUSINESS EXCEL AI</div>
+        <div class="brand-sub">Excel Business Automation V1</div>
+    </div>
+
+    <div class="nav">
+
+        <button class="active" onclick="goPage('dashboard',this)">
+            <span class="nav-icon">⌂</span>
+            <span class="nav-text">Dashboard</span>
+        </button>
+
+        <button onclick="goPage('editor',this)">
+            <span class="nav-icon">▦</span>
+            <span class="nav-text">Excel Editor</span>
+        </button>
+
+        <button onclick="goPage('builder',this)">
+            <span class="nav-icon">ƒ</span>
+            <span class="nav-text">Formula Builder</span>
+        </button>
+
+        <button onclick="goPage('ai',this)">
+            <span class="nav-icon">✦</span>
+            <span class="nav-text">AI Formula</span>
+        </button>
+
+        <button onclick="goPage('library',this)">
+            <span class="nav-icon">☷</span>
+            <span class="nav-text">Formula Library</span>
+        </button>
+
+        <button onclick="goPage('tools',this)">
+            <span class="nav-icon">⚙</span>
+            <span class="nav-text">Data Tools</span>
+        </button>
+
+        <button onclick="goPage('settings',this)">
+            <span class="nav-icon">◉</span>
+            <span class="nav-text">Settings</span>
+        </button>
+
+    </div>
+
+</aside>
+
+
+<main class="main">
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="page active">
+
+<div class="topbar">
+
+<div>
+<div class="page-title">Excel Business Dashboard</div>
+<div class="page-sub">Business Excel automation workspace</div>
+</div>
+
+<div class="top-actions">
+<button class="btn" onclick="saveData()">Save</button>
+<button class="btn btn-primary" onclick="exportXLSX()">Export XLSX</button>
+</div>
+
+</div>
+
+
+<div class="grid grid-4">
+
+<div class="card">
+<div class="stat-label">Workbook</div>
+<div class="stat-value">1</div>
+<div class="stat-note">Active workbook</div>
+</div>
+
+<div class="card">
+<div class="stat-label">Rows</div>
+<div class="stat-value" id="statRows">10</div>
+<div class="stat-note">Editable records</div>
+</div>
+
+<div class="card">
+<div class="stat-label">Formulas</div>
+<div class="stat-value" id="statFormulas">0</div>
+<div class="stat-note">Detected formulas</div>
+</div>
+
+<div class="card">
+<div class="stat-label">Formula Library</div>
+<div class="stat-value">100+</div>
+<div class="stat-note">Business formulas</div>
+</div>
+
+</div>
+
+
+<div class="section">
+
+<div class="section-title">Quick Actions</div>
+
+<div class="grid grid-3">
+
+<div class="card">
+<h3>VLOOKUP</h3>
+<p class="page-sub">
+Customer / Product / Distributor master data lookup
+</p>
+<br>
+<button class="btn btn-primary"
+onclick="goPage('builder',document.querySelectorAll('.nav button')[2]);setFormulaType('VLOOKUP')">
+Build VLOOKUP
+</button>
+</div>
+
+<div class="card">
+<h3>XLOOKUP</h3>
+<p class="page-sub">
+Modern lookup formula for business data
+</p>
+<br>
+<button class="btn btn-primary"
+onclick="goPage('builder',document.querySelectorAll('.nav button')[2]);setFormulaType('XLOOKUP')">
+Build XLOOKUP
+</button>
+</div>
+
+<div class="card">
+<h3>AI Formula</h3>
+<p class="page-sub">
+မြန်မာလို ရေးပြီး Formula ရယူပါ
+</p>
+<br>
+<button class="btn btn-primary"
+onclick="goPage('ai',document.querySelectorAll('.nav button')[3])">
+Open AI Formula
+</button>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- EDITOR -->
+
+<section id="editor" class="page">
+
+<div class="topbar">
+
+<div>
+<div class="page-title">Excel Editor</div>
+<div class="page-sub">Excel-like business data editor</div>
+</div>
+
+<div class="top-actions">
+
+<label class="btn">
+Import XLSX
+<input
+type="file"
+class="file-input"
+accept=".xlsx,.xls,.csv"
+onchange="importExcel(event)">
+</label>
+
+<button class="btn" onclick="addRow()">+ Row</button>
+
+<button class="btn" onclick="addColumn()">+ Column</button>
+
+<button class="btn btn-primary" onclick="exportXLSX()">
+Export XLSX
+</button>
+
+</div>
+
+</div>
+
+
+<div class="toolbar">
+
+<button class="btn" onclick="calculateSheet()">Calculate</button>
+
+<button class="btn" onclick="saveData()">Save</button>
+
+<button class="btn" onclick="clearSheet()">Clear</button>
+
+<button class="btn" onclick="exportCSV()">Export CSV</button>
+
+</div>
+
+
+<div class="table-wrap">
+
+<table class="sheet" id="sheetTable">
+
+<thead>
+<tr>
+<th class="row-number">#</th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+<th>E</th>
+<th>F</th>
+<th>G</th>
+<th>H</th>
+</tr>
+</thead>
+
+<tbody id="sheetBody"></tbody>
+
+</table>
+
+</div>
+
+</section>
+
+
+<!-- BUILDER -->
+
+<section id="builder" class="page">
+
+<div class="topbar">
+
+<div>
+<div class="page-title">Formula Builder</div>
+<div class="page-sub">Build Excel formulas without remembering syntax</div>
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="form-grid">
+
+<div class="field">
+
+<label>Formula Type</label>
+
+<select id="formulaType" onchange="renderFormulaFields()">
+
+<option>VLOOKUP</option>
+<option>XLOOKUP</option>
+<option>HLOOKUP</option>
+<option>SUM</option>
+<option>SUMIF</option>
+<option>SUMIFS</option>
+<option>COUNTIF</option>
+<option>COUNTIFS</option>
+<option>IF</option>
+<option>IFERROR</option>
+<option>INDEX</option>
+<option>MATCH</option>
+<option>XMATCH</option>
+<option>FILTER</option>
+<option>UNIQUE</option>
+<option>SORT</option>
+<option>LEFT</option>
+<option>RIGHT</option>
+<option>MID</option>
+<option>TEXT</option>
+<option>ROUND</option>
+<option>EOMONTH</option>
+<option>NETWORKDAYS</option>
+
+</select>
+
+</div>
+
+<div class="field">
+<label>Lookup Value</label>
+<input id="f1" value="A2">
+</div>
+
+<div class="field">
+<label>Table / Range</label>
+<input id="f2" value="Sheet2!A:D">
+</div>
+
+<div class="field">
+<label>Column Number</label>
+<input id="f3" value="4">
+</div>
+
+<div class="field">
+<label>Match</label>
+<select id="f4">
+<option>FALSE</option>
+<option>TRUE</option>
+</select>
+</div>
+
+</div>
+
+
+<br>
+
+<button class="btn btn-primary" onclick="generateFormula()">
+Generate Formula
+</button>
+
+
+<div class="formula-result">
+
+<div class="stat-label">Generated Formula</div>
+
+<div class="formula-code" id="formulaOutput">
+=VLOOKUP(A2,Sheet2!A:D,4,FALSE)
+</div>
+
+<div class="explain" id="formulaExplain">
+A2 ကို Sheet2 ရဲ့ A:D table ထဲမှာရှာပြီး
+၄ ကြောင်းမြောက် column က value ကို exact match နဲ့ ပြန်ယူပါတယ်
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- AI -->
+
+<section id="ai" class="page">
+
+<div class="topbar">
+
+<div>
+<div class="page-title">AI Formula Generator</div>
+<div class="page-sub">
+မြန်မာလို ရေးပြီး Excel Formula ရယူပါ
+</div>
+</div>
+
+</div>
+
+
+<div class="ai-box">
+
+<div class="field">
+
+<label>သင်လုပ်ချင်တာကို ရေးပါ</label>
+
+<textarea
+id="aiInput"
+placeholder="ဥပမာ - Customer Code နဲ့ Customer Master ကနေ Region ရှာချင်တယ်
+ဥပမာ - Sales Amount 100000 ထက်ကြီးရင် Good လို့ပြချင်တယ်
+ဥပမာ - January Sales တွေကို Customer အလိုက် စုချင်တယ်
+ဥပမာ - Duplicate Customer တွေဖယ်ချင်တယ်"></textarea>
+
+</div>
+
+<br>
+
+<button class="btn btn-primary" onclick="generateAIFormula()">
+✦ Generate Formula
+</button>
+
+
+<div class="formula-result ai-answer" id="aiAnswer">
+
+<div class="stat-label">Suggested Formula</div>
+
+<div class="formula-code" id="aiFormula"></div>
+
+<div class="explain" id="aiExplain"></div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- LIBRARY -->
+
+<section id="library" class="page">
+
+<div class="topbar">
+
+<div>
+<div class="page-title">Formula Library</div>
+<div class="page-sub">Important Excel formulas for business users</div>
+</div>
+
+</div>
+
+
+<input
+class="search"
+id="formulaSearch"
+placeholder="Search formula... VLOOKUP, SUMIF, IF..."
+oninput="searchFormulas()">
+
+
+<div class="formula-list" id="formulaList"></div>
+
+</section>
+
+
+<!-- TOOLS -->
+
+<section id="tools" class="page">
+
+<div class="topbar">
+
+<div>
+<div class="page-title">Data Tools</div>
+<div class="page-sub">Business data utilities</div>
+</div>
+
+</div>
+
+
+<div class="grid grid-3">
+
+<div class="card">
+
+<h3>Duplicate Checker</h3>
+
+<p class="page-sub">
+Column A မှ duplicate data စစ်ရန်
+</p>
+
+<br>
+
+<button class="btn btn-primary"
+onclick="findDuplicates()">
+Check Duplicate
+</button>
+
+</div>
+
+
+<div class="card">
+
+<h3>Formula Checker</h3>
+
+<p class="page-sub">
+Formula error pattern များစစ်ရန်
+</p>
+
+<br>
+
+<button class="btn btn-primary"
+onclick="checkFormulas()">
+Check Formulas
+</button>
+
+</div>
+
+
+<div class="card">
+
+<h3>Clear Workbook</h3>
+
+<p class="page-sub">
+Current sheet data အားလုံးဖျက်ရန်
+</p>
+
+<br>
+
+<button class="btn btn-danger"
+onclick="clearSheet()">
+Clear Data
+</button>
+
+</div>
+
+</div>
+
+
+<div class="section">
+
+<div class="card">
+
+<div class="section-title">Tool Result</div>
+
+<div id="toolResult" class="page-sub">
+No result yet
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section id="settings" class="page">
+
+<div class="topbar">
+
+<div>
+<div class="page-title">Settings</div>
+<div class="page-sub">Application settings</div>
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="setting-row">
+
+<div>
+<strong>Application</strong>
+<div class="page-sub">
+AUNG BUSINESS EXCEL AI V1
+</div>
+</div>
+
+<strong>V1.0</strong>
+
+</div>
+
+
+<div class="setting-row">
+
+<div>
+<strong>Storage</strong>
+<div class="page-sub">
+Browser LocalStorage
+</div>
+</div>
+
+<strong>ON</strong>
+
+</div>
+
+
+<div class="setting-row">
+
+<div>
+<strong>Excel Engine</strong>
+<div class="page-sub">
+SheetJS
+</div>
+</div>
+
+<strong>READY</strong>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+let ROWS = 10;
+let COLS = 8;
+
+const formulas = [
+
+["SUM","Numbers / ranges ကို စုစုပေါင်းတွက်ရန်"],
+["SUMIF","Condition တစ်ခုနဲ့ total တွက်ရန်"],
+["SUMIFS","Conditions အများကြီးနဲ့ total တွက်ရန်"],
+["SUMPRODUCT","Array တွေကို multiply + sum လုပ်ရန်"],
+["SUBTOTAL","Filtered data အတွက် subtotal တွက်ရန်"],
+["AGGREGATE","Advanced aggregate calculation"],
+["PRODUCT","Numbers တွေကို မြှောက်ရန်"],
+["ROUND","Decimal number ကို round လုပ်ရန်"],
+["ROUNDUP","အပေါ်ဘက်သို့ round လုပ်ရန်"],
+["ROUNDDOWN","အောက်ဘက်သို့ round လုပ်ရန်"],
+["MROUND","Multiple အလိုက် round လုပ်ရန်"],
+["CEILING","အပေါ်ဘက် multiple သို့တင်ရန်"],
+["FLOOR","အောက်ဘက် multiple သို့ချရန်"],
+["ABS","Absolute value"],
+["MOD","Remainder ရယူရန်"],
+["QUOTIENT","Division quotient ရယူရန်"],
+["POWER","Power တွက်ရန်"],
+["SQRT","Square root တွက်ရန်"],
+
+["VLOOKUP","Vertical lookup"],
+["XLOOKUP","Modern lookup"],
+["HLOOKUP","Horizontal lookup"],
+["LOOKUP","Lookup value ရှာရန်"],
+["INDEX","Position အလိုက် value ရယူရန်"],
+["MATCH","Position ရှာရန်"],
+["XMATCH","Modern match function"],
+["CHOOSE","Index အလိုက် value ရွေးရန်"],
+["OFFSET","Reference ကို offset လုပ်ရန်"],
+["INDIRECT","Text reference ကို actual reference ပြောင်းရန်"],
+["ADDRESS","Cell address ဖန်တီးရန်"],
+["ROW","Row number"],
+["COLUMN","Column number"],
+["ROWS","Rows အရေအတွက်"],
+["COLUMNS","Columns အရေအတွက်"],
+
+["IF","Condition အလိုက် result ပြရန်"],
+["IFS","Conditions အများကြီးစစ်ရန်"],
+["AND","Conditions အားလုံး TRUE ဖြစ်ရမည်"],
+["OR","Condition တစ်ခုခု TRUE ဖြစ်ရမည်"],
+["NOT","TRUE/FALSE ပြောင်းပြန်"],
+["XOR","Exclusive OR"],
+["IFERROR","Error ဖြစ်ရင် alternative value"],
+["IFNA","#N/A error အတွက် alternative"],
+["SWITCH","Value အလိုက် result ရွေးရန်"],
+["TRUE","TRUE value"],
+["FALSE","FALSE value"],
+
+["COUNT","Numbers count"],
+["COUNTA","Non-empty cells count"],
+["COUNTBLANK","Blank cells count"],
+["COUNTIF","Condition အလိုက် count"],
+["COUNTIFS","Conditions အများကြီးနဲ့ count"],
+["AVERAGE","Average"],
+["AVERAGEIF","Condition အလိုက် average"],
+["AVERAGEIFS","Multiple conditions average"],
+["MAX","Maximum"],
+["MAXIFS","Condition အလိုက် maximum"],
+["MIN","Minimum"],
+["MINIFS","Condition အလိုက် minimum"],
+["MEDIAN","Median"],
+["MODE","Most frequent number"],
+["LARGE","Nth largest"],
+["SMALL","Nth smallest"],
+["RANK","Rank"],
+["RANK.EQ","Equal rank"],
+["PERCENTILE","Percentile"],
+["QUARTILE","Quartile"],
+
+["LEFT","ဘယ်ဘက်ကစာလုံးယူရန်"],
+["RIGHT","ညာဘက်ကစာလုံးယူရန်"],
+["MID","အလယ်ကစာလုံးယူရန်"],
+["LEN","စာလုံးအရေအတွက်"],
+["TRIM","Extra spaces ဖယ်ရန်"],
+["CLEAN","Non-printing characters ဖယ်ရန်"],
+["UPPER","စာလုံးအကြီးပြောင်းရန်"],
+["LOWER","စာလုံးအသေးပြောင်းရန်"],
+["PROPER","Each word ကို capital ပြောင်းရန်"],
+["CONCAT","Text တွေကိုပေါင်းရန်"],
+["CONCATENATE","Text တွေကိုပေါင်းရန်"],
+["TEXTJOIN","Delimiter နဲ့ text တွေကိုပေါင်းရန်"],
+["FIND","Text position ရှာရန်"],
+["SEARCH","Text position ရှာရန်"],
+["SUBSTITUTE","Text replace"],
+["REPLACE","Position အလိုက် text replace"],
+["TEXT","Number/date ကို format ပြောင်းရန်"],
+["VALUE","Text number ကို number ပြောင်းရန်"],
+["EXACT","Text နှစ်ခုတူမတူစစ်ရန်"],
+["CHAR","Character ဖန်တီးရန်"],
+["CODE","Character code ရယူရန်"],
+
+["TODAY","ယနေ့ရက်စွဲ"],
+["NOW","ယနေ့ date + time"],
+["DATE","Date ဖန်တီးရန်"],
+["YEAR","Year ရယူရန်"],
+["MONTH","Month ရယူရန်"],
+["DAY","Day ရယူရန်"],
+["HOUR","Hour ရယူရန်"],
+["MINUTE","Minute ရယူရန်"],
+["SECOND","Second ရယူရန်"],
+["DAYS","Date နှစ်ခုကြား days"],
+["DATEDIF","Date difference"],
+["EDATE","Month အလိုက် date ရွှေ့ရန်"],
+["EOMONTH","Month end date"],
+["WEEKDAY","Weekday number"],
+["WEEKNUM","Week number"],
+["WORKDAY","Working days အလိုက် date"],
+["NETWORKDAYS","Working days count"],
+["YEARFRAC","Year fraction"],
+
+["FILTER","Condition နဲ့ data filter"],
+["SORT","Data sort"],
+["SORTBY","Another range အလိုက် sort"],
+["UNIQUE","Duplicate ဖယ်ပြီး unique values"],
+["SEQUENCE","Number sequence"],
+["TRANSPOSE","Rows/columns ပြောင်းရန်"],
+["TAKE","Rows/columns အချို့ယူရန်"],
+["DROP","Rows/columns အချို့ဖယ်ရန်"],
+["CHOOSECOLS","Columns ရွေးရန်"],
+["CHOOSEROWS","Rows ရွေးရန်"],
+["VSTACK","Ranges ကို vertical stack"],
+["HSTACK","Ranges ကို horizontal stack"],
+
+["PMT","Loan payment"],
+["PV","Present value"],
+["FV","Future value"],
+["NPV","Net present value"],
+["IRR","Internal rate of return"],
+["RATE","Interest rate"],
+["IPMT","Interest payment"],
+["PPMT","Principal payment"],
+["SLN","Straight-line depreciation"],
+["DB","Declining balance depreciation"],
+["DDB","Double declining depreciation"],
+
+["ISBLANK","Blank ဖြစ်မဖြစ်"],
+["ISNUMBER","Number ဖြစ်မဖြစ်"],
+["ISTEXT","Text ဖြစ်မဖြစ်"],
+["ISERROR","Error ဖြစ်မဖြစ်"],
+["ISERR","Non #N/A error စစ်ရန်"],
+["ISNA","#N/A စစ်ရန်"],
+["ISEVEN","Even number စစ်ရန်"],
+["ISODD","Odd number စစ်ရန်"],
+["TYPE","Data type စစ်ရန်"],
+["CELL","Cell information"],
+["INFO","System information"]
+
+];
+
+
+function toast(message){
+
+    const el = document.getElementById("toast");
+
+    el.textContent = message;
+
+    el.classList.add("show");
+
+    setTimeout(()=>{
+        el.classList.remove("show");
+    },2200);
+}
+
+
+function goPage(id,button){
+
+    document.querySelectorAll(".page").forEach(p=>{
+        p.classList.remove("active");
+    });
+
+    const page=document.getElementById(id);
+
+    if(page){
+        page.classList.add("active");
+    }
+
+    document.querySelectorAll(".nav button").forEach(b=>{
+        b.classList.remove("active");
+    });
+
+    if(button){
+        button.classList.add("active");
+    }
+
+}
+
+
+function columnLetter(index){
+
+    let s="";
+
+    while(index>0){
+
+        let mod=(index-1)%26;
+
+        s=String.fromCharCode(65+mod)+s;
+
+        index=Math.floor((index-1)/26);
+
+    }
+
+    return s;
+}
+
+
+function buildSheet(){
+
+    const body=document.getElementById("sheetBody");
+
+    body.innerHTML="";
+
+    for(let r=1;r<=ROWS;r++){
+
+        const tr=document.createElement("tr");
+
+        const rowNum=document.createElement("td");
+
+        rowNum.className="row-number";
+
+        rowNum.textContent=r;
+
+        tr.appendChild(rowNum);
+
+        for(let c=1;c<=COLS;c++){
+
+            const td=document.createElement("td");
+
+            const input=document.createElement("input");
+
+            input.dataset.row=r;
+            input.dataset.col=c;
+
+            input.value=getSavedCell(r,c) || "";
+
+            input.addEventListener("input",updateStats);
+
+            td.appendChild(input);
+
+            tr.appendChild(td);
+
+        }
+
+        body.appendChild(tr);
+
+    }
+
+    updateStats();
+
+}
+
+
+function getSavedCell(r,c){
+
+    const data=localStorage.getItem("aung_excel_data");
+
+    if(!data) return "";
+
+    try{
+
+        const obj=JSON.parse(data);
+
+        return obj?.[r]?.[c] || "";
+
+    }catch(e){
+
+        return "";
+
+    }
+
+}
+
+
+function collectSheet(){
+
+    const data={};
+
+    document.querySelectorAll("#sheetBody input").forEach(input=>{
+
+        const r=input.dataset.row;
+        const c=input.dataset.col;
+
+        if(!data[r]) data[r]={};
+
+        data[r][c]=input.value;
+
+    });
+
+    return data;
+
+}
+
+
+function saveData(){
+
+    const data=collectSheet();
+
+    localStorage.setItem(
+        "aung_excel_data",
+        JSON.stringify(data)
+    );
+
+    toast("Excel data saved");
+
+    updateStats();
+
+}
+
+
+function updateStats(){
+
+    const inputs=[
+        ...document.querySelectorAll("#sheetBody input")
+    ];
+
+    let formulaCount=0;
+
+    inputs.forEach(i=>{
+
+        if(i.value.trim().startsWith("=")){
+            formulaCount++;
+        }
+
+    });
+
+    document.getElementById("statRows").textContent=ROWS;
+
+    document.getElementById("statFormulas").textContent=formulaCount;
+
+}
+
+
+function addRow(){
+
+    ROWS++;
+
+    buildSheet();
+
+    toast("New row added");
+
+}
+
+
+function addColumn(){
+
+    COLS++;
+
+    const head=document.querySelector("#sheetTable thead tr");
+
+    const th=document.createElement("th");
+
+    th.textContent=columnLetter(COLS);
+
+    head.appendChild(th);
+
+    buildSheet();
+
+    toast("New column added");
+
+}
+
+
+function clearSheet(){
+
+    if(!confirm("Current Excel data အားလုံးဖျက်မလား?")){
+        return;
+    }
+
+    localStorage.removeItem("aung_excel_data");
+
+    buildSheet();
+
+    toast("Sheet cleared");
+
+}
+
+
+function calculateSheet(){
+
+    const inputs=[
+        ...document.querySelectorAll("#sheetBody input")
+    ];
+
+    inputs.forEach(input=>{
+
+        const value=input.value.trim();
+
+        if(!value.startsWith("=")) return;
+
+        const formula=value.toUpperCase();
+
+        if(formula==="=TODAY()"){
+            input.title=new Date().toLocaleDateString();
+        }
+
+    });
+
+    toast("Formula calculation checked");
+
+}
+
+
+function exportXLSX(){
+
+    const rows=[];
+
+    const inputs=[
+        ...document.querySelectorAll("#sheetBody input")
+    ];
+
+    for(let r=1;r<=ROWS;r++){
+
+        const row=[];
+
+        for(let c=1;c<=COLS;c++){
+
+            const input=inputs.find(
+                x=>Number(x.dataset.row)===r &&
+                Number(x.dataset.col)===c
+            );
+
+            row.push(input ? input.value : "");
+
+        }
+
+        rows.push(row);
+
+    }
+
+    const ws=XLSX.utils.aoa_to_sheet(rows);
+
+    const wb=XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(
+        wb,
+        ws,
+        "Business Data"
+    );
+
+
+    const notes=[
+
+        ["AUNG BUSINESS EXCEL AI V1"],
+        ["Formula Notes"],
+        [],
+        ["VLOOKUP","=VLOOKUP(A2,Sheet2!A:D,4,FALSE)"],
+        ["XLOOKUP",'=XLOOKUP(A2,Customer_Master!A:A,Customer_Master!D:D,"Not Found")'],
+        ["SUM","=SUM(E2:E100)"],
+        ["SUMIF",'=SUMIF(B:B,"Traga",E:E)'],
+        ["SUMIFS",'=SUMIFS(E:E,B:B,"Traga",A:A,"Yangon")'],
+        ["COUNTIF",'=COUNTIF(B:B,"Traga")'],
+        ["IF",'=IF(E2>=100000,"Good","Need Action")'],
+        ["IFERROR",'=IFERROR(A2/B2,0)'],
+        ["INDEX MATCH",'=INDEX(D:D,MATCH(A2,A:A,0))'],
+        ["FILTER",'=FILTER(A2:E100,E2:E100>100000)'],
+        ["UNIQUE","=UNIQUE(B2:B100)"],
+        ["SORT","=SORT(A2:E100,5,-1)"]
+
+    ];
+
+    const notesWs=XLSX.utils.aoa_to_sheet(notes);
+
+    XLSX.utils.book_append_sheet(
+        wb,
+        notesWs,
+        "Formula Notes"
+    );
+
+    XLSX.writeFile(
+        wb,
+        "AUNG_BUSINESS_EXCEL_AI_V1.xlsx"
+    );
+
+    toast("XLSX exported");
+
+}
+
+
+function exportCSV(){
+
+    const rows=[];
+
+    const inputs=[
+        ...document.querySelectorAll("#sheetBody input")
+    ];
+
+    for(let r=1;r<=ROWS;r++){
+
+        const row=[];
+
+        for(let c=1;c<=COLS;c++){
+
+            const input=inputs.find(
+                x=>Number(x.dataset.row)===r &&
+                Number(x.dataset.col)===c
+            );
+
+            row.push(input ? input.value : "");
+
+        }
+
+        rows.push(row);
+
+    }
+
+    const ws=XLSX.utils.aoa_to_sheet(rows);
+
+    const csv=XLSX.utils.sheet_to_csv(ws);
+
+    const blob=new Blob(
+        [csv],
+        {type:"text/csv;charset=utf-8;"}
+    );
+
+    const a=document.createElement("a");
+
+    a.href=URL.createObjectURL(blob);
+
+    a.download="AUNG_BUSINESS_EXCEL_DATA.csv";
+
+    a.click();
+
+    toast("CSV exported");
+
+}
+
+
+function importExcel(event){
+
+    const file=event.target.files[0];
+
+    if(!file) return;
+
+    const reader=new FileReader();
+
+    reader.onload=function(e){
+
+        try{
+
+            const workbook=XLSX.read(
+                e.target.result,
+                {type:"array"}
+            );
+
+            const firstSheet=
+                workbook.Sheets[
+                    workbook.SheetNames[0]
+                ];
+
+            const data=
+                XLSX.utils.sheet_to_json(
+                    firstSheet,
+                    {header:1}
+                );
+
+            if(!data.length){
+                toast("Empty Excel file");
+                return;
+            }
+
+            ROWS=Math.max(data.length,10);
+
+            COLS=Math.max(
+                ...data.map(r=>r.length),
+                8
+            );
+
+            buildSheet();
+
+            const inputs=[
+                ...document.querySelectorAll("#sheetBody input")
+            ];
+
+            for(let r=0;r<data.length;r++){
+
+                for(let c=0;c<data[r].length;c++){
+
+                    const input=inputs.find(
+                        x=>Number(x.dataset.row)===r+1 &&
+                        Number(x.dataset.col)===c+1
+                    );
+
+                    if(input){
+                        input.value=
+                            data[r][c]===undefined
+                            ? ""
+                            : data[r][c];
+                    }
+
+                }
+
+            }
+
+            updateStats();
+
+            toast("Excel imported successfully");
+
+        }catch(error){
+
+            console.error(error);
+
+            toast("Excel import failed");
+
+        }
+
+    };
+
+    reader.readAsArrayBuffer(file);
+
+}
+
+
+function renderFormulaFields(){
+
+    const type=
+        document.getElementById("formulaType").value;
+
+    const f1=document.getElementById("f1");
+    const f2=document.getElementById("f2");
+    const f3=document.getElementById("f3");
+    const f4=document.getElementById("f4");
+
+    f1.value="A2";
+    f2.value="Sheet2!A:D";
+    f3.value="4";
+    f4.value="FALSE";
+
+    if(type==="XLOOKUP"){
+
+        f1.value="A2";
+        f2.value="Customer_Master!A:A";
+        f3.value="Customer_Master!D:D";
+        f4.value='"Not Found"';
+
+    }
+
+    if(type==="SUM"){
+
+        f1.value="E2:E100";
+        f2.value="";
+        f3.value="";
+        f4.value="";
+
+    }
+
+    if(type==="SUMIF"){
+
+        f1.value="B:B";
+        f2.value='"Traga"';
+        f3.value="E:E";
+        f4.value="";
+
+    }
+
+    if(type==="SUMIFS"){
+
+        f1.value="E:E";
+        f2.value='B:B,"Traga"';
+        f3.value='A:A,"Yangon"';
+        f4.value="";
+
+    }
+
+    if(type==="COUNTIF"){
+
+        f1.value="B:B";
+        f2.value='"Traga"';
+        f3.value="";
+        f4.value="";
+
+    }
+
+    if(type==="COUNTIFS"){
+
+        f1.value='B:B,"Traga"';
+        f2.value='A:A,"Yangon"';
+        f3.value="";
+        f4.value="";
+
+    }
+
+    if(type==="IF"){
+
+        f1.value="E2>=100000";
+        f2.value='"Good"';
+        f3.value='"Need Action"';
+        f4.value="";
+
+    }
+
+    if(type==="IFERROR"){
+
+        f1.value="A2/B2";
+        f2.value="0";
+        f3.value="";
+        f4.value="";
+
+    }
+
+    if(type==="INDEX"){
+
+        f1.value="D:D";
+        f2.value="MATCH(A2,A:A,0)";
+        f3.value="";
+        f4.value="";
+
+    }
+
+    if(type==="MATCH" || type==="XMATCH"){
+
+        f1.value="A2";
+        f2.value="A:A";
+        f3.value="0";
+        f4.value="";
+
+    }
+
+    if(type==="FILTER"){
+
+        f1.value="A2:E100";
+        f2.value="E2:E100>100000";
+        f3.value="";
+        f4.value="";
+
+    }
+
+    if(type==="UNIQUE"){
+
+        f1.value="B2:B100";
+        f2.value="";
+        f3.value="";
+        f4.value="";
+
+    }
+
+    if(type==="SORT"){
+
+        f1.value="A2:E100";
+        f2.value="5";
+        f3.value="-1";
+        f4.value="";
+
+    }
+
+    if(
+        ["LEFT","RIGHT","MID","TEXT","ROUND","EOMONTH","NETWORKDAYS"]
+        .includes(type)
+    ){
+
+        f1.value="A2";
+        f2.value="10";
+        f3.value="0";
+        f4.value="";
+
+    }
+
+}
+
+
+function setFormulaType(type){
+
+    document.getElementById("formulaType").value=type;
+
+    renderFormulaFields();
+
+}
+
+
+function generateFormula(){
+
+    const type=
+        document.getElementById("formulaType").value;
+
+    const a=document.getElementById("f1").value.trim();
+
+    const b=document.getElementById("f2").value.trim();
+
+    const c=document.getElementById("f3").value.trim();
+
+    const d=document.getElementById("f4").value.trim();
+
+    let formula="";
+    let explain="";
+
+
+    switch(type){
+
+        case "VLOOKUP":
+
+            formula=`=VLOOKUP(${a},${b},${c},${d})`;
+
+            explain=
+                `${a} ကို ${b} table ထဲမှာရှာပြီး ${c} ကြောင်းမြောက် column က value ကို ${d} match နဲ့ ပြန်ယူပါတယ်`;
+
+            break;
+
+
+        case "XLOOKUP":
+
+            formula=`=XLOOKUP(${a},${b},${c},${d || '"Not Found"'})`;
+
+            explain=
+                `${a} ကို lookup array ${b} ထဲမှာရှာပြီး return array ${c} ထဲက value ကို ပြန်ယူပါတယ်`;
+
+            break;
+
+
+        case "HLOOKUP":
+
+            formula=`=HLOOKUP(${a},${b},${c},${d})`;
+
+            explain=
+                `${a} ကို horizontal table ထဲမှာရှာပြီး ${c} row က value ကို ပြန်ယူပါတယ်`;
+
+            break;
+
+
+        case "SUM":
+
+            formula=`=SUM(${a})`;
+
+            explain=
+                `${a} range ထဲက number အားလုံးကို စုစုပေါင်းတွက်ပါတယ်`;
+
+            break;
+
+
+        case "SUMIF":
+
+            formula=`=SUMIF(${a},${b},${c})`;
+
+            explain=
+                `${a} range ထဲမှာ ${b} condition ကိုရှာပြီး ${c} range ကို စုစုပေါင်းပါတယ်`;
+
+            break;
+
+
+        case "SUMIFS":
+
+            formula=`=SUMIFS(${a},${b},${c},${d})`;
+
+            explain=
+                `Condition အများကြီးနဲ့ ${a} range ကို စုစုပေါင်းပါတယ်`;
+
+            break;
+
+
+        case "COUNTIF":
+
+            formula=`=COUNTIF(${a},${b})`;
+
+            explain=
+                `${a} range ထဲမှာ ${b} condition ကိုက်ညီတဲ့ cells အရေအတွက်ကိုတွက်ပါတယ်`;
+
+            break;
+
+
+        case "COUNTIFS":
+
+            formula=`=COUNTIFS(${a},${b},${c},${d})`;
+
+            explain=
+                `Condition နှစ်ခုကိုက်ညီတဲ့ records အရေအတွက်ကိုတွက်ပါတယ်`;
+
+            break;
+
+
+        case "IF":
+
+            formula=`=IF(${a},${b},${c})`;
+
+            explain=
+                `Condition ${a} TRUE ဖြစ်ရင် ${b}၊ FALSE ဖြစ်ရင် ${c} ပြပါတယ်`;
+
+            break;
+
+
+        case "IFERROR":
+
+            formula=`=IFERROR(${a},${b})`;
+
+            explain=
+                `${a} မှာ error ဖြစ်ရင် ${b} ကိုပြပါတယ်`;
+
+            break;
+
+
+        case "INDEX":
+
+            formula=`=INDEX(${a},${b})`;
+
+            explain=
+                `${a} range ထဲက ${b} position ကို value ပြန်ယူပါတယ်`;
+
+            break;
+
+
+        case "MATCH":
+
+            formula=`=MATCH(${a},${b},${c || "0"})`;
+
+            explain=
+                `${a} ကို ${b} ထဲမှာရှာပြီး position ပြန်ပေးပါတယ်`;
+
+            break;
+
+
+        case "XMATCH":
+
+            formula=`=XMATCH(${a},${b},${c || "0"})`;
+
+            explain=
+                `Modern MATCH formula ဖြစ်ပြီး ${a} ရဲ့ position ကိုရှာပါတယ်`;
+
+            break;
+
+
+        case "FILTER":
+
+            formula=`=FILTER(${a},${b})`;
+
+            explain=
+                `${b} condition ကိုက်တဲ့ ${a} data တွေကို filter လုပ်ပြီး ပြပါတယ်`;
+
+            break;
+
+
+        case "UNIQUE":
+
+            formula=`=UNIQUE(${a})`;
+
+            explain=
+                `${a} ထဲက duplicate values တွေဖယ်ပြီး unique values ပဲပြပါတယ်`;
+
+            break;
+
+
+        case "SORT":
+
+            formula=`=SORT(${a},${b || "1"},${c || "1"})`;
+
+            explain=
+                `${a} data ကို ${b || "1"} column အလိုက် sort လုပ်ပါတယ်`;
+
+            break;
+
+
+        case "LEFT":
+
+            formula=`=LEFT(${a},${b || "1"})`;
+
+            explain=
+                `${a} ရဲ့ ဘယ်ဘက်က စာလုံး ${b || "1"} လုံးယူပါတယ်`;
+
+            break;
+
+
+        case "RIGHT":
+
+            formula=`=RIGHT(${a},${b || "1"})`;
+
+            explain=
+                `${a} ရဲ့ ညာဘက်က စာလုံး ${b || "1"} လုံးယူပါတယ်`;
+
+            break;
+
+
+        case "MID":
+
+            formula=`=MID(${a},${b || "1"},${c || "1"})`;
+
+            explain=
+                `${a} ထဲက ${b || "1"} position ကနေ ${c || "1"} လုံးယူပါတယ်`;
+
+            break;
+
+
+        case "TEXT":
+
+            formula=`=TEXT(${a},${b || '"0.00"'})`;
+
+            explain=
+                `${a} ကို ${b || "format"} အတိုင်း text အဖြစ် format ပြောင်းပါတယ်`;
+
+            break;
+
+
+        case "ROUND":
+
+            formula=`=ROUND(${a},${b || "0"})`;
+
+            explain=
+                `${a} ကို decimal ${b || "0"} နေရာအထိ round လုပ်ပါတယ်`;
+
+            break;
+
+
+        case "EOMONTH":
+
+            formula=`=EOMONTH(${a},${b || "0"})`;
+
+            explain=
+                `${a} date ရဲ့ month end date ကို ရယူပါတယ်`;
+
+            break;
+
+
+        case "NETWORKDAYS":
+
+            formula=`=NETWORKDAYS(${a},${b})`;
+
+            explain=
+                `Start date နဲ့ End date ကြား working days အရေအတွက်ကိုတွက်ပါတယ်`;
+
+            break;
+
+
+        default:
+
+            formula="=FORMULA()";
+
+            explain="Formula template";
+
+    }
+
+
+    document.getElementById("formulaOutput").textContent=
+        formula;
+
+    document.getElementById("formulaExplain").textContent=
+        explain;
+
+}
+
+
+function generateAIFormula(){
+
+    const text=
+        document.getElementById("aiInput")
+        .value
+        .trim()
+        .toLowerCase();
+
+    let formula="";
+    let explain="";
+
+
+    if(
+        text.includes("vlookup") ||
+        text.includes("customer") &&
+        text.includes("region")
+    ){
+
+        formula=
+            '=XLOOKUP(A2,Customer_Master!A:A,Customer_Master!D:D,"Not Found")';
+
+        explain=
+            "A2 ထဲက Customer Code ကို Customer_Master Sheet ရဲ့ A Column မှာရှာပြီး D Column ထဲက Region ကို ပြန်ယူတဲ့ formula ဖြစ်ပါတယ်";
+
+    }
+
+    else if(
+        text.includes("100000") &&
+        (
+            text.includes("good") ||
+            text.includes("ကောင်း")
+        )
+    ){
+
+        formula=
+            '=IF(E2>=100000,"Good","Need Action")';
+
+        explain=
+            "Sales Amount E2 က 100,000 ထက်ကြီး/ညီရင် Good၊ မဟုတ်ရင် Need Action လို့ပြပါတယ်";
+
+    }
+
+    else if(
+        text.includes("duplicate") ||
+        text.includes("ထပ်")
+    ){
+
+        formula=
+            '=UNIQUE(A2:A100)';
+
+        explain=
+            "Duplicate value တွေကိုဖယ်ပြီး unique customer/value တွေကို ပြန်ထုတ်ပေးပါတယ်";
+
+    }
+
+    else if(
+        text.includes("sum") ||
+        text.includes("စု") ||
+        text.includes("sales")
+    ){
+
+        formula=
+            '=SUM(E2:E100)';
+
+        explain=
+            "E2:E100 ထဲက Sales Amount တွေကို စုစုပေါင်းတွက်ပါတယ်";
+
+    }
+
+    else if(
+        text.includes("count") ||
+        text.includes("အရေအတွက်")
+    ){
+
+        formula=
+            '=COUNTIF(B:B,"Traga")';
+
+        explain=
+            "B Column ထဲမှာ Traga ဖြစ်တဲ့ records အရေအတွက်ကိုတွက်ပါတယ်";
+
+    }
+
+    else if(
+        text.includes("average") ||
+        text.includes("ပျမ်းမျှ")
+    ){
+
+        formula=
+            '=AVERAGE(E2:E100)';
+
+        explain=
+            "E2:E100 ထဲက value တွေရဲ့ average ကိုတွက်ပါတယ်";
+
+    }
+
+    else if(
+        text.includes("filter") ||
+        text.includes("စစ်ထုတ်")
+    ){
+
+        formula=
+            '=FILTER(A2:E100,E2:E100>100000)';
+
+        explain=
+            "Sales Amount 100,000 ထက်ကြီးတဲ့ records တွေကို filter လုပ်ပြီး ပြပါတယ်";
+
+    }
+
+    else if(
+        text.includes("date") ||
+        text.includes("ရက်")
+    ){
+
+        formula=
+            '=TODAY()';
+
+        explain=
+            "ယနေ့ရက်စွဲကို ပြန်ပေးပါတယ်";
+
+    }
+
+    else{
+
+        formula=
+            '=IFERROR(A2/B2,0)';
+
+        explain=
+            "သင်ရေးထားတဲ့ requirement ကို V1 AI engine က မသိသေးတဲ့အတွက် generic business formula အနေနဲ့ error-safe division ကို ပြထားပါတယ်";
+
+    }
+
+
+    document.getElementById("aiFormula").textContent=
+        formula;
+
+    document.getElementById("aiExplain").textContent=
+        explain;
+
+    document.getElementById("aiAnswer").style.display=
+        "block";
+
+}
+
+
+function renderFormulaLibrary(list=formulas){
+
+    const container=
+        document.getElementById("formulaList");
+
+    container.innerHTML="";
+
+    list.forEach(item=>{
+
+        const div=document.createElement("div");
+
+        div.className="formula-item";
+
+        div.innerHTML=`
+
+            <div class="formula-name">
+                ${item[0]}
+            </div>
+
+            <div class="formula-desc">
+                ${item[1]}
+            </div>
+
+        `;
+
+        container.appendChild(div);
+
+    });
+
+}
+
+
+function searchFormulas(){
+
+    const q=
+        document.getElementById("formulaSearch")
+        .value
+        .toLowerCase();
+
+    const filtered=
+        formulas.filter(item=>
+            item[0].toLowerCase().includes(q) ||
+            item[1].toLowerCase().includes(q)
+        );
+
+    renderFormulaLibrary(filtered);
+
+}
+
+
+function findDuplicates(){
+
+    const inputs=[
+        ...document.querySelectorAll(
+            '#sheetBody input[data-col="1"]'
+        )
+    ];
+
+    const values=[];
+
+    inputs.forEach(i=>{
+
+        const value=i.value.trim();
+
+        if(value) values.push(value);
+
+    });
+
+    const duplicates=
+        values.filter(
+            (v,i,a)=>a.indexOf(v)!==i
+        );
+
+    const unique=[
+        ...new Set(duplicates)
+    ];
+
+    document.getElementById("toolResult").textContent=
+        unique.length
+        ? "Duplicate: "+unique.join(", ")
+        : "Duplicate မတွေ့ပါ";
+
+}
+
+
+function checkFormulas(){
+
+    const inputs=[
+        ...document.querySelectorAll("#sheetBody input")
+    ];
+
+    const errors=[];
+
+    inputs.forEach(input=>{
+
+        const value=input.value.trim();
+
+        if(!value.startsWith("=")) return;
+
+        if(
+            value.includes("#REF!") ||
+            value.includes("#VALUE!") ||
+            value.includes("#N/A") ||
+            value.includes("#DIV/0!")
+        ){
+
+            errors.push(
+                `Row ${input.dataset.row}, Column ${input.dataset.col}: ${value}`
+            );
+
+        }
+
+    });
+
+    document.getElementById("toolResult").innerHTML=
+        errors.length
+        ? errors.join("<br>")
+        : "Formula error pattern မတွေ့ပါ";
+
+}
+
+
+/* INIT */
+
+buildSheet();
+
+renderFormulaLibrary();
+
+renderFormulaFields();
+
+</script>
+
+</body>
+</html>

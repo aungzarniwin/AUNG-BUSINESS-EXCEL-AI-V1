@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AUNG BUSINESS EXCEL AI V1</title>
 
-<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
 <style>
 *{
@@ -16,16 +16,16 @@
 
 :root{
     --bg:#0b0f14;
-    --panel:#111821;
-    --panel2:#151e28;
-    --border:#263241;
+    --panel:#111720;
+    --panel2:#151d27;
+    --border:#26313d;
     --text:#f4f7fa;
     --muted:#8f9baa;
-    --accent:#21c77a;
-    --accent2:#19a968;
-    --danger:#ef5350;
-    --warning:#ffb74d;
-    --input:#0d141c;
+    --accent:#22c55e;
+    --accent2:#16a34a;
+    --danger:#ef4444;
+    --warning:#f59e0b;
+    --blue:#3b82f6;
 }
 
 body{
@@ -39,7 +39,7 @@ button,
 input,
 select,
 textarea{
-    font:inherit;
+    font-family:inherit;
 }
 
 button{
@@ -55,66 +55,70 @@ button{
 
 .sidebar{
     width:250px;
-    background:#0d131a;
+    background:#0d131b;
     border-right:1px solid var(--border);
-    padding:18px 14px;
+    padding:20px 14px;
     position:fixed;
     left:0;
     top:0;
     bottom:0;
-    z-index:100;
+    overflow-y:auto;
 }
 
-.brand{
-    padding:10px 10px 20px;
-    border-bottom:1px solid var(--border);
-    margin-bottom:15px;
+.logo{
+    padding:8px 10px 24px;
 }
 
-.brand-title{
+.logo-title{
     font-size:20px;
     font-weight:800;
-    letter-spacing:.4px;
+    letter-spacing:.5px;
 }
 
-.brand-sub{
+.logo-sub{
     color:var(--muted);
     font-size:11px;
     margin-top:5px;
 }
 
-.nav{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
+.nav-title{
+    color:#657180;
+    font-size:10px;
+    font-weight:700;
+    text-transform:uppercase;
+    padding:14px 10px 7px;
+    letter-spacing:1px;
 }
 
-.nav button{
+.nav-btn{
     width:100%;
-    text-align:left;
-    border:0;
-    background:transparent;
-    color:#aeb8c4;
-    padding:12px 13px;
-    border-radius:9px;
     display:flex;
     align-items:center;
     gap:11px;
+    border:0;
+    background:transparent;
+    color:#aab4c0;
+    padding:12px 11px;
+    border-radius:9px;
+    margin-bottom:4px;
+    text-align:left;
+    font-size:13px;
 }
 
-.nav button:hover{
+.nav-btn:hover{
     background:#17202b;
-    color:white;
+    color:#fff;
 }
 
-.nav button.active{
-    background:#163326;
-    color:#55df9b;
+.nav-btn.active{
+    background:#18351f;
+    color:#4ade80;
 }
 
 .nav-icon{
-    width:22px;
+    width:20px;
     text-align:center;
+    font-size:15px;
 }
 
 /* MAIN */
@@ -122,60 +126,66 @@ button{
 .main{
     margin-left:250px;
     width:calc(100% - 250px);
-    padding:24px;
+    min-width:0;
 }
 
 .topbar{
+    height:64px;
+    border-bottom:1px solid var(--border);
+    background:#0d131b;
     display:flex;
-    justify-content:space-between;
     align-items:center;
-    margin-bottom:22px;
-    gap:15px;
+    justify-content:space-between;
+    padding:0 22px;
+    position:sticky;
+    top:0;
+    z-index:20;
 }
 
 .page-title{
-    font-size:25px;
-    font-weight:800;
-}
-
-.page-sub{
-    color:var(--muted);
-    font-size:13px;
-    margin-top:5px;
+    font-size:18px;
+    font-weight:700;
 }
 
 .top-actions{
     display:flex;
     gap:8px;
-    flex-wrap:wrap;
 }
 
 .btn{
     border:1px solid var(--border);
-    background:#151d26;
-    color:white;
-    padding:10px 14px;
-    border-radius:8px;
+    background:#151d27;
+    color:#e8edf2;
+    padding:9px 13px;
+    border-radius:7px;
+    font-size:12px;
     font-weight:600;
 }
 
 .btn:hover{
-    background:#1b2733;
+    background:#1b2530;
 }
 
 .btn-primary{
-    background:var(--accent);
-    color:#06150d;
-    border-color:var(--accent);
+    background:var(--accent2);
+    border-color:var(--accent2);
+    color:#fff;
 }
 
 .btn-primary:hover{
-    background:#35d78c;
+    background:var(--accent);
 }
 
 .btn-danger{
-    color:#ff7777;
+    color:#fecaca;
+    border-color:#5b2020;
 }
+
+.content{
+    padding:22px;
+}
+
+/* PAGES */
 
 .page{
     display:none;
@@ -185,134 +195,274 @@ button{
     display:block;
 }
 
-/* CARDS */
+/* DASHBOARD */
 
 .grid{
     display:grid;
-    gap:15px;
+    gap:14px;
 }
 
-.grid-4{
+.stats{
     grid-template-columns:repeat(4,1fr);
-}
-
-.grid-3{
-    grid-template-columns:repeat(3,1fr);
 }
 
 .card{
     background:var(--panel);
     border:1px solid var(--border);
-    border-radius:12px;
-    padding:18px;
+    border-radius:11px;
+    padding:17px;
 }
 
 .stat-label{
     color:var(--muted);
-    font-size:12px;
+    font-size:11px;
+    margin-bottom:8px;
 }
 
 .stat-value{
-    font-size:27px;
+    font-size:25px;
     font-weight:800;
-    margin-top:8px;
 }
 
-.stat-note{
-    color:#61dba0;
+.stat-small{
     font-size:11px;
+    color:#6f7b89;
     margin-top:5px;
 }
 
-.section{
-    margin-top:18px;
+.two{
+    grid-template-columns:1fr 1fr;
+    margin-top:16px;
 }
 
-.section-title{
-    font-size:17px;
-    font-weight:800;
-    margin-bottom:12px;
+.card-title{
+    font-size:14px;
+    font-weight:700;
+    margin-bottom:14px;
 }
 
-/* FORM */
-
-.form-grid{
+.quick-grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
-    gap:14px;
+    gap:9px;
 }
 
-.field{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-}
-
-.field label{
-    font-size:12px;
-    color:#aeb8c4;
-}
-
-.field input,
-.field select,
-.field textarea{
-    background:var(--input);
+.quick-btn{
+    background:#151d27;
     border:1px solid var(--border);
-    color:white;
+    color:#dbe3eb;
     border-radius:8px;
-    padding:11px 12px;
+    padding:13px;
+    text-align:left;
+}
+
+.quick-btn:hover{
+    border-color:#3a4857;
+}
+
+/* EXCEL */
+
+.toolbar{
+    background:var(--panel);
+    border:1px solid var(--border);
+    padding:10px;
+    border-radius:10px 10px 0 0;
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+}
+
+.sheet-wrap{
+    border:1px solid var(--border);
+    border-top:0;
+    background:#0f151d;
+    overflow:auto;
+    max-height:600px;
+}
+
+.sheet{
+    border-collapse:collapse;
+    min-width:900px;
+    width:max-content;
+}
+
+.sheet th,
+.sheet td{
+    border-right:1px solid #252e39;
+    border-bottom:1px solid #252e39;
+    height:34px;
+    min-width:130px;
+    padding:0;
+}
+
+.sheet th{
+    background:#18212b;
+    color:#aeb8c3;
+    font-size:11px;
+    font-weight:700;
+    position:sticky;
+    top:0;
+    z-index:5;
+}
+
+.sheet th.row-num{
+    min-width:48px;
+    width:48px;
+    position:sticky;
+    left:0;
+    z-index:8;
+}
+
+.sheet td.row-num{
+    min-width:48px;
+    width:48px;
+    text-align:center;
+    background:#141c25;
+    color:#687584;
+    font-size:11px;
+    position:sticky;
+    left:0;
+    z-index:4;
+}
+
+.cell-input{
+    width:100%;
+    height:33px;
+    background:transparent;
+    border:0;
     outline:none;
+    color:#e8edf2;
+    padding:7px 9px;
+    font-size:12px;
 }
 
-.field input:focus,
-.field select:focus,
-.field textarea:focus{
-    border-color:var(--accent);
+.cell-input:focus{
+    background:#12261a;
+    box-shadow:inset 0 0 0 2px #22c55e;
 }
 
-textarea{
+.formula-cell{
+    color:#7dd3fc;
+}
+
+.sheet-status{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:9px 12px;
+    background:#121923;
+    border:1px solid var(--border);
+    border-top:0;
+    color:#82909f;
+    font-size:11px;
+}
+
+/* FORM BUILDER */
+
+.form-layout{
+    display:grid;
+    grid-template-columns:320px 1fr;
+    gap:15px;
+}
+
+.form-card{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:18px;
+}
+
+.form-group{
+    margin-bottom:13px;
+}
+
+.form-group label{
+    display:block;
+    color:#98a4b1;
+    font-size:11px;
+    margin-bottom:6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+    background:#0c1219;
+    border:1px solid var(--border);
+    color:#e8edf2;
+    border-radius:7px;
+    padding:10px;
+    outline:none;
+    font-size:12px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    border-color:#22c55e;
+}
+
+.formula-result{
+    margin-top:15px;
+    background:#0b1310;
+    border:1px solid #21492d;
+    border-radius:8px;
+    padding:15px;
+}
+
+.formula-result-title{
+    color:#86efac;
+    font-size:11px;
+    margin-bottom:8px;
+}
+
+.formula-code{
+    font-family:monospace;
+    color:#e2f8e8;
+    word-break:break-all;
+    font-size:13px;
+}
+
+.example-box{
+    margin-top:15px;
+    padding:13px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    color:#9ba7b4;
+    font-size:11px;
+    line-height:1.7;
+}
+
+/* AI */
+
+.ai-box{
+    max-width:850px;
+}
+
+.ai-input{
     min-height:110px;
     resize:vertical;
 }
 
-.full{
-    grid-column:1/-1;
-}
-
-/* FORMULA RESULT */
-
-.formula-result{
-    background:#071b12;
-    border:1px solid #175f3e;
-    border-radius:10px;
-    padding:15px;
+.ai-result{
     margin-top:15px;
+    display:none;
 }
 
-.formula-code{
-    font-family:Consolas,monospace;
-    color:#59e6a1;
-    word-break:break-all;
-    font-size:15px;
+/* LIBRARY */
+
+.search-box{
+    margin-bottom:14px;
 }
 
-.explain{
-    margin-top:10px;
-    color:#b9c6d1;
-    line-height:1.6;
-    font-size:13px;
-}
-
-/* FORMULA LIBRARY */
-
-.search{
+.search-box input{
     width:100%;
-    background:var(--input);
+    background:#111720;
     border:1px solid var(--border);
-    color:white;
+    color:#fff;
     border-radius:8px;
     padding:12px;
-    margin-bottom:12px;
+    outline:none;
 }
 
 .formula-list{
@@ -322,114 +472,59 @@ textarea{
 }
 
 .formula-item{
-    background:#101821;
+    background:var(--panel);
     border:1px solid var(--border);
     border-radius:9px;
     padding:13px;
 }
 
 .formula-name{
-    color:#55df9b;
+    color:#4ade80;
     font-weight:800;
-    font-family:Consolas,monospace;
+    font-family:monospace;
+    font-size:13px;
 }
 
 .formula-desc{
-    color:#9ba7b4;
-    font-size:12px;
-    margin-top:5px;
+    color:#8995a2;
+    font-size:11px;
+    margin-top:6px;
+    line-height:1.5;
 }
 
-/* TABLE */
+.formula-example{
+    margin-top:8px;
+    font-family:monospace;
+    color:#a7d8ff;
+    font-size:10px;
+    word-break:break-all;
+}
 
-.table-wrap{
-    overflow:auto;
+/* DATA TOOLS */
+
+.tool-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+}
+
+.tool-result{
+    margin-top:12px;
+    background:#0d131b;
     border:1px solid var(--border);
-    border-radius:10px;
-    background:#0c1218;
-}
-
-.sheet{
-    border-collapse:collapse;
-    min-width:850px;
-    width:100%;
-}
-
-.sheet th,
-.sheet td{
-    border:1px solid #27323f;
-    min-width:130px;
-    height:38px;
-    padding:0;
-}
-
-.sheet th{
-    background:#151e28;
-    color:#98a5b2;
+    border-radius:8px;
+    padding:12px;
     font-size:12px;
-    height:34px;
-    text-align:center;
-}
-
-.sheet td{
-    background:#0e151d;
-}
-
-.sheet td input{
-    width:100%;
-    height:100%;
-    border:0;
-    outline:0;
-    background:transparent;
-    color:white;
-    padding:8px;
-}
-
-.sheet td input:focus{
-    background:#13231c;
-    box-shadow:inset 0 0 0 1px var(--accent);
-}
-
-.row-number{
-    width:42px!important;
-    min-width:42px!important;
-    text-align:center;
-    background:#151e28!important;
-    color:#8996a3;
-    padding:0!important;
-}
-
-.toolbar{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-    margin-bottom:12px;
-}
-
-.file-input{
-    display:none;
-}
-
-/* AI */
-
-.ai-box{
-    background:#101923;
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:18px;
-}
-
-.ai-answer{
-    margin-top:15px;
-    display:none;
+    color:#aeb8c3;
+    white-space:pre-wrap;
 }
 
 /* SETTINGS */
 
 .setting-row{
     display:flex;
-    justify-content:space-between;
     align-items:center;
+    justify-content:space-between;
     padding:14px 0;
     border-bottom:1px solid var(--border);
 }
@@ -438,85 +533,90 @@ textarea{
     border-bottom:0;
 }
 
-/* TOAST */
-
-.toast{
-    position:fixed;
-    right:20px;
-    bottom:20px;
-    background:#17231d;
-    border:1px solid #2b6b4c;
-    color:#baffd9;
-    padding:12px 16px;
-    border-radius:8px;
-    transform:translateY(100px);
-    opacity:0;
-    transition:.25s;
-    z-index:999;
+.setting-label{
+    font-size:13px;
 }
 
-.toast.show{
-    transform:translateY(0);
-    opacity:1;
+.setting-desc{
+    color:#788594;
+    font-size:11px;
+    margin-top:4px;
+}
+
+.toggle{
+    width:42px;
+    height:23px;
+    background:#26313d;
+    border-radius:20px;
+    position:relative;
+    cursor:pointer;
+}
+
+.toggle.active{
+    background:#16a34a;
+}
+
+.toggle-dot{
+    width:17px;
+    height:17px;
+    background:white;
+    border-radius:50%;
+    position:absolute;
+    top:3px;
+    left:3px;
+    transition:.2s;
+}
+
+.toggle.active .toggle-dot{
+    left:22px;
 }
 
 /* MOBILE */
 
-@media(max-width:1000px){
-
-    .grid-4{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .formula-list{
-        grid-template-columns:repeat(2,1fr);
-    }
+.mobile-menu{
+    display:none;
+    border:0;
+    background:transparent;
+    color:#fff;
+    font-size:20px;
 }
 
-@media(max-width:700px){
+@media(max-width:900px){
 
     .sidebar{
-        width:68px;
-        padding:12px 8px;
+        transform:translateX(-100%);
+        transition:.25s;
+        z-index:100;
     }
 
-    .brand-title{
-        font-size:0;
-    }
-
-    .brand-title::after{
-        content:"A";
-        font-size:22px;
-        color:#55df9b;
-    }
-
-    .brand-sub{
-        display:none;
-    }
-
-    .nav button{
-        justify-content:center;
-        padding:12px 5px;
-    }
-
-    .nav-text{
-        display:none;
+    .sidebar.open{
+        transform:translateX(0);
     }
 
     .main{
-        margin-left:68px;
-        width:calc(100% - 68px);
-        padding:15px;
+        margin-left:0;
+        width:100%;
+    }
+
+    .mobile-menu{
+        display:block;
     }
 
     .topbar{
-        align-items:flex-start;
-        flex-direction:column;
+        padding:0 13px;
     }
 
-    .grid-4,
-    .grid-3,
-    .form-grid{
+    .content{
+        padding:13px;
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .two,
+    .tool-grid,
+    .form-layout{
         grid-template-columns:1fr;
     }
 
@@ -524,8 +624,28 @@ textarea{
         grid-template-columns:1fr;
     }
 
-    .page-title{
-        font-size:21px;
+    .top-actions .btn:not(.btn-primary){
+        display:none;
+    }
+}
+
+@media(max-width:520px){
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+        gap:8px;
+    }
+
+    .card{
+        padding:13px;
+    }
+
+    .stat-value{
+        font-size:20px;
+    }
+
+    .quick-grid{
+        grid-template-columns:1fr;
     }
 }
 </style>
@@ -535,812 +655,1011 @@ textarea{
 
 <div class="app">
 
-<aside class="sidebar">
+<!-- SIDEBAR -->
 
-    <div class="brand">
-        <div class="brand-title">AUNG BUSINESS EXCEL AI</div>
-        <div class="brand-sub">Excel Business Automation V1</div>
+<aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+        <div class="logo-title">AUNG EXCEL AI</div>
+        <div class="logo-sub">BUSINESS EXCEL WORKSPACE V1</div>
     </div>
 
-    <div class="nav">
+    <div class="nav-title">Workspace</div>
 
-        <button class="active" onclick="goPage('dashboard',this)">
-            <span class="nav-icon">⌂</span>
-            <span class="nav-text">Dashboard</span>
-        </button>
+    <button class="nav-btn active" data-page="dashboard">
+        <span class="nav-icon">▦</span>
+        Dashboard
+    </button>
 
-        <button onclick="goPage('editor',this)">
-            <span class="nav-icon">▦</span>
-            <span class="nav-text">Excel Editor</span>
-        </button>
+    <button class="nav-btn" data-page="editor">
+        <span class="nav-icon">▤</span>
+        Excel Editor
+    </button>
 
-        <button onclick="goPage('builder',this)">
-            <span class="nav-icon">ƒ</span>
-            <span class="nav-text">Formula Builder</span>
-        </button>
+    <button class="nav-btn" data-page="builder">
+        <span class="nav-icon">ƒx</span>
+        Formula Builder
+    </button>
 
-        <button onclick="goPage('ai',this)">
-            <span class="nav-icon">✦</span>
-            <span class="nav-text">AI Formula</span>
-        </button>
+    <button class="nav-btn" data-page="ai">
+        <span class="nav-icon">✦</span>
+        AI Formula
+    </button>
 
-        <button onclick="goPage('library',this)">
-            <span class="nav-icon">☷</span>
-            <span class="nav-text">Formula Library</span>
-        </button>
+    <div class="nav-title">Tools</div>
 
-        <button onclick="goPage('tools',this)">
-            <span class="nav-icon">⚙</span>
-            <span class="nav-text">Data Tools</span>
-        </button>
+    <button class="nav-btn" data-page="library">
+        <span class="nav-icon">☷</span>
+        Formula Library
+    </button>
 
-        <button onclick="goPage('settings',this)">
-            <span class="nav-icon">◉</span>
-            <span class="nav-text">Settings</span>
-        </button>
+    <button class="nav-btn" data-page="tools">
+        <span class="nav-icon">⚙</span>
+        Data Tools
+    </button>
 
-    </div>
+    <div class="nav-title">System</div>
+
+    <button class="nav-btn" data-page="settings">
+        <span class="nav-icon">◉</span>
+        Settings
+    </button>
 
 </aside>
 
 
+<!-- MAIN -->
+
 <main class="main">
+
+<header class="topbar">
+
+    <div style="display:flex;align-items:center;gap:12px;">
+        <button class="mobile-menu" id="mobileMenu">☰</button>
+        <div class="page-title" id="pageTitle">Dashboard</div>
+    </div>
+
+    <div class="top-actions">
+        <button class="btn" id="saveTopBtn">Save</button>
+        <button class="btn btn-primary" id="exportTopBtn">Export XLSX</button>
+    </div>
+
+</header>
+
+
+<div class="content">
 
 <!-- DASHBOARD -->
 
-<section id="dashboard" class="page active">
+<section class="page active" id="page-dashboard">
 
-<div class="topbar">
+    <div class="grid stats">
 
-<div>
-<div class="page-title">Excel Business Dashboard</div>
-<div class="page-sub">Business Excel automation workspace</div>
-</div>
+        <div class="card">
+            <div class="stat-label">ROWS</div>
+            <div class="stat-value" id="statRows">20</div>
+            <div class="stat-small">Current worksheet rows</div>
+        </div>
 
-<div class="top-actions">
-<button class="btn" onclick="saveData()">Save</button>
-<button class="btn btn-primary" onclick="exportXLSX()">Export XLSX</button>
-</div>
+        <div class="card">
+            <div class="stat-label">COLUMNS</div>
+            <div class="stat-value" id="statCols">10</div>
+            <div class="stat-small">Current worksheet columns</div>
+        </div>
 
-</div>
+        <div class="card">
+            <div class="stat-label">FORMULAS</div>
+            <div class="stat-value" id="statFormulas">0</div>
+            <div class="stat-small">Formula cells detected</div>
+        </div>
 
+        <div class="card">
+            <div class="stat-label">DATA CELLS</div>
+            <div class="stat-value" id="statData">0</div>
+            <div class="stat-small">Filled cells</div>
+        </div>
 
-<div class="grid grid-4">
-
-<div class="card">
-<div class="stat-label">Workbook</div>
-<div class="stat-value">1</div>
-<div class="stat-note">Active workbook</div>
-</div>
-
-<div class="card">
-<div class="stat-label">Rows</div>
-<div class="stat-value" id="statRows">10</div>
-<div class="stat-note">Editable records</div>
-</div>
-
-<div class="card">
-<div class="stat-label">Formulas</div>
-<div class="stat-value" id="statFormulas">0</div>
-<div class="stat-note">Detected formulas</div>
-</div>
-
-<div class="card">
-<div class="stat-label">Formula Library</div>
-<div class="stat-value">100+</div>
-<div class="stat-note">Business formulas</div>
-</div>
-
-</div>
+    </div>
 
 
-<div class="section">
+    <div class="grid two">
 
-<div class="section-title">Quick Actions</div>
+        <div class="card">
 
-<div class="grid grid-3">
+            <div class="card-title">Quick Actions</div>
 
-<div class="card">
-<h3>VLOOKUP</h3>
-<p class="page-sub">
-Customer / Product / Distributor master data lookup
-</p>
-<br>
-<button class="btn btn-primary"
-onclick="goPage('builder',document.querySelectorAll('.nav button')[2]);setFormulaType('VLOOKUP')">
-Build VLOOKUP
-</button>
-</div>
+            <div class="quick-grid">
 
-<div class="card">
-<h3>XLOOKUP</h3>
-<p class="page-sub">
-Modern lookup formula for business data
-</p>
-<br>
-<button class="btn btn-primary"
-onclick="goPage('builder',document.querySelectorAll('.nav button')[2]);setFormulaType('XLOOKUP')">
-Build XLOOKUP
-</button>
-</div>
+                <button class="quick-btn" onclick="showPage('editor')">
+                    <strong>Excel Editor</strong>
+                    <div style="color:#758291;font-size:10px;margin-top:5px;">
+                        Create and edit worksheet
+                    </div>
+                </button>
 
-<div class="card">
-<h3>AI Formula</h3>
-<p class="page-sub">
-မြန်မာလို ရေးပြီး Formula ရယူပါ
-</p>
-<br>
-<button class="btn btn-primary"
-onclick="goPage('ai',document.querySelectorAll('.nav button')[3])">
-Open AI Formula
-</button>
-</div>
+                <button class="quick-btn" onclick="showPage('builder')">
+                    <strong>Formula Builder</strong>
+                    <div style="color:#758291;font-size:10px;margin-top:5px;">
+                        Build formulas easily
+                    </div>
+                </button>
 
-</div>
+                <button class="quick-btn" onclick="showPage('ai')">
+                    <strong>AI Formula</strong>
+                    <div style="color:#758291;font-size:10px;margin-top:5px;">
+                        Describe what you need
+                    </div>
+                </button>
 
-</div>
+                <button class="quick-btn" onclick="showPage('library')">
+                    <strong>Formula Library</strong>
+                    <div style="color:#758291;font-size:10px;margin-top:5px;">
+                        Browse Excel formulas
+                    </div>
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">Excel Navigation</div>
+
+            <div style="font-size:12px;color:#98a4b1;line-height:2;">
+
+                <div>
+                    <strong style="color:#fff;">Enter</strong>
+                    → Move down
+                </div>
+
+                <div>
+                    <strong style="color:#fff;">Tab</strong>
+                    → Move right
+                </div>
+
+                <div>
+                    <strong style="color:#fff;">↑ ↓</strong>
+                    → Move between rows
+                </div>
+
+                <div>
+                    <strong style="color:#fff;">Auto Row</strong>
+                    → New row at bottom
+                </div>
+
+                <div>
+                    <strong style="color:#fff;">Ctrl + S</strong>
+                    → Save worksheet
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </section>
 
 
 <!-- EDITOR -->
 
-<section id="editor" class="page">
+<section class="page" id="page-editor">
 
-<div class="topbar">
+    <div class="toolbar">
 
-<div>
-<div class="page-title">Excel Editor</div>
-<div class="page-sub">Excel-like business data editor</div>
-</div>
+        <button class="btn btn-primary" id="newSheetBtn">
+            + New Sheet
+        </button>
 
-<div class="top-actions">
+        <button class="btn" id="importBtn">
+            Import XLSX / CSV
+        </button>
 
-<label class="btn">
-Import XLSX
-<input
-type="file"
-class="file-input"
-accept=".xlsx,.xls,.csv"
-onchange="importExcel(event)">
-</label>
+        <button class="btn" id="exportBtn">
+            Export XLSX
+        </button>
 
-<button class="btn" onclick="addRow()">+ Row</button>
+        <button class="btn" id="exportCsvBtn">
+            Export CSV
+        </button>
 
-<button class="btn" onclick="addColumn()">+ Column</button>
+        <button class="btn" id="saveBtn">
+            Save
+        </button>
 
-<button class="btn btn-primary" onclick="exportXLSX()">
-Export XLSX
-</button>
+        <button class="btn btn-danger" id="clearBtn">
+            Clear
+        </button>
 
-</div>
+        <input
+            type="file"
+            id="fileInput"
+            accept=".xlsx,.xls,.csv"
+            style="display:none"
+        >
 
-</div>
-
-
-<div class="toolbar">
-
-<button class="btn" onclick="calculateSheet()">Calculate</button>
-
-<button class="btn" onclick="saveData()">Save</button>
-
-<button class="btn" onclick="clearSheet()">Clear</button>
-
-<button class="btn" onclick="exportCSV()">Export CSV</button>
-
-</div>
+    </div>
 
 
-<div class="table-wrap">
+    <div class="sheet-wrap">
 
-<table class="sheet" id="sheetTable">
+        <table class="sheet" id="sheetTable">
 
-<thead>
-<tr>
-<th class="row-number">#</th>
-<th>A</th>
-<th>B</th>
-<th>C</th>
-<th>D</th>
-<th>E</th>
-<th>F</th>
-<th>G</th>
-<th>H</th>
-</tr>
-</thead>
+            <thead>
+                <tr id="sheetHead"></tr>
+            </thead>
 
-<tbody id="sheetBody"></tbody>
+            <tbody id="sheetBody"></tbody>
 
-</table>
+        </table>
 
-</div>
+    </div>
+
+
+    <div class="sheet-status">
+
+        <div id="cellStatus">
+            Ready
+        </div>
+
+        <div id="saveStatus">
+            Not saved
+        </div>
+
+    </div>
 
 </section>
 
 
-<!-- BUILDER -->
+<!-- FORMULA BUILDER -->
 
-<section id="builder" class="page">
+<section class="page" id="page-builder">
 
-<div class="topbar">
+    <div class="form-layout">
 
-<div>
-<div class="page-title">Formula Builder</div>
-<div class="page-sub">Build Excel formulas without remembering syntax</div>
-</div>
+        <div class="form-card">
 
-</div>
+            <div class="card-title">
+                Formula Builder
+            </div>
 
+            <div class="form-group">
 
-<div class="card">
+                <label>Formula</label>
 
-<div class="form-grid">
+                <select id="formulaSelect">
 
-<div class="field">
+                    <option value="VLOOKUP">VLOOKUP</option>
+                    <option value="XLOOKUP">XLOOKUP</option>
+                    <option value="HLOOKUP">HLOOKUP</option>
 
-<label>Formula Type</label>
+                    <option value="SUM">SUM</option>
+                    <option value="SUMIF">SUMIF</option>
+                    <option value="SUMIFS">SUMIFS</option>
 
-<select id="formulaType" onchange="renderFormulaFields()">
+                    <option value="COUNTIF">COUNTIF</option>
+                    <option value="COUNTIFS">COUNTIFS</option>
 
-<option>VLOOKUP</option>
-<option>XLOOKUP</option>
-<option>HLOOKUP</option>
-<option>SUM</option>
-<option>SUMIF</option>
-<option>SUMIFS</option>
-<option>COUNTIF</option>
-<option>COUNTIFS</option>
-<option>IF</option>
-<option>IFERROR</option>
-<option>INDEX</option>
-<option>MATCH</option>
-<option>XMATCH</option>
-<option>FILTER</option>
-<option>UNIQUE</option>
-<option>SORT</option>
-<option>LEFT</option>
-<option>RIGHT</option>
-<option>MID</option>
-<option>TEXT</option>
-<option>ROUND</option>
-<option>EOMONTH</option>
-<option>NETWORKDAYS</option>
+                    <option value="AVERAGE">AVERAGE</option>
+                    <option value="AVERAGEIF">AVERAGEIF</option>
 
-</select>
+                    <option value="IF">IF</option>
+                    <option value="IFERROR">IFERROR</option>
 
-</div>
+                    <option value="INDEX">INDEX</option>
+                    <option value="MATCH">MATCH</option>
+                    <option value="XMATCH">XMATCH</option>
 
-<div class="field">
-<label>Lookup Value</label>
-<input id="f1" value="A2">
-</div>
+                    <option value="FILTER">FILTER</option>
+                    <option value="UNIQUE">UNIQUE</option>
+                    <option value="SORT">SORT</option>
 
-<div class="field">
-<label>Table / Range</label>
-<input id="f2" value="Sheet2!A:D">
-</div>
+                    <option value="LEFT">LEFT</option>
+                    <option value="RIGHT">RIGHT</option>
+                    <option value="MID">MID</option>
 
-<div class="field">
-<label>Column Number</label>
-<input id="f3" value="4">
-</div>
+                    <option value="ROUND">ROUND</option>
+                    <option value="EOMONTH">EOMONTH</option>
+                    <option value="NETWORKDAYS">NETWORKDAYS</option>
 
-<div class="field">
-<label>Match</label>
-<select id="f4">
-<option>FALSE</option>
-<option>TRUE</option>
-</select>
-</div>
+                </select>
 
-</div>
+            </div>
+
+            <div id="builderFields"></div>
+
+            <button class="btn btn-primary" id="buildFormulaBtn">
+                Build Formula
+            </button>
+
+        </div>
 
 
-<br>
+        <div class="form-card">
 
-<button class="btn btn-primary" onclick="generateFormula()">
-Generate Formula
-</button>
+            <div class="card-title">
+                Formula Result
+            </div>
+
+            <div class="formula-result">
+
+                <div class="formula-result-title">
+                    GENERATED FORMULA
+                </div>
+
+                <div
+                    class="formula-code"
+                    id="formulaOutput"
+                >
+                    Select a formula and enter values
+                </div>
+
+            </div>
 
 
-<div class="formula-result">
+            <div class="example-box" id="formulaExplanation">
 
-<div class="stat-label">Generated Formula</div>
+                Choose a formula to see the required arguments and example
 
-<div class="formula-code" id="formulaOutput">
-=VLOOKUP(A2,Sheet2!A:D,4,FALSE)
-</div>
+            </div>
 
-<div class="explain" id="formulaExplain">
-A2 ကို Sheet2 ရဲ့ A:D table ထဲမှာရှာပြီး
-၄ ကြောင်းမြောက် column က value ကို exact match နဲ့ ပြန်ယူပါတယ်
-</div>
+        </div>
 
-</div>
-
-</div>
+    </div>
 
 </section>
 
 
-<!-- AI -->
+<!-- AI FORMULA -->
 
-<section id="ai" class="page">
+<section class="page" id="page-ai">
 
-<div class="topbar">
+    <div class="form-card ai-box">
 
-<div>
-<div class="page-title">AI Formula Generator</div>
-<div class="page-sub">
-မြန်မာလို ရေးပြီး Excel Formula ရယူပါ
-</div>
-</div>
+        <div class="card-title">
+            AI Formula Assistant
+        </div>
 
-</div>
+        <div
+            style="color:#8d99a7;font-size:12px;line-height:1.7;margin-bottom:13px;"
+        >
+            Describe what you want to calculate. The assistant will suggest
+            an Excel formula.
+        </div>
+
+        <div class="form-group">
+
+            <label>Your Requirement</label>
+
+            <textarea
+                class="ai-input"
+                id="aiInput"
+                placeholder="Example: Customer name is in A2 and I want to get the sales amount from another table..."
+            ></textarea>
+
+        </div>
+
+        <button
+            class="btn btn-primary"
+            id="aiGenerateBtn"
+        >
+            Generate Formula
+        </button>
 
 
-<div class="ai-box">
+        <div
+            class="form-card ai-result"
+            id="aiResult"
+        >
 
-<div class="field">
+            <div class="card-title">
+                Suggested Formula
+            </div>
 
-<label>သင်လုပ်ချင်တာကို ရေးပါ</label>
+            <div class="formula-result">
 
-<textarea
-id="aiInput"
-placeholder="ဥပမာ - Customer Code နဲ့ Customer Master ကနေ Region ရှာချင်တယ်
-ဥပမာ - Sales Amount 100000 ထက်ကြီးရင် Good လို့ပြချင်တယ်
-ဥပမာ - January Sales တွေကို Customer အလိုက် စုချင်တယ်
-ဥပမာ - Duplicate Customer တွေဖယ်ချင်တယ်"></textarea>
+                <div class="formula-code" id="aiFormulaOutput"></div>
 
-</div>
+            </div>
 
-<br>
+            <div
+                id="aiExplanation"
+                style="color:#96a2af;font-size:12px;margin-top:12px;line-height:1.7;"
+            ></div>
 
-<button class="btn btn-primary" onclick="generateAIFormula()">
-✦ Generate Formula
-</button>
+        </div>
 
-
-<div class="formula-result ai-answer" id="aiAnswer">
-
-<div class="stat-label">Suggested Formula</div>
-
-<div class="formula-code" id="aiFormula"></div>
-
-<div class="explain" id="aiExplain"></div>
-
-</div>
-
-</div>
+    </div>
 
 </section>
 
 
 <!-- LIBRARY -->
 
-<section id="library" class="page">
+<section class="page" id="page-library">
 
-<div class="topbar">
+    <div class="search-box">
 
-<div>
-<div class="page-title">Formula Library</div>
-<div class="page-sub">Important Excel formulas for business users</div>
-</div>
+        <input
+            id="formulaSearch"
+            placeholder="Search formula e.g. VLOOKUP, SUMIFS, date..."
+        >
 
-</div>
+    </div>
 
-
-<input
-class="search"
-id="formulaSearch"
-placeholder="Search formula... VLOOKUP, SUMIF, IF..."
-oninput="searchFormulas()">
-
-
-<div class="formula-list" id="formulaList"></div>
+    <div
+        class="formula-list"
+        id="formulaList"
+    ></div>
 
 </section>
 
 
-<!-- TOOLS -->
+<!-- DATA TOOLS -->
 
-<section id="tools" class="page">
+<section class="page" id="page-tools">
 
-<div class="topbar">
+    <div class="tool-grid">
 
-<div>
-<div class="page-title">Data Tools</div>
-<div class="page-sub">Business data utilities</div>
-</div>
+        <div class="form-card">
 
-</div>
+            <div class="card-title">
+                Duplicate Checker
+            </div>
 
+            <div class="form-group">
 
-<div class="grid grid-3">
+                <label>Column Letter</label>
 
-<div class="card">
+                <input
+                    id="duplicateColumn"
+                    value="A"
+                    placeholder="A"
+                >
 
-<h3>Duplicate Checker</h3>
+            </div>
 
-<p class="page-sub">
-Column A မှ duplicate data စစ်ရန်
-</p>
+            <button
+                class="btn btn-primary"
+                id="duplicateBtn"
+            >
+                Check Duplicates
+            </button>
 
-<br>
+            <div
+                class="tool-result"
+                id="duplicateResult"
+            >
+                Ready
+            </div>
 
-<button class="btn btn-primary"
-onclick="findDuplicates()">
-Check Duplicate
-</button>
-
-</div>
-
-
-<div class="card">
-
-<h3>Formula Checker</h3>
-
-<p class="page-sub">
-Formula error pattern များစစ်ရန်
-</p>
-
-<br>
-
-<button class="btn btn-primary"
-onclick="checkFormulas()">
-Check Formulas
-</button>
-
-</div>
+        </div>
 
 
-<div class="card">
+        <div class="form-card">
 
-<h3>Clear Workbook</h3>
+            <div class="card-title">
+                Formula Error Checker
+            </div>
 
-<p class="page-sub">
-Current sheet data အားလုံးဖျက်ရန်
-</p>
+            <button
+                class="btn btn-primary"
+                id="errorCheckBtn"
+            >
+                Check Formula Errors
+            </button>
 
-<br>
+            <div
+                class="tool-result"
+                id="errorResult"
+            >
+                Ready
+            </div>
 
-<button class="btn btn-danger"
-onclick="clearSheet()">
-Clear Data
-</button>
-
-</div>
-
-</div>
+        </div>
 
 
-<div class="section">
+        <div class="form-card">
 
-<div class="card">
+            <div class="card-title">
+                Worksheet Statistics
+            </div>
 
-<div class="section-title">Tool Result</div>
+            <div
+                class="tool-result"
+                id="worksheetStats"
+            ></div>
 
-<div id="toolResult" class="page-sub">
-No result yet
-</div>
+        </div>
 
-</div>
 
-</div>
+        <div class="form-card">
+
+            <div class="card-title">
+                Clear Worksheet
+            </div>
+
+            <div style="color:#8b96a3;font-size:12px;line-height:1.7;margin-bottom:12px;">
+                Clear all cells and start with a new blank worksheet.
+            </div>
+
+            <button
+                class="btn btn-danger"
+                id="clearToolBtn"
+            >
+                Clear Worksheet
+            </button>
+
+        </div>
+
+    </div>
 
 </section>
 
 
 <!-- SETTINGS -->
 
-<section id="settings" class="page">
+<section class="page" id="page-settings">
 
-<div class="topbar">
+    <div class="form-card">
 
-<div>
-<div class="page-title">Settings</div>
-<div class="page-sub">Application settings</div>
-</div>
-
-</div>
+        <div class="card-title">
+            Settings
+        </div>
 
 
-<div class="card">
+        <div class="setting-row">
 
-<div class="setting-row">
+            <div>
+                <div class="setting-label">
+                    Auto Save
+                </div>
 
-<div>
-<strong>Application</strong>
-<div class="page-sub">
-AUNG BUSINESS EXCEL AI V1
-</div>
-</div>
+                <div class="setting-desc">
+                    Automatically save worksheet data locally
+                </div>
+            </div>
 
-<strong>V1.0</strong>
+            <div
+                class="toggle active"
+                id="autoSaveToggle"
+            >
+                <div class="toggle-dot"></div>
+            </div>
 
-</div>
-
-
-<div class="setting-row">
-
-<div>
-<strong>Storage</strong>
-<div class="page-sub">
-Browser LocalStorage
-</div>
-</div>
-
-<strong>ON</strong>
-
-</div>
+        </div>
 
 
-<div class="setting-row">
+        <div class="setting-row">
 
-<div>
-<strong>Excel Engine</strong>
-<div class="page-sub">
-SheetJS
-</div>
-</div>
+            <div>
+                <div class="setting-label">
+                    Enter moves down
+                </div>
 
-<strong>READY</strong>
+                <div class="setting-desc">
+                    Press Enter to move to the cell below
+                </div>
+            </div>
 
-</div>
+            <div
+                class="toggle active"
+                id="enterToggle"
+            >
+                <div class="toggle-dot"></div>
+            </div>
 
-</div>
+        </div>
+
+
+        <div class="setting-row">
+
+            <div>
+                <div class="setting-label">
+                    Tab moves right
+                </div>
+
+                <div class="setting-desc">
+                    Press Tab to move to the next cell
+                </div>
+            </div>
+
+            <div
+                class="toggle active"
+                id="tabToggle"
+            >
+                <div class="toggle-dot"></div>
+            </div>
+
+        </div>
+
+
+        <div class="setting-row">
+
+            <div>
+                <div class="setting-label">
+                    Local Storage
+                </div>
+
+                <div class="setting-desc">
+                    Worksheet is stored in this browser
+                </div>
+            </div>
+
+            <button
+                class="btn"
+                id="clearStorageBtn"
+            >
+                Clear Saved Data
+            </button>
+
+        </div>
+
+    </div>
 
 </section>
 
-</main>
-
 </div>
-
-
-<div class="toast" id="toast"></div>
+</main>
+</div>
 
 
 <script>
 
-let ROWS = 10;
-let COLS = 8;
-
-const formulas = [
-
-["SUM","Numbers / ranges ကို စုစုပေါင်းတွက်ရန်"],
-["SUMIF","Condition တစ်ခုနဲ့ total တွက်ရန်"],
-["SUMIFS","Conditions အများကြီးနဲ့ total တွက်ရန်"],
-["SUMPRODUCT","Array တွေကို multiply + sum လုပ်ရန်"],
-["SUBTOTAL","Filtered data အတွက် subtotal တွက်ရန်"],
-["AGGREGATE","Advanced aggregate calculation"],
-["PRODUCT","Numbers တွေကို မြှောက်ရန်"],
-["ROUND","Decimal number ကို round လုပ်ရန်"],
-["ROUNDUP","အပေါ်ဘက်သို့ round လုပ်ရန်"],
-["ROUNDDOWN","အောက်ဘက်သို့ round လုပ်ရန်"],
-["MROUND","Multiple အလိုက် round လုပ်ရန်"],
-["CEILING","အပေါ်ဘက် multiple သို့တင်ရန်"],
-["FLOOR","အောက်ဘက် multiple သို့ချရန်"],
-["ABS","Absolute value"],
-["MOD","Remainder ရယူရန်"],
-["QUOTIENT","Division quotient ရယူရန်"],
-["POWER","Power တွက်ရန်"],
-["SQRT","Square root တွက်ရန်"],
-
-["VLOOKUP","Vertical lookup"],
-["XLOOKUP","Modern lookup"],
-["HLOOKUP","Horizontal lookup"],
-["LOOKUP","Lookup value ရှာရန်"],
-["INDEX","Position အလိုက် value ရယူရန်"],
-["MATCH","Position ရှာရန်"],
-["XMATCH","Modern match function"],
-["CHOOSE","Index အလိုက် value ရွေးရန်"],
-["OFFSET","Reference ကို offset လုပ်ရန်"],
-["INDIRECT","Text reference ကို actual reference ပြောင်းရန်"],
-["ADDRESS","Cell address ဖန်တီးရန်"],
-["ROW","Row number"],
-["COLUMN","Column number"],
-["ROWS","Rows အရေအတွက်"],
-["COLUMNS","Columns အရေအတွက်"],
-
-["IF","Condition အလိုက် result ပြရန်"],
-["IFS","Conditions အများကြီးစစ်ရန်"],
-["AND","Conditions အားလုံး TRUE ဖြစ်ရမည်"],
-["OR","Condition တစ်ခုခု TRUE ဖြစ်ရမည်"],
-["NOT","TRUE/FALSE ပြောင်းပြန်"],
-["XOR","Exclusive OR"],
-["IFERROR","Error ဖြစ်ရင် alternative value"],
-["IFNA","#N/A error အတွက် alternative"],
-["SWITCH","Value အလိုက် result ရွေးရန်"],
-["TRUE","TRUE value"],
-["FALSE","FALSE value"],
-
-["COUNT","Numbers count"],
-["COUNTA","Non-empty cells count"],
-["COUNTBLANK","Blank cells count"],
-["COUNTIF","Condition အလိုက် count"],
-["COUNTIFS","Conditions အများကြီးနဲ့ count"],
-["AVERAGE","Average"],
-["AVERAGEIF","Condition အလိုက် average"],
-["AVERAGEIFS","Multiple conditions average"],
-["MAX","Maximum"],
-["MAXIFS","Condition အလိုက် maximum"],
-["MIN","Minimum"],
-["MINIFS","Condition အလိုက် minimum"],
-["MEDIAN","Median"],
-["MODE","Most frequent number"],
-["LARGE","Nth largest"],
-["SMALL","Nth smallest"],
-["RANK","Rank"],
-["RANK.EQ","Equal rank"],
-["PERCENTILE","Percentile"],
-["QUARTILE","Quartile"],
-
-["LEFT","ဘယ်ဘက်ကစာလုံးယူရန်"],
-["RIGHT","ညာဘက်ကစာလုံးယူရန်"],
-["MID","အလယ်ကစာလုံးယူရန်"],
-["LEN","စာလုံးအရေအတွက်"],
-["TRIM","Extra spaces ဖယ်ရန်"],
-["CLEAN","Non-printing characters ဖယ်ရန်"],
-["UPPER","စာလုံးအကြီးပြောင်းရန်"],
-["LOWER","စာလုံးအသေးပြောင်းရန်"],
-["PROPER","Each word ကို capital ပြောင်းရန်"],
-["CONCAT","Text တွေကိုပေါင်းရန်"],
-["CONCATENATE","Text တွေကိုပေါင်းရန်"],
-["TEXTJOIN","Delimiter နဲ့ text တွေကိုပေါင်းရန်"],
-["FIND","Text position ရှာရန်"],
-["SEARCH","Text position ရှာရန်"],
-["SUBSTITUTE","Text replace"],
-["REPLACE","Position အလိုက် text replace"],
-["TEXT","Number/date ကို format ပြောင်းရန်"],
-["VALUE","Text number ကို number ပြောင်းရန်"],
-["EXACT","Text နှစ်ခုတူမတူစစ်ရန်"],
-["CHAR","Character ဖန်တီးရန်"],
-["CODE","Character code ရယူရန်"],
-
-["TODAY","ယနေ့ရက်စွဲ"],
-["NOW","ယနေ့ date + time"],
-["DATE","Date ဖန်တီးရန်"],
-["YEAR","Year ရယူရန်"],
-["MONTH","Month ရယူရန်"],
-["DAY","Day ရယူရန်"],
-["HOUR","Hour ရယူရန်"],
-["MINUTE","Minute ရယူရန်"],
-["SECOND","Second ရယူရန်"],
-["DAYS","Date နှစ်ခုကြား days"],
-["DATEDIF","Date difference"],
-["EDATE","Month အလိုက် date ရွှေ့ရန်"],
-["EOMONTH","Month end date"],
-["WEEKDAY","Weekday number"],
-["WEEKNUM","Week number"],
-["WORKDAY","Working days အလိုက် date"],
-["NETWORKDAYS","Working days count"],
-["YEARFRAC","Year fraction"],
-
-["FILTER","Condition နဲ့ data filter"],
-["SORT","Data sort"],
-["SORTBY","Another range အလိုက် sort"],
-["UNIQUE","Duplicate ဖယ်ပြီး unique values"],
-["SEQUENCE","Number sequence"],
-["TRANSPOSE","Rows/columns ပြောင်းရန်"],
-["TAKE","Rows/columns အချို့ယူရန်"],
-["DROP","Rows/columns အချို့ဖယ်ရန်"],
-["CHOOSECOLS","Columns ရွေးရန်"],
-["CHOOSEROWS","Rows ရွေးရန်"],
-["VSTACK","Ranges ကို vertical stack"],
-["HSTACK","Ranges ကို horizontal stack"],
-
-["PMT","Loan payment"],
-["PV","Present value"],
-["FV","Future value"],
-["NPV","Net present value"],
-["IRR","Internal rate of return"],
-["RATE","Interest rate"],
-["IPMT","Interest payment"],
-["PPMT","Principal payment"],
-["SLN","Straight-line depreciation"],
-["DB","Declining balance depreciation"],
-["DDB","Double declining depreciation"],
-
-["ISBLANK","Blank ဖြစ်မဖြစ်"],
-["ISNUMBER","Number ဖြစ်မဖြစ်"],
-["ISTEXT","Text ဖြစ်မဖြစ်"],
-["ISERROR","Error ဖြစ်မဖြစ်"],
-["ISERR","Non #N/A error စစ်ရန်"],
-["ISNA","#N/A စစ်ရန်"],
-["ISEVEN","Even number စစ်ရန်"],
-["ISODD","Odd number စစ်ရန်"],
-["TYPE","Data type စစ်ရန်"],
-["CELL","Cell information"],
-["INFO","System information"]
-
-];
+/* =========================================================
+   AUNG BUSINESS EXCEL AI V1
+   SINGLE FILE APPLICATION
+========================================================= */
 
 
-function toast(message){
+/* =========================
+   GLOBAL STATE
+========================= */
 
-    const el = document.getElementById("toast");
+let ROWS = 20;
+let COLS = 10;
 
-    el.textContent = message;
+let sheetData = [];
 
-    el.classList.add("show");
+let autoSave = true;
+let enterMove = true;
+let tabMove = true;
 
-    setTimeout(()=>{
-        el.classList.remove("show");
-    },2200);
+const STORAGE_KEY = "aung_business_excel_ai_v1";
+
+
+/* =========================
+   COLUMN LETTER
+========================= */
+
+function columnLetter(number){
+
+    let result = "";
+
+    while(number > 0){
+
+        let remainder = (number - 1) % 26;
+
+        result =
+            String.fromCharCode(65 + remainder) +
+            result;
+
+        number =
+            Math.floor((number - 1) / 26);
+    }
+
+    return result;
 }
 
 
-function goPage(id,button){
+/* =========================
+   COLUMN NUMBER
+========================= */
 
-    document.querySelectorAll(".page").forEach(p=>{
-        p.classList.remove("active");
-    });
+function columnNumber(letter){
 
-    const page=document.getElementById(id);
+    letter =
+        String(letter || "")
+        .toUpperCase()
+        .trim();
 
-    if(page){
-        page.classList.add("active");
+    let number = 0;
+
+    for(let i = 0; i < letter.length; i++){
+
+        number =
+            number * 26 +
+            letter.charCodeAt(i) -
+            64;
     }
 
-    document.querySelectorAll(".nav button").forEach(b=>{
-        b.classList.remove("active");
-    });
-
-    if(button){
-        button.classList.add("active");
-    }
-
+    return number;
 }
 
 
-function columnLetter(index){
+/* =========================
+   INITIAL DATA
+========================= */
 
-    let s="";
+function createEmptyData(){
 
-    while(index>0){
+    sheetData = [];
 
-        let mod=(index-1)%26;
+    for(let r = 0; r < ROWS; r++){
 
-        s=String.fromCharCode(65+mod)+s;
+        let row = [];
 
-        index=Math.floor((index-1)/26);
+        for(let c = 0; c < COLS; c++){
 
+            row.push("");
+
+        }
+
+        sheetData.push(row);
     }
-
-    return s;
 }
 
+
+/* =========================
+   DEMO DATA
+========================= */
+
+function loadDemoData(){
+
+    createEmptyData();
+
+    const demo = [
+
+        ["Customer","Product","Qty","Price","Amount"],
+
+        ["ABC","Traga","5","50000","=C2*D2"],
+
+        ["XYZ","NLR","3","70000","=C3*D3"],
+
+        ["DEF","Traga","7","50000","=C4*D4"],
+
+        ["GHI","NLR","2","70000","=C5*D5"],
+
+        ["JKL","Traga","10","50000","=C6*D6"]
+
+    ];
+
+    for(let r = 0; r < demo.length; r++){
+
+        for(let c = 0; c < demo[r].length; c++){
+
+            sheetData[r][c] =
+                demo[r][c];
+
+        }
+
+    }
+}
+
+
+/* =========================
+   BUILD SHEET
+========================= */
 
 function buildSheet(){
 
-    const body=document.getElementById("sheetBody");
+    const head =
+        document.getElementById("sheetHead");
 
-    body.innerHTML="";
+    const body =
+        document.getElementById("sheetBody");
 
-    for(let r=1;r<=ROWS;r++){
+    head.innerHTML = "";
 
-        const tr=document.createElement("tr");
+    body.innerHTML = "";
 
-        const rowNum=document.createElement("td");
 
-        rowNum.className="row-number";
+    const corner =
+        document.createElement("th");
 
-        rowNum.textContent=r;
+    corner.className = "row-num";
 
-        tr.appendChild(rowNum);
+    corner.textContent = "#";
 
-        for(let c=1;c<=COLS;c++){
+    head.appendChild(corner);
 
-            const td=document.createElement("td");
 
-            const input=document.createElement("input");
+    for(let c = 0; c < COLS; c++){
 
-            input.dataset.row=r;
-            input.dataset.col=c;
+        const th =
+            document.createElement("th");
 
-            input.value=getSavedCell(r,c) || "";
+        th.textContent =
+            columnLetter(c + 1);
 
-            input.addEventListener("input",updateStats);
+        head.appendChild(th);
+
+    }
+
+
+    for(let r = 0; r < ROWS; r++){
+
+        const tr =
+            document.createElement("tr");
+
+
+        const rowNumber =
+            document.createElement("td");
+
+        rowNumber.className =
+            "row-num";
+
+        rowNumber.textContent =
+            r + 1;
+
+        tr.appendChild(rowNumber);
+
+
+        for(let c = 0; c < COLS; c++){
+
+            const td =
+                document.createElement("td");
+
+            const input =
+                document.createElement("input");
+
+            input.className =
+                "cell-input";
+
+            input.type =
+                "text";
+
+            input.value =
+                sheetData[r]?.[c] ?? "";
+
+            input.dataset.row =
+                r + 1;
+
+            input.dataset.col =
+                c + 1;
+
+            if(
+                String(input.value)
+                .startsWith("=")
+            ){
+
+                input.classList.add(
+                    "formula-cell"
+                );
+
+            }
+
+
+            input.addEventListener(
+                "focus",
+                function(){
+
+                    document.getElementById(
+                        "cellStatus"
+                    ).textContent =
+                        `${columnLetter(c+1)}${r+1}`;
+
+                }
+            );
+
+
+            input.addEventListener(
+                "input",
+                function(){
+
+                    sheetData[r][c] =
+                        this.value;
+
+                    if(
+                        this.value.startsWith("=")
+                    ){
+
+                        this.classList.add(
+                            "formula-cell"
+                        );
+
+                    }else{
+
+                        this.classList.remove(
+                            "formula-cell"
+                        );
+
+                    }
+
+                    updateStats();
+
+                    if(autoSave){
+
+                        saveData(false);
+
+                    }
+
+                }
+            );
+
+
+            input.addEventListener(
+                "keydown",
+                function(e){
+
+                    /* ENTER */
+
+                    if(
+                        e.key === "Enter" &&
+                        enterMove
+                    ){
+
+                        e.preventDefault();
+
+                        moveCell(
+                            r + 1,
+                            c + 1,
+                            1,
+                            0
+                        );
+
+                        return;
+                    }
+
+
+                    /* TAB */
+
+                    if(
+                        e.key === "Tab" &&
+                        tabMove
+                    ){
+
+                        e.preventDefault();
+
+                        moveCell(
+                            r + 1,
+                            c + 1,
+                            0,
+                            1
+                        );
+
+                        return;
+                    }
+
+
+                    /* ARROW UP */
+
+                    if(e.key === "ArrowUp"){
+
+                        e.preventDefault();
+
+                        moveCell(
+                            r + 1,
+                            c + 1,
+                            -1,
+                            0
+                        );
+
+                        return;
+                    }
+
+
+                    /* ARROW DOWN */
+
+                    if(e.key === "ArrowDown"){
+
+                        e.preventDefault();
+
+                        moveCell(
+                            r + 1,
+                            c + 1,
+                            1,
+                            0
+                        );
+
+                        return;
+                    }
+
+                }
+            );
+
 
             td.appendChild(input);
 
@@ -1357,947 +1676,1420 @@ function buildSheet(){
 }
 
 
-function getSavedCell(r,c){
+/* =========================
+   MOVE CELL
+========================= */
 
-    const data=localStorage.getItem("aung_excel_data");
+function moveCell(
+    currentRow,
+    currentCol,
+    rowStep,
+    colStep
+){
 
-    if(!data) return "";
+    let nextRow =
+        currentRow + rowStep;
 
-    try{
+    let nextCol =
+        currentCol + colStep;
 
-        const obj=JSON.parse(data);
 
-        return obj?.[r]?.[c] || "";
+    if(nextRow < 1){
 
-    }catch(e){
+        nextRow = 1;
 
-        return "";
+    }
+
+
+    if(nextCol < 1){
+
+        nextCol = 1;
+
+    }
+
+
+    /* AUTO ADD ROW */
+
+    if(nextRow > ROWS){
+
+        ROWS++;
+
+        sheetData.push(
+            new Array(COLS).fill("")
+        );
+
+        buildSheet();
+
+    }
+
+
+    /* AUTO ADD COLUMN */
+
+    if(nextCol > COLS){
+
+        COLS++;
+
+        sheetData.forEach(
+            row => row.push("")
+        );
+
+        buildSheet();
+
+    }
+
+
+    const target =
+        document.querySelector(
+            `#sheetBody input[data-row="${nextRow}"][data-col="${nextCol}"]`
+        );
+
+
+    if(target){
+
+        target.focus();
+
+        target.select();
+
+        target.scrollIntoView({
+            block:"nearest",
+            inline:"nearest"
+        });
 
     }
 
 }
 
 
-function collectSheet(){
-
-    const data={};
-
-    document.querySelectorAll("#sheetBody input").forEach(input=>{
-
-        const r=input.dataset.row;
-        const c=input.dataset.col;
-
-        if(!data[r]) data[r]={};
-
-        data[r][c]=input.value;
-
-    });
-
-    return data;
-
-}
-
-
-function saveData(){
-
-    const data=collectSheet();
-
-    localStorage.setItem(
-        "aung_excel_data",
-        JSON.stringify(data)
-    );
-
-    toast("Excel data saved");
-
-    updateStats();
-
-}
-
+/* =========================
+   UPDATE STATS
+========================= */
 
 function updateStats(){
 
-    const inputs=[
-        ...document.querySelectorAll("#sheetBody input")
-    ];
+    let formulas = 0;
+    let dataCells = 0;
 
-    let formulaCount=0;
+    sheetData.forEach(row => {
 
-    inputs.forEach(i=>{
+        row.forEach(value => {
 
-        if(i.value.trim().startsWith("=")){
-            formulaCount++;
-        }
+            if(
+                value !== null &&
+                value !== undefined &&
+                String(value).trim() !== ""
+            ){
+
+                dataCells++;
+
+            }
+
+            if(
+                String(value).trim().startsWith("=")
+            ){
+
+                formulas++;
+
+            }
+
+        });
 
     });
 
-    document.getElementById("statRows").textContent=ROWS;
 
-    document.getElementById("statFormulas").textContent=formulaCount;
+    document.getElementById(
+        "statRows"
+    ).textContent = ROWS;
+
+
+    document.getElementById(
+        "statCols"
+    ).textContent = COLS;
+
+
+    document.getElementById(
+        "statFormulas"
+    ).textContent = formulas;
+
+
+    document.getElementById(
+        "statData"
+    ).textContent = dataCells;
+
+
+    document.getElementById(
+        "worksheetStats"
+    ).textContent =
+        `Rows: ${ROWS}\nColumns: ${COLS}\nFilled Cells: ${dataCells}\nFormula Cells: ${formulas}`;
 
 }
 
 
-function addRow(){
+/* =========================
+   SAVE
+========================= */
 
-    ROWS++;
+function saveData(showMessage = true){
+
+    const payload = {
+
+        rows: ROWS,
+
+        cols: COLS,
+
+        data: sheetData,
+
+        savedAt:
+            new Date().toISOString()
+
+    };
+
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(payload)
+    );
+
+
+    if(showMessage){
+
+        document.getElementById(
+            "saveStatus"
+        ).textContent =
+            "Saved just now";
+
+    }
+
+}
+
+
+/* =========================
+   LOAD
+========================= */
+
+function loadData(){
+
+    const raw =
+        localStorage.getItem(
+            STORAGE_KEY
+        );
+
+
+    if(!raw){
+
+        loadDemoData();
+
+        return;
+
+    }
+
+
+    try{
+
+        const payload =
+            JSON.parse(raw);
+
+
+        ROWS =
+            Number(payload.rows) || 20;
+
+        COLS =
+            Number(payload.cols) || 10;
+
+        sheetData =
+            payload.data || [];
+
+
+        while(sheetData.length < ROWS){
+
+            sheetData.push(
+                new Array(COLS).fill("")
+            );
+
+        }
+
+
+        sheetData =
+            sheetData.map(row => {
+
+                const newRow =
+                    Array.from(
+                        {length:COLS},
+                        (_,i) =>
+                            row[i] ?? ""
+                    );
+
+                return newRow;
+
+            });
+
+
+    }catch(error){
+
+        loadDemoData();
+
+    }
+
+}
+
+
+/* =========================
+   NEW SHEET
+========================= */
+
+function newSheet(){
+
+    if(
+        !confirm(
+            "Create a new blank worksheet?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    ROWS = 20;
+
+    COLS = 10;
+
+    createEmptyData();
 
     buildSheet();
 
-    toast("New row added");
+    saveData();
 
 }
 
 
-function addColumn(){
-
-    COLS++;
-
-    const head=document.querySelector("#sheetTable thead tr");
-
-    const th=document.createElement("th");
-
-    th.textContent=columnLetter(COLS);
-
-    head.appendChild(th);
-
-    buildSheet();
-
-    toast("New column added");
-
-}
-
+/* =========================
+   CLEAR
+========================= */
 
 function clearSheet(){
 
-    if(!confirm("Current Excel data အားလုံးဖျက်မလား?")){
+    if(
+        !confirm(
+            "Clear all worksheet data?"
+        )
+    ){
+
         return;
+
     }
 
-    localStorage.removeItem("aung_excel_data");
+
+    createEmptyData();
 
     buildSheet();
 
-    toast("Sheet cleared");
+    saveData();
 
 }
 
 
-function calculateSheet(){
-
-    const inputs=[
-        ...document.querySelectorAll("#sheetBody input")
-    ];
-
-    inputs.forEach(input=>{
-
-        const value=input.value.trim();
-
-        if(!value.startsWith("=")) return;
-
-        const formula=value.toUpperCase();
-
-        if(formula==="=TODAY()"){
-            input.title=new Date().toLocaleDateString();
-        }
-
-    });
-
-    toast("Formula calculation checked");
-
-}
-
+/* =========================
+   EXPORT XLSX
+========================= */
 
 function exportXLSX(){
 
-    const rows=[];
+    if(typeof XLSX === "undefined"){
 
-    const inputs=[
-        ...document.querySelectorAll("#sheetBody input")
-    ];
+        alert(
+            "XLSX library is not loaded"
+        );
 
-    for(let r=1;r<=ROWS;r++){
-
-        const row=[];
-
-        for(let c=1;c<=COLS;c++){
-
-            const input=inputs.find(
-                x=>Number(x.dataset.row)===r &&
-                Number(x.dataset.col)===c
-            );
-
-            row.push(input ? input.value : "");
-
-        }
-
-        rows.push(row);
+        return;
 
     }
 
-    const ws=XLSX.utils.aoa_to_sheet(rows);
 
-    const wb=XLSX.utils.book_new();
+    const ws =
+        XLSX.utils.aoa_to_sheet(
+            sheetData
+        );
+
+
+    const wb =
+        XLSX.utils.book_new();
+
 
     XLSX.utils.book_append_sheet(
         wb,
         ws,
-        "Business Data"
+        "Sheet1"
     );
 
-
-    const notes=[
-
-        ["AUNG BUSINESS EXCEL AI V1"],
-        ["Formula Notes"],
-        [],
-        ["VLOOKUP","=VLOOKUP(A2,Sheet2!A:D,4,FALSE)"],
-        ["XLOOKUP",'=XLOOKUP(A2,Customer_Master!A:A,Customer_Master!D:D,"Not Found")'],
-        ["SUM","=SUM(E2:E100)"],
-        ["SUMIF",'=SUMIF(B:B,"Traga",E:E)'],
-        ["SUMIFS",'=SUMIFS(E:E,B:B,"Traga",A:A,"Yangon")'],
-        ["COUNTIF",'=COUNTIF(B:B,"Traga")'],
-        ["IF",'=IF(E2>=100000,"Good","Need Action")'],
-        ["IFERROR",'=IFERROR(A2/B2,0)'],
-        ["INDEX MATCH",'=INDEX(D:D,MATCH(A2,A:A,0))'],
-        ["FILTER",'=FILTER(A2:E100,E2:E100>100000)'],
-        ["UNIQUE","=UNIQUE(B2:B100)"],
-        ["SORT","=SORT(A2:E100,5,-1)"]
-
-    ];
-
-    const notesWs=XLSX.utils.aoa_to_sheet(notes);
-
-    XLSX.utils.book_append_sheet(
-        wb,
-        notesWs,
-        "Formula Notes"
-    );
 
     XLSX.writeFile(
         wb,
-        "AUNG_BUSINESS_EXCEL_AI_V1.xlsx"
+        "AUNG_BUSINESS_EXCEL.xlsx"
     );
-
-    toast("XLSX exported");
 
 }
 
+
+/* =========================
+   EXPORT CSV
+========================= */
 
 function exportCSV(){
 
-    const rows=[];
+    if(typeof XLSX === "undefined"){
 
-    const inputs=[
-        ...document.querySelectorAll("#sheetBody input")
-    ];
+        alert(
+            "XLSX library is not loaded"
+        );
 
-    for(let r=1;r<=ROWS;r++){
-
-        const row=[];
-
-        for(let c=1;c<=COLS;c++){
-
-            const input=inputs.find(
-                x=>Number(x.dataset.row)===r &&
-                Number(x.dataset.col)===c
-            );
-
-            row.push(input ? input.value : "");
-
-        }
-
-        rows.push(row);
+        return;
 
     }
 
-    const ws=XLSX.utils.aoa_to_sheet(rows);
 
-    const csv=XLSX.utils.sheet_to_csv(ws);
+    const ws =
+        XLSX.utils.aoa_to_sheet(
+            sheetData
+        );
 
-    const blob=new Blob(
-        [csv],
-        {type:"text/csv;charset=utf-8;"}
-    );
 
-    const a=document.createElement("a");
+    const csv =
+        XLSX.utils.sheet_to_csv(
+            ws
+        );
 
-    a.href=URL.createObjectURL(blob);
 
-    a.download="AUNG_BUSINESS_EXCEL_DATA.csv";
+    const blob =
+        new Blob(
+            [csv],
+            {
+                type:"text/csv;charset=utf-8;"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+
+    a.download =
+        "AUNG_BUSINESS_EXCEL.csv";
 
     a.click();
 
-    toast("CSV exported");
+    URL.revokeObjectURL(url);
 
 }
 
 
-function importExcel(event){
+/* =========================
+   IMPORT FILE
+========================= */
 
-    const file=event.target.files[0];
+function importFile(file){
 
-    if(!file) return;
+    if(!file){
 
-    const reader=new FileReader();
+        return;
 
-    reader.onload=function(e){
+    }
 
-        try{
 
-            const workbook=XLSX.read(
-                e.target.result,
-                {type:"array"}
-            );
+    const reader =
+        new FileReader();
 
-            const firstSheet=
-                workbook.Sheets[
-                    workbook.SheetNames[0]
-                ];
 
-            const data=
-                XLSX.utils.sheet_to_json(
-                    firstSheet,
-                    {header:1}
-                );
+    reader.onload =
+        function(e){
 
-            if(!data.length){
-                toast("Empty Excel file");
-                return;
-            }
+            try{
 
-            ROWS=Math.max(data.length,10);
-
-            COLS=Math.max(
-                ...data.map(r=>r.length),
-                8
-            );
-
-            buildSheet();
-
-            const inputs=[
-                ...document.querySelectorAll("#sheetBody input")
-            ];
-
-            for(let r=0;r<data.length;r++){
-
-                for(let c=0;c<data[r].length;c++){
-
-                    const input=inputs.find(
-                        x=>Number(x.dataset.row)===r+1 &&
-                        Number(x.dataset.col)===c+1
+                const data =
+                    new Uint8Array(
+                        e.target.result
                     );
 
-                    if(input){
-                        input.value=
-                            data[r][c]===undefined
-                            ? ""
-                            : data[r][c];
-                    }
+
+                const workbook =
+                    XLSX.read(
+                        data,
+                        {
+                            type:"array"
+                        }
+                    );
+
+
+                const firstSheet =
+                    workbook.Sheets[
+                        workbook.SheetNames[0]
+                    ];
+
+
+                const imported =
+                    XLSX.utils.sheet_to_json(
+                        firstSheet,
+                        {
+                            header:1,
+                            defval:""
+                        }
+                    );
+
+
+                if(!imported.length){
+
+                    alert(
+                        "No data found"
+                    );
+
+                    return;
 
                 }
 
+
+                ROWS =
+                    Math.max(
+                        20,
+                        imported.length
+                    );
+
+
+                COLS =
+                    Math.max(
+                        10,
+                        ...imported.map(
+                            row => row.length
+                        )
+                    );
+
+
+                sheetData =
+                    [];
+
+
+                for(let r = 0; r < ROWS; r++){
+
+                    const row = [];
+
+                    for(let c = 0; c < COLS; c++){
+
+                        row.push(
+                            imported[r]?.[c] ?? ""
+                        );
+
+                    }
+
+                    sheetData.push(row);
+
+                }
+
+
+                buildSheet();
+
+                saveData();
+
+                showPage("editor");
+
+
+            }catch(error){
+
+                console.error(error);
+
+                alert(
+                    "Unable to import this file"
+                );
+
             }
 
-            updateStats();
+        };
 
-            toast("Excel imported successfully");
-
-        }catch(error){
-
-            console.error(error);
-
-            toast("Excel import failed");
-
-        }
-
-    };
 
     reader.readAsArrayBuffer(file);
 
 }
 
 
-function renderFormulaFields(){
+/* =========================
+   FORMULA BUILDER DATA
+========================= */
 
-    const type=
-        document.getElementById("formulaType").value;
+const builderConfig = {
 
-    const f1=document.getElementById("f1");
-    const f2=document.getElementById("f2");
-    const f3=document.getElementById("f3");
-    const f4=document.getElementById("f4");
+    VLOOKUP:{
 
-    f1.value="A2";
-    f2.value="Sheet2!A:D";
-    f3.value="4";
-    f4.value="FALSE";
+        fields:[
+            ["lookup","Lookup Value","A2"],
+            ["table","Table Range","Sheet2!A:D"],
+            ["col","Column Number","4"],
+            ["match","Exact Match","FALSE"]
+        ],
 
-    if(type==="XLOOKUP"){
+        example:
+            "=VLOOKUP(A2,Sheet2!A:D,4,FALSE)"
 
-        f1.value="A2";
-        f2.value="Customer_Master!A:A";
-        f3.value="Customer_Master!D:D";
-        f4.value='"Not Found"';
+    },
+
+
+    XLOOKUP:{
+
+        fields:[
+            ["lookup","Lookup Value","A2"],
+            ["lookupArray","Lookup Array","Customer_Master!A:A"],
+            ["returnArray","Return Array","Customer_Master!D:D"],
+            ["notFound","If Not Found","\"Not Found\""]
+        ],
+
+        example:
+            '=XLOOKUP(A2,Customer_Master!A:A,Customer_Master!D:D,"Not Found")'
+
+    },
+
+
+    HLOOKUP:{
+
+        fields:[
+            ["lookup","Lookup Value","A2"],
+            ["table","Table Range","Sheet2!A1:Z10"],
+            ["row","Row Number","4"],
+            ["match","Exact Match","FALSE"]
+        ],
+
+        example:
+            "=HLOOKUP(A2,Sheet2!A1:Z10,4,FALSE)"
+
+    },
+
+
+    SUM:{
+
+        fields:[
+            ["range","Range","A2:A20"]
+        ],
+
+        example:
+            "=SUM(A2:A20)"
+
+    },
+
+
+    SUMIF:{
+
+        fields:[
+            ["range","Criteria Range","A2:A20"],
+            ["criteria","Criteria","\"Traga\""],
+            ["sum","Sum Range","D2:D20"]
+        ],
+
+        example:
+            '=SUMIF(A2:A20,"Traga",D2:D20)'
+
+    },
+
+
+    SUMIFS:{
+
+        fields:[
+            ["sum","Sum Range","D2:D20"],
+            ["range1","Criteria Range 1","A2:A20"],
+            ["criteria1","Criteria 1","\"Traga\""],
+            ["range2","Criteria Range 2","B2:B20"],
+            ["criteria2","Criteria 2","\">100\""]
+        ],
+
+        example:
+            '=SUMIFS(D2:D20,A2:A20,"Traga",B2:B20,">100")'
+
+    },
+
+
+    COUNTIF:{
+
+        fields:[
+            ["range","Range","A2:A20"],
+            ["criteria","Criteria","\"Traga\""]
+        ],
+
+        example:
+            '=COUNTIF(A2:A20,"Traga")'
+
+    },
+
+
+    COUNTIFS:{
+
+        fields:[
+            ["range1","Criteria Range 1","A2:A20"],
+            ["criteria1","Criteria 1","\"Traga\""],
+            ["range2","Criteria Range 2","B2:B20"],
+            ["criteria2","Criteria 2","\">100\""]
+        ],
+
+        example:
+            '=COUNTIFS(A2:A20,"Traga",B2:B20,">100")'
+
+    },
+
+
+    AVERAGE:{
+
+        fields:[
+            ["range","Range","D2:D20"]
+        ],
+
+        example:
+            "=AVERAGE(D2:D20)"
+
+    },
+
+
+    AVERAGEIF:{
+
+        fields:[
+            ["range","Criteria Range","A2:A20"],
+            ["criteria","Criteria","\"Traga\""],
+            ["average","Average Range","D2:D20"]
+        ],
+
+        example:
+            '=AVERAGEIF(A2:A20,"Traga",D2:D20)'
+
+    },
+
+
+    IF:{
+
+        fields:[
+            ["test","Logical Test","A2>=100"],
+            ["true","Value If True","\"YES\""],
+            ["false","Value If False","\"NO\""]
+        ],
+
+        example:
+            '=IF(A2>=100,"YES","NO")'
+
+    },
+
+
+    IFERROR:{
+
+        fields:[
+            ["value","Value","A2/B2"],
+            ["error","If Error","0"]
+        ],
+
+        example:
+            "=IFERROR(A2/B2,0)"
+
+    },
+
+
+    INDEX:{
+
+        fields:[
+            ["array","Array","D2:D20"],
+            ["row","Row Number","MATCH(A2,A2:A20,0)"]
+        ],
+
+        example:
+            "=INDEX(D2:D20,MATCH(A2,A2:A20,0))"
+
+    },
+
+
+    MATCH:{
+
+        fields:[
+            ["lookup","Lookup Value","A2"],
+            ["range","Lookup Range","B2:B20"],
+            ["match","Match Type","0"]
+        ],
+
+        example:
+            "=MATCH(A2,B2:B20,0)"
+
+    },
+
+
+    XMATCH:{
+
+        fields:[
+            ["lookup","Lookup Value","A2"],
+            ["range","Lookup Range","B2:B20"],
+            ["match","Match Mode","0"]
+        ],
+
+        example:
+            "=XMATCH(A2,B2:B20,0)"
+
+    },
+
+
+    FILTER:{
+
+        fields:[
+            ["array","Array","A2:D100"],
+            ["include","Include Condition","D2:D100>100"]
+        ],
+
+        example:
+            "=FILTER(A2:D100,D2:D100>100)"
+
+    },
+
+
+    UNIQUE:{
+
+        fields:[
+            ["array","Array","A2:A100"]
+        ],
+
+        example:
+            "=UNIQUE(A2:A100)"
+
+    },
+
+
+    SORT:{
+
+        fields:[
+            ["array","Array","A2:D100"],
+            ["index","Sort Index","4"],
+            ["order","Sort Order","-1"]
+        ],
+
+        example:
+            "=SORT(A2:D100,4,-1)"
+
+    },
+
+
+    LEFT:{
+
+        fields:[
+            ["text","Text","A2"],
+            ["num","Number Characters","5"]
+        ],
+
+        example:
+            "=LEFT(A2,5)"
+
+    },
+
+
+    RIGHT:{
+
+        fields:[
+            ["text","Text","A2"],
+            ["num","Number Characters","5"]
+        ],
+
+        example:
+            "=RIGHT(A2,5)"
+
+    },
+
+
+    MID:{
+
+        fields:[
+            ["text","Text","A2"],
+            ["start","Start Number","2"],
+            ["num","Number Characters","5"]
+        ],
+
+        example:
+            "=MID(A2,2,5)"
+
+    },
+
+
+    ROUND:{
+
+        fields:[
+            ["number","Number","A2"],
+            ["digits","Digits","2"]
+        ],
+
+        example:
+            "=ROUND(A2,2)"
+
+    },
+
+
+    EOMONTH:{
+
+        fields:[
+            ["date","Start Date","A2"],
+            ["months","Months","1"]
+        ],
+
+        example:
+            "=EOMONTH(A2,1)"
+
+    },
+
+
+    NETWORKDAYS:{
+
+        fields:[
+            ["start","Start Date","A2"],
+            ["end","End Date","B2"]
+        ],
+
+        example:
+            "=NETWORKDAYS(A2,B2)"
 
     }
 
-    if(type==="SUM"){
+};
 
-        f1.value="E2:E100";
-        f2.value="";
-        f3.value="";
-        f4.value="";
 
-    }
+/* =========================
+   BUILD FORM FIELDS
+========================= */
 
-    if(type==="SUMIF"){
+function renderBuilderFields(){
 
-        f1.value="B:B";
-        f2.value='"Traga"';
-        f3.value="E:E";
-        f4.value="";
+    const select =
+        document.getElementById(
+            "formulaSelect"
+        );
 
-    }
+    const name =
+        select.value;
 
-    if(type==="SUMIFS"){
+    const config =
+        builderConfig[name];
 
-        f1.value="E:E";
-        f2.value='B:B,"Traga"';
-        f3.value='A:A,"Yangon"';
-        f4.value="";
+    const container =
+        document.getElementById(
+            "builderFields"
+        );
 
-    }
+    container.innerHTML = "";
 
-    if(type==="COUNTIF"){
 
-        f1.value="B:B";
-        f2.value='"Traga"';
-        f3.value="";
-        f4.value="";
+    if(!config){
+
+        return;
 
     }
 
-    if(type==="COUNTIFS"){
 
-        f1.value='B:B,"Traga"';
-        f2.value='A:A,"Yangon"';
-        f3.value="";
-        f4.value="";
+    config.fields.forEach(
+        field => {
 
-    }
+            const group =
+                document.createElement(
+                    "div"
+                );
 
-    if(type==="IF"){
+            group.className =
+                "form-group";
 
-        f1.value="E2>=100000";
-        f2.value='"Good"';
-        f3.value='"Need Action"';
-        f4.value="";
 
-    }
+            const label =
+                document.createElement(
+                    "label"
+                );
 
-    if(type==="IFERROR"){
+            label.textContent =
+                field[1];
 
-        f1.value="A2/B2";
-        f2.value="0";
-        f3.value="";
-        f4.value="";
 
-    }
+            const input =
+                document.createElement(
+                    "input"
+                );
 
-    if(type==="INDEX"){
+            input.id =
+                "builder_" + field[0];
 
-        f1.value="D:D";
-        f2.value="MATCH(A2,A:A,0)";
-        f3.value="";
-        f4.value="";
+            input.value =
+                field[2];
 
-    }
 
-    if(type==="MATCH" || type==="XMATCH"){
+            group.appendChild(label);
 
-        f1.value="A2";
-        f2.value="A:A";
-        f3.value="0";
-        f4.value="";
+            group.appendChild(input);
 
-    }
+            container.appendChild(group);
 
-    if(type==="FILTER"){
+        }
+    );
 
-        f1.value="A2:E100";
-        f2.value="E2:E100>100000";
-        f3.value="";
-        f4.value="";
 
-    }
-
-    if(type==="UNIQUE"){
-
-        f1.value="B2:B100";
-        f2.value="";
-        f3.value="";
-        f4.value="";
-
-    }
-
-    if(type==="SORT"){
-
-        f1.value="A2:E100";
-        f2.value="5";
-        f3.value="-1";
-        f4.value="";
-
-    }
-
-    if(
-        ["LEFT","RIGHT","MID","TEXT","ROUND","EOMONTH","NETWORKDAYS"]
-        .includes(type)
-    ){
-
-        f1.value="A2";
-        f2.value="10";
-        f3.value="0";
-        f4.value="";
-
-    }
+    document.getElementById(
+        "formulaExplanation"
+    ).textContent =
+        "Example: " + config.example;
 
 }
 
 
-function setFormulaType(type){
+/* =========================
+   BUILD FORMULA
+========================= */
 
-    document.getElementById("formulaType").value=type;
+function buildFormula(){
 
-    renderFormulaFields();
-
-}
-
-
-function generateFormula(){
-
-    const type=
-        document.getElementById("formulaType").value;
-
-    const a=document.getElementById("f1").value.trim();
-
-    const b=document.getElementById("f2").value.trim();
-
-    const c=document.getElementById("f3").value.trim();
-
-    const d=document.getElementById("f4").value.trim();
-
-    let formula="";
-    let explain="";
+    const name =
+        document.getElementById(
+            "formulaSelect"
+        ).value;
 
 
-    switch(type){
+    const config =
+        builderConfig[name];
+
+
+    if(!config){
+
+        return;
+
+    }
+
+
+    const values =
+        config.fields.map(
+            field => {
+
+                const input =
+                    document.getElementById(
+                        "builder_" + field[0]
+                    );
+
+                return input
+                    ? input.value.trim()
+                    : "";
+
+            }
+        );
+
+
+    let formula = "";
+
+
+    switch(name){
 
         case "VLOOKUP":
 
-            formula=`=VLOOKUP(${a},${b},${c},${d})`;
-
-            explain=
-                `${a} ကို ${b} table ထဲမှာရှာပြီး ${c} ကြောင်းမြောက် column က value ကို ${d} match နဲ့ ပြန်ယူပါတယ်`;
+            formula =
+                `=VLOOKUP(${values[0]},${values[1]},${values[2]},${values[3]})`;
 
             break;
 
 
         case "XLOOKUP":
 
-            formula=`=XLOOKUP(${a},${b},${c},${d || '"Not Found"'})`;
-
-            explain=
-                `${a} ကို lookup array ${b} ထဲမှာရှာပြီး return array ${c} ထဲက value ကို ပြန်ယူပါတယ်`;
+            formula =
+                `=XLOOKUP(${values[0]},${values[1]},${values[2]},${values[3]})`;
 
             break;
 
 
         case "HLOOKUP":
 
-            formula=`=HLOOKUP(${a},${b},${c},${d})`;
-
-            explain=
-                `${a} ကို horizontal table ထဲမှာရှာပြီး ${c} row က value ကို ပြန်ယူပါတယ်`;
+            formula =
+                `=HLOOKUP(${values[0]},${values[1]},${values[2]},${values[3]})`;
 
             break;
 
 
         case "SUM":
 
-            formula=`=SUM(${a})`;
-
-            explain=
-                `${a} range ထဲက number အားလုံးကို စုစုပေါင်းတွက်ပါတယ်`;
+            formula =
+                `=SUM(${values[0]})`;
 
             break;
 
 
         case "SUMIF":
 
-            formula=`=SUMIF(${a},${b},${c})`;
-
-            explain=
-                `${a} range ထဲမှာ ${b} condition ကိုရှာပြီး ${c} range ကို စုစုပေါင်းပါတယ်`;
+            formula =
+                `=SUMIF(${values[0]},${values[1]},${values[2]})`;
 
             break;
 
 
         case "SUMIFS":
 
-            formula=`=SUMIFS(${a},${b},${c},${d})`;
-
-            explain=
-                `Condition အများကြီးနဲ့ ${a} range ကို စုစုပေါင်းပါတယ်`;
+            formula =
+                `=SUMIFS(${values.join(",")})`;
 
             break;
 
 
         case "COUNTIF":
 
-            formula=`=COUNTIF(${a},${b})`;
-
-            explain=
-                `${a} range ထဲမှာ ${b} condition ကိုက်ညီတဲ့ cells အရေအတွက်ကိုတွက်ပါတယ်`;
+            formula =
+                `=COUNTIF(${values[0]},${values[1]})`;
 
             break;
 
 
         case "COUNTIFS":
 
-            formula=`=COUNTIFS(${a},${b},${c},${d})`;
+            formula =
+                `=COUNTIFS(${values.join(",")})`;
 
-            explain=
-                `Condition နှစ်ခုကိုက်ညီတဲ့ records အရေအတွက်ကိုတွက်ပါတယ်`;
+            break;
+
+
+        case "AVERAGE":
+
+            formula =
+                `=AVERAGE(${values[0]})`;
+
+            break;
+
+
+        case "AVERAGEIF":
+
+            formula =
+                `=AVERAGEIF(${values[0]},${values[1]},${values[2]})`;
 
             break;
 
 
         case "IF":
 
-            formula=`=IF(${a},${b},${c})`;
-
-            explain=
-                `Condition ${a} TRUE ဖြစ်ရင် ${b}၊ FALSE ဖြစ်ရင် ${c} ပြပါတယ်`;
+            formula =
+                `=IF(${values[0]},${values[1]},${values[2]})`;
 
             break;
 
 
         case "IFERROR":
 
-            formula=`=IFERROR(${a},${b})`;
-
-            explain=
-                `${a} မှာ error ဖြစ်ရင် ${b} ကိုပြပါတယ်`;
+            formula =
+                `=IFERROR(${values[0]},${values[1]})`;
 
             break;
 
 
         case "INDEX":
 
-            formula=`=INDEX(${a},${b})`;
-
-            explain=
-                `${a} range ထဲက ${b} position ကို value ပြန်ယူပါတယ်`;
+            formula =
+                `=INDEX(${values[0]},${values[1]})`;
 
             break;
 
 
         case "MATCH":
 
-            formula=`=MATCH(${a},${b},${c || "0"})`;
-
-            explain=
-                `${a} ကို ${b} ထဲမှာရှာပြီး position ပြန်ပေးပါတယ်`;
+            formula =
+                `=MATCH(${values[0]},${values[1]},${values[2]})`;
 
             break;
 
 
         case "XMATCH":
 
-            formula=`=XMATCH(${a},${b},${c || "0"})`;
-
-            explain=
-                `Modern MATCH formula ဖြစ်ပြီး ${a} ရဲ့ position ကိုရှာပါတယ်`;
+            formula =
+                `=XMATCH(${values[0]},${values[1]},${values[2]})`;
 
             break;
 
 
         case "FILTER":
 
-            formula=`=FILTER(${a},${b})`;
-
-            explain=
-                `${b} condition ကိုက်တဲ့ ${a} data တွေကို filter လုပ်ပြီး ပြပါတယ်`;
+            formula =
+                `=FILTER(${values[0]},${values[1]})`;
 
             break;
 
 
         case "UNIQUE":
 
-            formula=`=UNIQUE(${a})`;
-
-            explain=
-                `${a} ထဲက duplicate values တွေဖယ်ပြီး unique values ပဲပြပါတယ်`;
+            formula =
+                `=UNIQUE(${values[0]})`;
 
             break;
 
 
         case "SORT":
 
-            formula=`=SORT(${a},${b || "1"},${c || "1"})`;
-
-            explain=
-                `${a} data ကို ${b || "1"} column အလိုက် sort လုပ်ပါတယ်`;
+            formula =
+                `=SORT(${values[0]},${values[1]},${values[2]})`;
 
             break;
 
 
         case "LEFT":
 
-            formula=`=LEFT(${a},${b || "1"})`;
-
-            explain=
-                `${a} ရဲ့ ဘယ်ဘက်က စာလုံး ${b || "1"} လုံးယူပါတယ်`;
+            formula =
+                `=LEFT(${values[0]},${values[1]})`;
 
             break;
 
 
         case "RIGHT":
 
-            formula=`=RIGHT(${a},${b || "1"})`;
-
-            explain=
-                `${a} ရဲ့ ညာဘက်က စာလုံး ${b || "1"} လုံးယူပါတယ်`;
+            formula =
+                `=RIGHT(${values[0]},${values[1]})`;
 
             break;
 
 
         case "MID":
 
-            formula=`=MID(${a},${b || "1"},${c || "1"})`;
-
-            explain=
-                `${a} ထဲက ${b || "1"} position ကနေ ${c || "1"} လုံးယူပါတယ်`;
-
-            break;
-
-
-        case "TEXT":
-
-            formula=`=TEXT(${a},${b || '"0.00"'})`;
-
-            explain=
-                `${a} ကို ${b || "format"} အတိုင်း text အဖြစ် format ပြောင်းပါတယ်`;
+            formula =
+                `=MID(${values[0]},${values[1]},${values[2]})`;
 
             break;
 
 
         case "ROUND":
 
-            formula=`=ROUND(${a},${b || "0"})`;
-
-            explain=
-                `${a} ကို decimal ${b || "0"} နေရာအထိ round လုပ်ပါတယ်`;
+            formula =
+                `=ROUND(${values[0]},${values[1]})`;
 
             break;
 
 
         case "EOMONTH":
 
-            formula=`=EOMONTH(${a},${b || "0"})`;
-
-            explain=
-                `${a} date ရဲ့ month end date ကို ရယူပါတယ်`;
+            formula =
+                `=EOMONTH(${values[0]},${values[1]})`;
 
             break;
 
 
         case "NETWORKDAYS":
 
-            formula=`=NETWORKDAYS(${a},${b})`;
-
-            explain=
-                `Start date နဲ့ End date ကြား working days အရေအတွက်ကိုတွက်ပါတယ်`;
+            formula =
+                `=NETWORKDAYS(${values[0]},${values[1]})`;
 
             break;
 
-
-        default:
-
-            formula="=FORMULA()";
-
-            explain="Formula template";
-
     }
 
 
-    document.getElementById("formulaOutput").textContent=
+    document.getElementById(
+        "formulaOutput"
+    ).textContent =
         formula;
-
-    document.getElementById("formulaExplain").textContent=
-        explain;
 
 }
 
 
-function generateAIFormula(){
+/* =========================
+   FORMULA LIBRARY
+========================= */
 
-    const text=
-        document.getElementById("aiInput")
-        .value
-        .trim()
-        .toLowerCase();
+const formulaLibrary = [
 
-    let formula="";
-    let explain="";
+    ["SUM","Adds numbers","=SUM(A2:A20)"],
+    ["SUMIF","Adds values based on one condition",'=SUMIF(A:A,"Traga",D:D)'],
+    ["SUMIFS","Adds values based on multiple conditions",'=SUMIFS(D:D,A:A,"Traga",B:B,"Yangon")'],
+    ["PRODUCT","Multiplies numbers","=PRODUCT(A2:A5)"],
+    ["SUMPRODUCT","Multiplies arrays and sums result","=SUMPRODUCT(A2:A20,B2:B20)"],
+    ["SUBTOTAL","Subtotal calculation","=SUBTOTAL(9,D2:D20)"],
+    ["AGGREGATE","Advanced aggregate calculation","=AGGREGATE(9,5,D2:D20)"],
+    ["ROUND","Rounds a number","=ROUND(A2,2)"],
+    ["ROUNDUP","Rounds upward","=ROUNDUP(A2,0)"],
+    ["ROUNDDOWN","Rounds downward","=ROUNDDOWN(A2,0)"],
+    ["MROUND","Rounds to multiple","=MROUND(A2,10)"],
+    ["CEILING","Rounds upward to significance","=CEILING(A2,10)"],
+    ["FLOOR","Rounds downward to significance","=FLOOR(A2,10)"],
+    ["ABS","Absolute value","=ABS(A2)"],
+    ["MOD","Returns remainder","=MOD(A2,2)"],
+    ["QUOTIENT","Integer division","=QUOTIENT(A2,B2)"],
+    ["POWER","Power calculation","=POWER(A2,2)"],
+    ["SQRT","Square root","=SQRT(A2)"],
+
+    ["VLOOKUP","Vertical lookup","=VLOOKUP(A2,Sheet2!A:D,4,FALSE)"],
+    ["XLOOKUP","Modern lookup",'=XLOOKUP(A2,A:A,D:D,"Not Found")'],
+    ["HLOOKUP","Horizontal lookup","=HLOOKUP(A2,A1:Z10,4,FALSE)"],
+    ["LOOKUP","Lookup value","=LOOKUP(A2,A:A,D:D)"],
+    ["INDEX","Returns value by position","=INDEX(D:D,MATCH(A2,A:A,0))"],
+    ["MATCH","Finds position","=MATCH(A2,A:A,0)"],
+    ["XMATCH","Modern position lookup","=XMATCH(A2,A:A)"],
+    ["CHOOSE","Chooses from values","=CHOOSE(A2,B2,C2,D2)"],
+    ["OFFSET","Returns shifted reference","=OFFSET(A1,2,1)"],
+    ["INDIRECT","Converts text to reference",'=INDIRECT("A"&B2)'],
+    ["ADDRESS","Creates cell address","=ADDRESS(2,4)"],
+    ["ROW","Returns row number","=ROW(A2)"],
+    ["COLUMN","Returns column number","=COLUMN(D2)"],
+    ["ROWS","Counts rows","=ROWS(A2:A20)"],
+    ["COLUMNS","Counts columns","=COLUMNS(A2:D20)"],
+
+    ["IF","Conditional result",'=IF(A2>=100,"YES","NO")'],
+    ["IFS","Multiple conditions",'=IFS(A2>=90,"A",A2>=80,"B",TRUE,"C")'],
+    ["AND","All conditions true","=AND(A2>10,B2>20)"],
+    ["OR","Any condition true","=OR(A2>10,B2>20)"],
+    ["NOT","Reverses TRUE/FALSE","=NOT(A2>10)"],
+    ["XOR","Exclusive OR","=XOR(A2>10,B2>20)"],
+    ["IFERROR","Handles errors","=IFERROR(A2/B2,0)"],
+    ["IFNA","Handles #N/A",'=IFNA(VLOOKUP(A2,A:D,4,FALSE),"Not Found")'],
+    ["TRUE","Returns TRUE","=TRUE()"],
+    ["FALSE","Returns FALSE","=FALSE()"],
+    ["SWITCH","Multiple value selection",'=SWITCH(A2,"A","Apple","B","Banana","Other")'],
+
+    ["COUNT","Counts numbers","=COUNT(A2:A20)"],
+    ["COUNTA","Counts non-empty cells","=COUNTA(A2:A20)"],
+    ["COUNTBLANK","Counts blank cells","=COUNTBLANK(A2:A20)"],
+    ["COUNTIF","Counts with condition",'=COUNTIF(A:A,"Traga")'],
+    ["COUNTIFS","Counts multiple conditions",'=COUNTIFS(A:A,"Traga",B:B,"Yangon")'],
+    ["AVERAGE","Average","=AVERAGE(D2:D20)"],
+    ["AVERAGEIF","Average with condition",'=AVERAGEIF(A:A,"Traga",D:D)'],
+    ["AVERAGEIFS","Average with conditions",'=AVERAGEIFS(D:D,A:A,"Traga",B:B,"Yangon")'],
+    ["MAX","Maximum","=MAX(D2:D20)"],
+    ["MAXIFS","Maximum with condition",'=MAXIFS(D:D,A:A,"Traga")'],
+    ["MIN","Minimum","=MIN(D2:D20)"],
+    ["MINIFS","Minimum with condition",'=MINIFS(D:D,A:A,"Traga")'],
+    ["MEDIAN","Middle value","=MEDIAN(D2:D20)"],
+    ["MODE","Most frequent value","=MODE(A2:A20)"],
+    ["LARGE","Nth largest","=LARGE(D2:D20,2)"],
+    ["SMALL","Nth smallest","=SMALL(D2:D20,2)"],
+    ["RANK","Rank value","=RANK(D2,D2:D20)"],
+    ["RANK.EQ","Equal rank","=RANK.EQ(D2,D2:D20)"],
+    ["PERCENTILE","Percentile","=PERCENTILE(D2:D20,0.9)"],
+    ["QUARTILE","Quartile","=QUARTILE(D2:D20,3)"],
+
+    ["LEFT","Gets characters from left","=LEFT(A2,5)"],
+    ["RIGHT","Gets characters from right","=RIGHT(A2,5)"],
+    ["MID","Gets characters from middle","=MID(A2,2,5)"],
+    ["LEN","Counts characters","=LEN(A2)"],
+    ["TRIM","Removes extra spaces","=TRIM(A2)"],
+    ["CLEAN","Removes non-printable characters","=CLEAN(A2)"],
+    ["UPPER","Uppercase","=UPPER(A2)"],
+    ["LOWER","Lowercase","=LOWER(A2)"],
+    ["PROPER","Proper case","=PROPER(A2)"],
+    ["CONCAT","Joins text","=CONCAT(A2,B2)"],
+    ["CONCATENATE","Joins text","=CONCATENATE(A2,"" "",B2)"],
+    ["TEXTJOIN","Joins with delimiter",'=TEXTJOIN(", ",TRUE,A2:A10)'],
+    ["FIND","Finds text position",'=FIND("ABC",A2)'],
+    ["SEARCH","Searches text","=SEARCH(\"abc\",A2)"],
+    ["SUBSTITUTE","Replaces text",'=SUBSTITUTE(A2,"Old","New")'],
+    ["REPLACE","Replaces characters",'=REPLACE(A2,1,3,"ABC")'],
+    ["TEXT","Formats number/date",'=TEXT(A2,"#,##0")'],
+    ["VALUE","Converts text to number","=VALUE(A2)"],
+    ["EXACT","Compares text","=EXACT(A2,B2)"],
+    ["CHAR","Returns character","=CHAR(65)"],
+    ["CODE","Returns character code","=CODE(A2)"],
+
+    ["TODAY","Current date","=TODAY()"],
+    ["NOW","Current date and time","=NOW()"],
+    ["DATE","Creates date","=DATE(2026,9,29)"],
+    ["YEAR","Gets year","=YEAR(A2)"],
+    ["MONTH","Gets month","=MONTH(A2)"],
+    ["DAY","Gets day","=DAY(A2)"],
+    ["HOUR","Gets hour","=HOUR(A2)"],
+    ["MINUTE","Gets minute","=MINUTE(A2)"],
+    ["SECOND","Gets second","=SECOND(A2)"],
+    ["DAYS","Days between dates","=DAYS(B2,A2)"],
+    ["DATEDIF","Date difference","=DATEDIF(A2,B2,"Y")"],
+    ["EDATE","Moves months","=EDATE(A2,1)"],
+    ["EOMONTH","End of month","=EOMONTH(A2,0)"],
+    ["WEEKDAY","Weekday number","=WEEKDAY(A2,2)"],
+    ["WEEKNUM","Week number","=WEEKNUM(A2,2)"],
+    ["WORKDAY","Workday date","=WORKDAY(A2,10)"],
+    ["NETWORKDAYS","Working days","=NETWORKDAYS(A2,B2)"],
+    ["YEARFRAC","Fraction of year","=YEARFRAC(A2,B2)"],
+
+    ["FILTER","Filters array","=FILTER(A2:D100,D2:D100>100)"],
+    ["SORT","Sorts array","=SORT(A2:D100,4,-1)"],
+    ["SORTBY","Sorts by another range","=SORTBY(A2:D100,D2:D100,-1)"],
+    ["UNIQUE","Unique values","=UNIQUE(A2:A100)"],
+    ["SEQUENCE","Creates sequence","=SEQUENCE(10)"],
+    ["TRANSPOSE","Transposes range","=TRANSPOSE(A2:D10)"],
+    ["TAKE","Takes rows/columns","=TAKE(A2:D100,10)"],
+    ["DROP","Drops rows/columns","=DROP(A2:D100,2)"],
+    ["CHOOSECOLS","Chooses columns","=CHOOSECOLS(A2:D100,1,4)"],
+    ["CHOOSEROWS","Chooses rows","=CHOOSEROWS(A2:D100,1,5)"],
+    ["VSTACK","Stacks vertically","=VSTACK(A2:D10,A12:D20)"],
+    ["HSTACK","Stacks horizontally","=HSTACK(A2:B10,D2:E10)"],
+
+    ["PMT","Loan payment","=PMT(10%/12,60,-10000000)"],
+    ["PV","Present value","=PV(10%/12,60,-250000)"],
+    ["FV","Future value","=FV(10%/12,60,-250000)"],
+    ["NPV","Net present value","=NPV(10%,B2:B10)"],
+    ["IRR","Internal rate of return","=IRR(B2:B10)"],
+    ["RATE","Interest rate","=RATE(60,-250000,10000000)"],
+    ["IPMT","Interest payment","=IPMT(10%/12,1,60,10000000)"],
+    ["PPMT","Principal payment","=PPMT(10%/12,1,60,10000000)"],
+    ["SLN","Straight-line depreciation","=SLN(10000000,1000000,5)"],
+    ["DB","Declining balance depreciation","=DB(10000000,1000000,5,1)"],
+    ["DDB","Double declining depreciation","=DDB(10000000,1000000,5,1)"],
+
+    ["ISBLANK","Checks blank","=ISBLANK(A2)"],
+    ["ISNUMBER","Checks number","=ISNUMBER(A2)"],
+    ["ISTEXT","Checks text","=ISTEXT(A2)"],
+    ["ISERROR","Checks error","=ISERROR(A2)"],
+    ["ISERR","Checks non-N/A error","=ISERR(A2)"],
+    ["ISNA","Checks #N/A","=ISNA(A2)"],
+    ["ISEVEN","Checks even number","=ISEVEN(A2)"],
+    ["ISODD","Checks odd number","=ISODD(A2)"],
+    ["TYPE","Returns value type","=TYPE(A2)"],
+    ["CELL","Returns cell info","=CELL("address",A2)"],
+    ["INFO","Returns environment info","=INFO("system")"]
+
+];
 
 
-    if(
-        text.includes("vlookup") ||
-        text.includes("customer") &&
-        text.includes("region")
-    ){
+/* =========================
+   RENDER LIBRARY
+========================= */
 
-        formula=
-            '=XLOOKUP(A2,Customer_Master!A:A,Customer_Master!D:D,"Not Found")';
+function renderLibrary(){
 
-        explain=
-            "A2 ထဲက Customer Code ကို Customer_Master Sheet ရဲ့ A Column မှာရှာပြီး D Column ထဲက Region ကို ပြန်ယူတဲ့ formula ဖြစ်ပါတယ်";
-
-    }
-
-    else if(
-        text.includes("100000") &&
-        (
-            text.includes("good") ||
-            text.includes("ကောင်း")
-        )
-    ){
-
-        formula=
-            '=IF(E2>=100000,"Good","Need Action")';
-
-        explain=
-            "Sales Amount E2 က 100,000 ထက်ကြီး/ညီရင် Good၊ မဟုတ်ရင် Need Action လို့ပြပါတယ်";
-
-    }
-
-    else if(
-        text.includes("duplicate") ||
-        text.includes("ထပ်")
-    ){
-
-        formula=
-            '=UNIQUE(A2:A100)';
-
-        explain=
-            "Duplicate value တွေကိုဖယ်ပြီး unique customer/value တွေကို ပြန်ထုတ်ပေးပါတယ်";
-
-    }
-
-    else if(
-        text.includes("sum") ||
-        text.includes("စု") ||
-        text.includes("sales")
-    ){
-
-        formula=
-            '=SUM(E2:E100)';
-
-        explain=
-            "E2:E100 ထဲက Sales Amount တွေကို စုစုပေါင်းတွက်ပါတယ်";
-
-    }
-
-    else if(
-        text.includes("count") ||
-        text.includes("အရေအတွက်")
-    ){
-
-        formula=
-            '=COUNTIF(B:B,"Traga")';
-
-        explain=
-            "B Column ထဲမှာ Traga ဖြစ်တဲ့ records အရေအတွက်ကိုတွက်ပါတယ်";
-
-    }
-
-    else if(
-        text.includes("average") ||
-        text.includes("ပျမ်းမျှ")
-    ){
-
-        formula=
-            '=AVERAGE(E2:E100)';
-
-        explain=
-            "E2:E100 ထဲက value တွေရဲ့ average ကိုတွက်ပါတယ်";
-
-    }
-
-    else if(
-        text.includes("filter") ||
-        text.includes("စစ်ထုတ်")
-    ){
-
-        formula=
-            '=FILTER(A2:E100,E2:E100>100000)';
-
-        explain=
-            "Sales Amount 100,000 ထက်ကြီးတဲ့ records တွေကို filter လုပ်ပြီး ပြပါတယ်";
-
-    }
-
-    else if(
-        text.includes("date") ||
-        text.includes("ရက်")
-    ){
-
-        formula=
-            '=TODAY()';
-
-        explain=
-            "ယနေ့ရက်စွဲကို ပြန်ပေးပါတယ်";
-
-    }
-
-    else{
-
-        formula=
-            '=IFERROR(A2/B2,0)';
-
-        explain=
-            "သင်ရေးထားတဲ့ requirement ကို V1 AI engine က မသိသေးတဲ့အတွက် generic business formula အနေနဲ့ error-safe division ကို ပြထားပါတယ်";
-
-    }
+    const container =
+        document.getElementById(
+            "formulaList"
+        );
 
 
-    document.getElementById("aiFormula").textContent=
-        formula;
-
-    document.getElementById("aiExplain").textContent=
-        explain;
-
-    document.getElementById("aiAnswer").style.display=
-        "block";
-
-}
+    const query =
+        document.getElementById(
+            "formulaSearch"
+        ).value
+        .toLowerCase()
+        .trim();
 
 
-function renderFormulaLibrary(list=formulas){
+    container.innerHTML = "";
 
-    const container=
-        document.getElementById("formulaList");
 
-    container.innerHTML="";
+    const filtered =
+        formulaLibrary.filter(
+            item => {
 
-    list.forEach(item=>{
+                return (
+                    item[0]
+                    .toLowerCase()
+                    .includes(query)
+                    ||
+                    item[1]
+                    .toLowerCase()
+                    .includes(query)
+                    ||
+                    item[2]
+                    .toLowerCase()
+                    .includes(query)
+                );
 
-        const div=document.createElement("div");
+            }
+        );
 
-        div.className="formula-item";
 
-        div.innerHTML=`
+    filtered.forEach(item => {
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+        div.className =
+            "formula-item";
+
+
+        div.innerHTML = `
 
             <div class="formula-name">
                 ${item[0]}
@@ -2307,112 +3099,836 @@ function renderFormulaLibrary(list=formulas){
                 ${item[1]}
             </div>
 
+            <div class="formula-example">
+                ${escapeHtml(item[2])}
+            </div>
+
         `;
+
 
         container.appendChild(div);
 
     });
 
+
+    if(!filtered.length){
+
+        container.innerHTML =
+            `<div class="card">No formula found</div>`;
+
+    }
+
 }
 
 
-function searchFormulas(){
+/* =========================
+   ESCAPE HTML
+========================= */
 
-    const q=
-        document.getElementById("formulaSearch")
-        .value
-        .toLowerCase();
+function escapeHtml(value){
 
-    const filtered=
-        formulas.filter(item=>
-            item[0].toLowerCase().includes(q) ||
-            item[1].toLowerCase().includes(q)
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================
+   AI FORMULA
+========================= */
+
+function generateAIFormula(){
+
+    const input =
+        document.getElementById(
+            "aiInput"
+        ).value
+        .toLowerCase()
+        .trim();
+
+
+    if(!input){
+
+        alert(
+            "Please describe what you want to calculate"
         );
 
-    renderFormulaLibrary(filtered);
+        return;
+
+    }
+
+
+    let formula =
+        "=SUM(A2:A20)";
+
+    let explanation =
+        "A general SUM formula was suggested.";
+
+
+    if(
+        input.includes("vlookup") ||
+        input.includes("lookup") ||
+        input.includes("ရှာ")
+    ){
+
+        formula =
+            "=VLOOKUP(A2,Sheet2!A:D,4,FALSE)";
+
+        explanation =
+            "Use VLOOKUP when you want to find a value in the first column of a table and return information from another column.";
+
+    }
+
+
+    else if(
+        input.includes("xlookup")
+    ){
+
+        formula =
+            '=XLOOKUP(A2,Sheet2!A:A,Sheet2!D:D,"Not Found")';
+
+        explanation =
+            "XLOOKUP searches one range and returns the corresponding value from another range.";
+
+    }
+
+
+    else if(
+        input.includes("total") ||
+        input.includes("sum") ||
+        input.includes("ပေါင်း")
+    ){
+
+        formula =
+            "=SUM(D2:D100)";
+
+        explanation =
+            "SUM calculates the total of the selected numeric range.";
+
+    }
+
+
+    else if(
+        input.includes("sumif") ||
+        input.includes("condition")
+    ){
+
+        formula =
+            '=SUMIF(A:A,"Traga",D:D)';
+
+        explanation =
+            "SUMIF adds values when one condition is met.";
+
+    }
+
+
+    else if(
+        input.includes("multiple condition") ||
+        input.includes("sumifs")
+    ){
+
+        formula =
+            '=SUMIFS(D:D,A:A,"Traga",B:B,"Yangon")';
+
+        explanation =
+            "SUMIFS adds values using multiple criteria.";
+
+    }
+
+
+    else if(
+        input.includes("count")
+    ){
+
+        formula =
+            '=COUNTIF(A:A,"Traga")';
+
+        explanation =
+            "COUNTIF counts cells that match a condition.";
+
+    }
+
+
+    else if(
+        input.includes("average") ||
+        input.includes("avg") ||
+        input.includes("ပျမ်းမျှ")
+    ){
+
+        formula =
+            "=AVERAGE(D2:D100)";
+
+        explanation =
+            "AVERAGE calculates the arithmetic mean.";
+
+    }
+
+
+    else if(
+        input.includes("if") ||
+        input.includes("yes") ||
+        input.includes("no")
+    ){
+
+        formula =
+            '=IF(D2>=100,"YES","NO")';
+
+        explanation =
+            "IF returns one result when a condition is true and another result when false.";
+
+    }
+
+
+    else if(
+        input.includes("unique")
+    ){
+
+        formula =
+            "=UNIQUE(A2:A100)";
+
+        explanation =
+            "UNIQUE returns distinct values from a range.";
+
+    }
+
+
+    else if(
+        input.includes("filter")
+    ){
+
+        formula =
+            "=FILTER(A2:D100,D2:D100>100)";
+
+        explanation =
+            "FILTER returns only rows matching the specified condition.";
+
+    }
+
+
+    else if(
+        input.includes("rank")
+    ){
+
+        formula =
+            "=RANK(D2,D$2:D$100,0)";
+
+        explanation =
+            "RANK returns the position of a value compared with other values.";
+
+    }
+
+
+    else if(
+        input.includes("growth") ||
+        input.includes("increase")
+    ){
+
+        formula =
+            "=(B2-A2)/A2";
+
+        explanation =
+            "This calculates percentage growth from the previous value to the current value.";
+
+    }
+
+
+    else if(
+        input.includes("percentage") ||
+        input.includes("%")
+    ){
+
+        formula =
+            "=B2/A2";
+
+        explanation =
+            "Format the result as Percentage to calculate the ratio.";
+
+    }
+
+
+    document.getElementById(
+        "aiFormulaOutput"
+    ).textContent =
+        formula;
+
+
+    document.getElementById(
+        "aiExplanation"
+    ).textContent =
+        explanation;
+
+
+    document.getElementById(
+        "aiResult"
+    ).style.display =
+        "block";
 
 }
 
 
-function findDuplicates(){
+/* =========================
+   DUPLICATE CHECKER
+========================= */
 
-    const inputs=[
-        ...document.querySelectorAll(
-            '#sheetBody input[data-col="1"]'
-        )
-    ];
+function checkDuplicates(){
 
-    const values=[];
+    const letter =
+        document.getElementById(
+            "duplicateColumn"
+        ).value;
 
-    inputs.forEach(i=>{
 
-        const value=i.value.trim();
+    const col =
+        columnNumber(letter);
 
-        if(value) values.push(value);
 
-    });
+    if(
+        col < 1 ||
+        col > COLS
+    ){
 
-    const duplicates=
-        values.filter(
-            (v,i,a)=>a.indexOf(v)!==i
+        alert(
+            "Invalid column"
         );
 
-    const unique=[
-        ...new Set(duplicates)
-    ];
+        return;
 
-    document.getElementById("toolResult").textContent=
-        unique.length
-        ? "Duplicate: "+unique.join(", ")
-        : "Duplicate မတွေ့ပါ";
-
-}
+    }
 
 
-function checkFormulas(){
+    const values = {};
 
-    const inputs=[
-        ...document.querySelectorAll("#sheetBody input")
-    ];
+    const duplicates = [];
 
-    const errors=[];
 
-    inputs.forEach(input=>{
+    for(let r = 0; r < ROWS; r++){
 
-        const value=input.value.trim();
+        const value =
+            String(
+                sheetData[r][col - 1] ?? ""
+            ).trim();
 
-        if(!value.startsWith("=")) return;
 
-        if(
-            value.includes("#REF!") ||
-            value.includes("#VALUE!") ||
-            value.includes("#N/A") ||
-            value.includes("#DIV/0!")
-        ){
+        if(!value){
 
-            errors.push(
-                `Row ${input.dataset.row}, Column ${input.dataset.col}: ${value}`
-            );
+            continue;
 
         }
 
-    });
 
-    document.getElementById("toolResult").innerHTML=
-        errors.length
-        ? errors.join("<br>")
-        : "Formula error pattern မတွေ့ပါ";
+        if(values[value]){
+
+            if(
+                !duplicates.includes(value)
+            ){
+
+                duplicates.push(value);
+
+            }
+
+        }else{
+
+            values[value] = true;
+
+        }
+
+    }
+
+
+    const result =
+        document.getElementById(
+            "duplicateResult"
+        );
+
+
+    if(!duplicates.length){
+
+        result.textContent =
+            `No duplicates found in column ${letter.toUpperCase()}`;
+
+        return;
+
+    }
+
+
+    result.textContent =
+        `Duplicates found in column ${letter.toUpperCase()}:\n\n`
+        +
+        duplicates.join("\n");
 
 }
 
 
-/* INIT */
+/* =========================
+   FORMULA ERROR CHECK
+========================= */
+
+function checkFormulaErrors(){
+
+    const errors = [];
+
+
+    sheetData.forEach(
+        (row,r) => {
+
+            row.forEach(
+                (value,c) => {
+
+                    const text =
+                        String(value || "");
+
+
+                    if(
+                        text.startsWith("#")
+                    ){
+
+                        errors.push(
+                            `${columnLetter(c+1)}${r+1}: ${text}`
+                        );
+
+                    }
+
+
+                    if(
+                        text.startsWith("=")
+                        &&
+                        !text.includes("(")
+                        &&
+                        text.length > 1
+                    ){
+
+                        errors.push(
+                            `${columnLetter(c+1)}${r+1}: Possible invalid formula`
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+    const result =
+        document.getElementById(
+            "errorResult"
+        );
+
+
+    if(!errors.length){
+
+        result.textContent =
+            "No obvious formula errors found.";
+
+        return;
+
+    }
+
+
+    result.textContent =
+        errors.join("\n");
+
+}
+
+
+/* =========================
+   PAGE NAVIGATION
+========================= */
+
+const pageNames = {
+
+    dashboard:"Dashboard",
+
+    editor:"Excel Editor",
+
+    builder:"Formula Builder",
+
+    ai:"AI Formula",
+
+    library:"Formula Library",
+
+    tools:"Data Tools",
+
+    settings:"Settings"
+
+};
+
+
+function showPage(name){
+
+    document
+        .querySelectorAll(".page")
+        .forEach(
+            page =>
+                page.classList.remove(
+                    "active"
+                )
+        );
+
+
+    const target =
+        document.getElementById(
+            "page-" + name
+        );
+
+
+    if(target){
+
+        target.classList.add(
+            "active"
+        );
+
+    }
+
+
+    document
+        .querySelectorAll(".nav-btn")
+        .forEach(
+            btn => {
+
+                btn.classList.toggle(
+                    "active",
+                    btn.dataset.page === name
+                );
+
+            }
+        );
+
+
+    document.getElementById(
+        "pageTitle"
+    ).textContent =
+        pageNames[name] || name;
+
+
+    if(name === "editor"){
+
+        buildSheet();
+
+    }
+
+
+    if(name === "library"){
+
+        renderLibrary();
+
+    }
+
+
+    document
+        .getElementById("sidebar")
+        .classList.remove("open");
+
+}
+
+
+/* =========================
+   TOGGLE
+========================= */
+
+function setupToggle(
+    id,
+    callback
+){
+
+    const el =
+        document.getElementById(id);
+
+
+    el.addEventListener(
+        "click",
+        function(){
+
+            this.classList.toggle(
+                "active"
+            );
+
+            callback(
+                this.classList.contains(
+                    "active"
+                )
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================
+   KEYBOARD SHORTCUT
+========================= */
+
+document.addEventListener(
+    "keydown",
+    function(e){
+
+        if(
+            (e.ctrlKey || e.metaKey)
+            &&
+            e.key.toLowerCase() === "s"
+        ){
+
+            e.preventDefault();
+
+            saveData(true);
+
+        }
+
+    }
+);
+
+
+/* =========================
+   EVENT LISTENERS
+========================= */
+
+document
+    .querySelectorAll(".nav-btn")
+    .forEach(
+        btn => {
+
+            btn.addEventListener(
+                "click",
+                function(){
+
+                    showPage(
+                        this.dataset.page
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+document
+    .getElementById("mobileMenu")
+    .addEventListener(
+        "click",
+        function(){
+
+            document
+                .getElementById("sidebar")
+                .classList.toggle("open");
+
+        }
+    );
+
+
+document
+    .getElementById("saveBtn")
+    .addEventListener(
+        "click",
+        () => saveData(true)
+    );
+
+
+document
+    .getElementById("saveTopBtn")
+    .addEventListener(
+        "click",
+        () => saveData(true)
+    );
+
+
+document
+    .getElementById("exportBtn")
+    .addEventListener(
+        "click",
+        exportXLSX
+    );
+
+
+document
+    .getElementById("exportTopBtn")
+    .addEventListener(
+        "click",
+        exportXLSX
+    );
+
+
+document
+    .getElementById("exportCsvBtn")
+    .addEventListener(
+        "click",
+        exportCSV
+    );
+
+
+document
+    .getElementById("newSheetBtn")
+    .addEventListener(
+        "click",
+        newSheet
+    );
+
+
+document
+    .getElementById("clearBtn")
+    .addEventListener(
+        "click",
+        clearSheet
+    );
+
+
+document
+    .getElementById("clearToolBtn")
+    .addEventListener(
+        "click",
+        clearSheet
+    );
+
+
+document
+    .getElementById("fileInput")
+    .addEventListener(
+        "change",
+        function(){
+
+            importFile(
+                this.files[0]
+            );
+
+            this.value = "";
+
+        }
+    );
+
+
+document
+    .getElementById("importBtn")
+    .addEventListener(
+        "click",
+        function(){
+
+            document
+                .getElementById("fileInput")
+                .click();
+
+        }
+    );
+
+
+document
+    .getElementById("formulaSelect")
+    .addEventListener(
+        "change",
+        renderBuilderFields
+    );
+
+
+document
+    .getElementById("buildFormulaBtn")
+    .addEventListener(
+        "click",
+        buildFormula
+    );
+
+
+document
+    .getElementById("aiGenerateBtn")
+    .addEventListener(
+        "click",
+        generateAIFormula
+    );
+
+
+document
+    .getElementById("formulaSearch")
+    .addEventListener(
+        "input",
+        renderLibrary
+    );
+
+
+document
+    .getElementById("duplicateBtn")
+    .addEventListener(
+        "click",
+        checkDuplicates
+    );
+
+
+document
+    .getElementById("errorCheckBtn")
+    .addEventListener(
+        "click",
+        checkFormulaErrors
+    );
+
+
+setupToggle(
+    "autoSaveToggle",
+    value => {
+        autoSave = value;
+    }
+);
+
+
+setupToggle(
+    "enterToggle",
+    value => {
+        enterMove = value;
+    }
+);
+
+
+setupToggle(
+    "tabToggle",
+    value => {
+        tabMove = value;
+    }
+);
+
+
+document
+    .getElementById("clearStorageBtn")
+    .addEventListener(
+        "click",
+        function(){
+
+            if(
+                !confirm(
+                    "Delete saved worksheet data?"
+                )
+            ){
+
+                return;
+
+            }
+
+            localStorage.removeItem(
+                STORAGE_KEY
+            );
+
+            alert(
+                "Saved data cleared"
+            );
+
+        }
+    );
+
+
+/* =========================
+   INITIALIZE
+========================= */
+
+loadData();
 
 buildSheet();
 
-renderFormulaLibrary();
+renderBuilderFields();
 
-renderFormulaFields();
+renderLibrary();
+
+updateStats();
 
 </script>
 

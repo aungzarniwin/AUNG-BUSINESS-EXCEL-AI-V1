@@ -1,261 +1,384 @@
 ```html
 <!DOCTYPE html>
-<html lang="en">
+<html lang="my">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>AI Presentation Generator V2</title>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<title>AUNG OFFICE FORMULA PRO V3</title>
+
+<!-- Excel -->
+<script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+
+<!-- PowerPoint -->
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs/dist/pptxgen.min.js"></script>
+
+<!-- Word -->
+<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
+
 body{
   margin:0;
-  font-family:Inter,Arial,sans-serif;
-  background:#eef2f7;
+  font-family:Arial,"Noto Sans Myanmar",sans-serif;
+  background:#f1f5f9;
   color:#172033;
 }
+
 .app{
   display:flex;
   min-height:100vh;
 }
+
 .sidebar{
-  width:260px;
+  width:250px;
   background:#111827;
-  color:#fff;
-  padding:22px 16px;
+  color:white;
+  padding:20px 14px;
   position:fixed;
-  left:0;
   top:0;
+  left:0;
   bottom:0;
+  overflow:auto;
 }
+
 .logo{
-  font-size:22px;
+  font-size:20px;
   font-weight:800;
-  padding:8px 10px 25px;
+  padding:10px;
+  margin-bottom:20px;
 }
-.logo span{color:#60a5fa}
+
+.logo span{
+  color:#60a5fa;
+}
+
 .menu{
   padding:12px 14px;
-  margin:6px 0;
   border-radius:10px;
+  margin:5px 0;
   cursor:pointer;
+  color:#d1d5db;
 }
-.menu:hover,.menu.active{
+
+.menu:hover,
+.menu.active{
   background:#1f2937;
+  color:#fff;
 }
+
 .main{
-  margin-left:260px;
-  width:calc(100% - 260px);
+  margin-left:250px;
+  width:calc(100% - 250px);
 }
+
 .topbar{
-  height:70px;
+  height:68px;
   background:#fff;
   border-bottom:1px solid #e5e7eb;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 28px;
+  padding:0 25px;
   position:sticky;
   top:0;
-  z-index:10;
+  z-index:20;
 }
-.topbar h2{margin:0;font-size:20px}
-.badge{
-  background:#dcfce7;
-  color:#166534;
+
+.topbar h2{
+  margin:0;
+  font-size:20px;
+}
+
+.mode{
   padding:7px 12px;
   border-radius:20px;
+  background:#dcfce7;
+  color:#166534;
   font-size:12px;
-  font-weight:700;
+  font-weight:bold;
 }
+
 .content{
-  padding:25px;
   max-width:1500px;
   margin:auto;
+  padding:22px;
 }
+
 .grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:20px;
+  gap:18px;
 }
+
 .card{
-  background:#fff;
+  background:white;
   border:1px solid #e5e7eb;
   border-radius:16px;
   padding:20px;
-  box-shadow:0 4px 15px rgba(0,0,0,.04);
+  box-shadow:0 4px 16px rgba(0,0,0,.04);
 }
-.card h3{
+
+.full{
+  grid-column:1/-1;
+}
+
+h3{
   margin-top:0;
 }
-.full{grid-column:1/-1}
-textarea,input,select{
+
+textarea,
+input,
+select{
   width:100%;
-  border:1px solid #d1d5db;
-  border-radius:10px;
   padding:12px;
+  border:1px solid #cbd5e1;
+  border-radius:10px;
   font:inherit;
   outline:none;
 }
+
 textarea{
-  min-height:180px;
+  min-height:160px;
   resize:vertical;
 }
-textarea:focus,input:focus{
-  border-color:#3b82f6;
+
+textarea:focus,
+input:focus,
+select:focus{
+  border-color:#2563eb;
 }
+
 button{
   border:0;
+  padding:11px 16px;
   border-radius:10px;
-  padding:11px 17px;
   cursor:pointer;
-  font-weight:700;
+  font-weight:bold;
 }
+
 .primary{
   background:#2563eb;
-  color:#fff;
+  color:white;
 }
-.secondary{
+
+.success{
+  background:#16a34a;
+  color:white;
+}
+
+.dark{
+  background:#111827;
+  color:white;
+}
+
+.light{
   background:#e5e7eb;
   color:#111827;
 }
-.success{
-  background:#16a34a;
-  color:#fff;
+
+.orange{
+  background:#ea580c;
+  color:white;
 }
-.danger{
-  background:#dc2626;
-  color:#fff;
-}
+
 .actions{
   display:flex;
-  gap:10px;
+  gap:9px;
   flex-wrap:wrap;
-  margin-top:14px;
-}
-.drop{
-  border:2px dashed #cbd5e1;
-  padding:25px;
-  border-radius:12px;
-  text-align:center;
   margin-top:12px;
-  cursor:pointer;
 }
-.drop:hover{background:#f8fafc}
-table{
-  width:100%;
-  border-collapse:collapse;
-}
-th,td{
-  padding:11px;
-  border-bottom:1px solid #e5e7eb;
-  text-align:left;
-}
-th{
-  background:#f8fafc;
-}
-.kpis{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-}
-.kpi{
-  padding:16px;
-  border:1px solid #e5e7eb;
-  border-radius:12px;
-  background:#fafafa;
-}
-.kpi .label{
-  font-size:12px;
-  color:#64748b;
-}
-.kpi .value{
-  font-size:25px;
-  font-weight:800;
-  margin-top:5px;
-}
-.slide-list{
-  display:grid;
-  gap:12px;
-}
-.slide{
-  border:1px solid #dbe1ea;
-  border-radius:14px;
-  padding:17px;
-  background:#fff;
-}
-.slide-head{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-}
-.slide-number{
-  font-weight:800;
-  color:#2563eb;
-}
-.slide-title{
-  font-size:19px;
-  font-weight:800;
-}
-.slide-body{
-  margin-top:12px;
-  color:#475569;
-  line-height:1.6;
-}
-.notes{
-  background:#fff7ed;
-  padding:12px;
-  border-radius:10px;
-  margin-top:12px;
-  font-size:13px;
-}
-.chart-box{
-  height:320px;
-  margin-top:15px;
-}
+
 .small{
   font-size:12px;
   color:#64748b;
 }
-.hidden{display:none}
+
+.drop{
+  border:2px dashed #cbd5e1;
+  border-radius:12px;
+  padding:22px;
+  text-align:center;
+  cursor:pointer;
+  margin-bottom:12px;
+}
+
+.drop:hover{
+  background:#f8fafc;
+}
+
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+}
+
+.kpi{
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  border-radius:12px;
+  padding:15px;
+}
+
+.kpi-label{
+  font-size:12px;
+  color:#64748b;
+}
+
+.kpi-value{
+  font-size:23px;
+  font-weight:800;
+  margin-top:5px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,
+td{
+  border-bottom:1px solid #e5e7eb;
+  padding:10px;
+  text-align:left;
+}
+
+th{
+  background:#f8fafc;
+}
+
+.formula-box{
+  background:#0f172a;
+  color:#e2e8f0;
+  padding:15px;
+  border-radius:10px;
+  margin-top:10px;
+  overflow:auto;
+}
+
+.formula-row{
+  padding:8px 0;
+  border-bottom:1px solid #334155;
+}
+
+.formula-name{
+  color:#60a5fa;
+  font-weight:bold;
+}
+
+.slide{
+  border:1px solid #dbe1ea;
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:12px;
+  background:white;
+}
+
+.slide-number{
+  font-size:12px;
+  color:#2563eb;
+  font-weight:bold;
+}
+
+.slide-title{
+  font-size:20px;
+  font-weight:800;
+  margin:5px 0 10px;
+}
+
+.notes{
+  background:#fff7ed;
+  border-radius:9px;
+  padding:12px;
+  margin-top:12px;
+  font-size:13px;
+}
+
+.report{
+  border:1px solid #e2e8f0;
+  border-radius:12px;
+  padding:18px;
+  background:#fff;
+  line-height:1.7;
+}
+
+.chart-area{
+  height:340px;
+}
+
+canvas{
+  width:100%!important;
+  height:100%!important;
+}
+
+.status{
+  padding:10px;
+  background:#eff6ff;
+  color:#1d4ed8;
+  border-radius:10px;
+  margin-top:10px;
+  font-size:13px;
+}
 
 @media(max-width:900px){
+
   .sidebar{
-    width:70px;
-    padding:15px 8px;
+    width:68px;
+    padding:12px 7px;
   }
+
   .logo{
-    font-size:13px;
+    font-size:11px;
     text-align:center;
   }
+
   .menu{
     font-size:0;
     text-align:center;
   }
+
   .menu:first-letter{
-    font-size:20px;
+    font-size:19px;
   }
+
   .main{
-    margin-left:70px;
-    width:calc(100% - 70px);
+    margin-left:68px;
+    width:calc(100% - 68px);
   }
+
   .grid{
     grid-template-columns:1fr;
   }
-  .full{grid-column:auto}
+
+  .full{
+    grid-column:auto;
+  }
+
   .kpis{
     grid-template-columns:1fr 1fr;
   }
 }
 
-@media(max-width:600px){
-  .content{padding:12px}
-  .topbar{padding:0 14px}
-  .topbar h2{font-size:16px}
-  .kpis{grid-template-columns:1fr}
+@media(max-width:550px){
+
+  .content{
+    padding:10px;
+  }
+
+  .topbar{
+    padding:0 12px;
+  }
+
+  .topbar h2{
+    font-size:15px;
+  }
+
+  .kpis{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 </head>
@@ -264,180 +387,370 @@ th{
 
 <div class="app">
 
-  <aside class="sidebar">
-    <div class="logo">AI <span>Presentation</span></div>
+<aside class="sidebar">
 
-    <div class="menu active">🏠 Dashboard</div>
-    <div class="menu">🤖 AI Command</div>
-    <div class="menu">📊 Data Center</div>
-    <div class="menu">📑 Slides</div>
-    <div class="menu">📈 Charts</div>
-    <div class="menu">🎤 Speaker Notes</div>
-    <div class="menu">⚙️ Settings</div>
-  </aside>
+  <div class="logo">
+    AUNG <span>OFFICE</span>
+  </div>
 
-  <main class="main">
+  <div class="menu active">🏠 Dashboard</div>
+  <div class="menu">📊 Excel Formula</div>
+  <div class="menu">📑 PowerPoint</div>
+  <div class="menu">📝 Word</div>
+  <div class="menu">📈 Charts</div>
+  <div class="menu">💾 Projects</div>
 
-    <header class="topbar">
-      <h2>AI Data-Driven Presentation Generator</h2>
-      <div class="badge">LOCAL DEMO MODE</div>
-    </header>
+</aside>
 
-    <section class="content">
 
-      <div class="grid">
+<main class="main">
 
-        <!-- COMMAND -->
-        <div class="card">
-          <h3>🤖 AI Command</h3>
+<header class="topbar">
 
-          <p class="small">
-            မြန်မာလို Presentation instruction ရေးပါ
-          </p>
+  <h2>AUNG OFFICE FORMULA PRO V3</h2>
 
-          <textarea id="commandInput">
-2026 Q4 Sales Performance အတွက် Management Presentation လုပ်ပေးပါ။
-10 slides လုပ်ပါ။
-Sales Target နဲ့ Actual ကို comparison chart ထည့်ပါ။
-Region အလိုက် performance table ထည့်ပါ။
-Achievement % တွက်ပေးပါ။
-Growth နဲ့ KPI summary ပါထည့်ပါ။
-Slide တစ်ခုချင်းစီအတွက် Speaker Notes ရေးပေးပါ။
-          </textarea>
+  <div class="mode">
+    LOCAL FORMULA ENGINE
+  </div>
 
-          <div class="actions">
-            <button class="primary" onclick="generatePresentation()">
-              ✨ Generate Presentation
-            </button>
+</header>
 
-            <button class="secondary" onclick="clearAll()">
-              Clear
-            </button>
-          </div>
-        </div>
 
-        <!-- DATA -->
-        <div class="card">
-          <h3>📊 Data Center</h3>
+<section class="content">
 
-          <p class="small">
-            Excel / CSV data upload သို့မဟုတ် အောက်မှာ data ကို paste လုပ်နိုင်ပါတယ်
-          </p>
+<div class="grid">
 
-          <div class="drop" onclick="document.getElementById('fileInput').click()">
-            📂 Excel / CSV Upload
-            <input
-              id="fileInput"
-              type="file"
-              accept=".xlsx,.xls,.csv"
-              hidden
-              onchange="handleFile(event)"
-            >
-          </div>
 
-          <textarea id="dataInput" style="min-height:150px;margin-top:12px">Region,Target,Actual
+<!-- COMMAND -->
+
+<div class="card">
+
+<h3>🇲🇲 Command Center</h3>
+
+<p class="small">
+မြန်မာလို instruction ရေးပြီး Excel / PowerPoint / Word output ထုတ်ပါ
+</p>
+
+<textarea id="command">
+Sales performance report လုပ်ပေးပါ။
+Target နဲ့ Actual ကိုတွက်ပေးပါ။
+Achievement % နဲ့ Variance ထည့်ပါ။
+Region အလိုက် chart နဲ့ table ထည့်ပါ။
+PowerPoint 8 slides လုပ်ပါ။
+Speaker Notes ပါထည့်ပါ။
+Word management report လည်းလုပ်ပါ။
+</textarea>
+
+<div class="actions">
+
+<button class="primary" onclick="runCommand()">
+⚡ Run Command
+</button>
+
+<button class="light" onclick="loadExample()">
+Example
+</button>
+
+<button class="light" onclick="clearAll()">
+Clear
+</button>
+
+</div>
+
+<div id="commandStatus"></div>
+
+</div>
+
+
+<!-- DATA -->
+
+<div class="card">
+
+<h3>📊 Data Center</h3>
+
+<p class="small">
+Excel / CSV import သို့မဟုတ် data ကို paste လုပ်ပါ
+</p>
+
+<div class="drop"
+onclick="document.getElementById('fileInput').click()">
+
+📂 Excel / CSV Upload
+
+<input
+id="fileInput"
+type="file"
+accept=".xlsx,.xls,.csv"
+hidden
+onchange="importFile(event)"
+>
+
+</div>
+
+<textarea id="dataInput">Region,Target,Actual
 Yangon,500,450
 Mandalay,400,360
 Naypyidaw,300,330
 Taunggyi,250,225
 Mawlamyine,200,180</textarea>
 
-          <div class="actions">
-            <button class="secondary" onclick="parseData()">
-              Load Data
-            </button>
-          </div>
-        </div>
+<div class="actions">
 
-        <!-- KPI -->
-        <div class="card full">
-          <h3>📌 Data Analysis</h3>
+<button class="dark" onclick="loadData()">
+Load Data
+</button>
 
-          <div id="kpiArea" class="kpis">
-            <div class="kpi">
-              <div class="label">Total Target</div>
-              <div class="value" id="totalTarget">0</div>
-            </div>
+</div>
 
-            <div class="kpi">
-              <div class="label">Total Actual</div>
-              <div class="value" id="totalActual">0</div>
-            </div>
+</div>
 
-            <div class="kpi">
-              <div class="label">Achievement</div>
-              <div class="value" id="achievement">0%</div>
-            </div>
 
-            <div class="kpi">
-              <div class="label">Variance</div>
-              <div class="value" id="variance">0</div>
-            </div>
-          </div>
-        </div>
+<!-- KPI -->
 
-        <!-- TABLE -->
-        <div class="card full">
-          <h3>📋 Data Table</h3>
+<div class="card full">
 
-          <div id="tableArea">
-            <p class="small">Data Load လုပ်ပြီးနောက် table ပြပါမယ်</p>
-          </div>
-        </div>
+<h3>📌 KPI Analysis</h3>
 
-        <!-- CHART -->
-        <div class="card full">
-          <h3>📈 AI Chart</h3>
+<div class="kpis">
 
-          <div class="chart-box">
-            <canvas id="salesChart"></canvas>
-          </div>
-        </div>
+<div class="kpi">
+<div class="kpi-label">Total Target</div>
+<div class="kpi-value" id="kTarget">0</div>
+</div>
 
-        <!-- SLIDES -->
-        <div class="card full">
-          <h3>📑 Generated Presentation</h3>
+<div class="kpi">
+<div class="kpi-label">Total Actual</div>
+<div class="kpi-value" id="kActual">0</div>
+</div>
 
-          <div id="slideArea" class="slide-list">
-            <p class="small">
-              Generate Presentation ကိုနှိပ်ပြီး slides ထုတ်ပါ
-            </p>
-          </div>
-        </div>
+<div class="kpi">
+<div class="kpi-label">Achievement</div>
+<div class="kpi-value" id="kAchievement">0%</div>
+</div>
 
-        <!-- EXPORT -->
-        <div class="card full">
-          <h3>📤 Export</h3>
+<div class="kpi">
+<div class="kpi-label">Variance</div>
+<div class="kpi-value" id="kVariance">0</div>
+</div>
 
-          <p class="small">
-            ဒီ version မှာ Presentation JSON ကို export လုပ်နိုင်ပါတယ်။
-            နောက်အဆင့်မှာ PPTX engine နဲ့ တိုက်ရိုက် PowerPoint export ချိတ်နိုင်ပါတယ်။
-          </p>
+<div class="kpi">
+<div class="kpi-label">Rows</div>
+<div class="kpi-value" id="kRows">0</div>
+</div>
 
-          <div class="actions">
-            <button class="success" onclick="downloadJSON()">
-              Download Presentation JSON
-            </button>
+</div>
 
-            <button class="primary" onclick="printPresentation()">
-              Print / PDF
-            </button>
-          </div>
-        </div>
+</div>
 
-      </div>
 
-    </section>
+<!-- FORMULAS -->
 
-  </main>
+<div class="card full">
+
+<h3>🧮 Excel Formula Generator</h3>
+
+<div id="formulaArea"></div>
+
+</div>
+
+
+<!-- TABLE -->
+
+<div class="card full">
+
+<h3>📋 Data Table</h3>
+
+<div id="tableArea"></div>
+
+</div>
+
+
+<!-- CHART -->
+
+<div class="card full">
+
+<h3>📈 Chart Preview</h3>
+
+<div class="chart-area">
+<canvas id="chart"></canvas>
+</div>
+
+</div>
+
+
+<!-- POWERPOINT -->
+
+<div class="card full">
+
+<h3>📑 PowerPoint Generator</h3>
+
+<div id="slideArea"></div>
+
+<div class="actions">
+
+<button class="orange" onclick="generateSlides()">
+Generate Slides
+</button>
+
+<button class="primary" onclick="exportPPTX()">
+⬇ Export PowerPoint
+</button>
+
+</div>
+
+</div>
+
+
+<!-- WORD -->
+
+<div class="card full">
+
+<h3>📝 Word Report Generator</h3>
+
+<div id="wordPreview"></div>
+
+<div class="actions">
+
+<button class="success" onclick="generateWordReport()">
+Generate Word Report
+</button>
+
+<button class="dark" onclick="exportDOCX()">
+⬇ Export Word
+</button>
+
+</div>
+
+</div>
+
+
+<!-- EXCEL -->
+
+<div class="card full">
+
+<h3>📊 Excel Generator</h3>
+
+<p class="small">
+Data + formulas + KPI summary ကို Excel file အဖြစ် export လုပ်နိုင်ပါတယ်
+</p>
+
+<div class="actions">
+
+<button class="success" onclick="exportXLSX()">
+⬇ Export Excel
+</button>
+
+<button class="dark" onclick="saveProject()">
+💾 Save Project
+</button>
+
+<button class="light" onclick="loadProject()">
+📂 Load Project
+</button>
+
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+</main>
+
 </div>
 
 
 <script>
 
-let presentationData = [];
-let presentationJSON = null;
-let salesChart = null;
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+let rows = [];
+let formulas = {};
+let slides = [];
+let wordData = {};
+let chartInstance = null;
+
+
+/* =========================================================
+   COMMAND ENGINE
+========================================================= */
+
+function runCommand(){
+
+  const command =
+    document.getElementById("command").value
+      .toLowerCase();
+
+  loadData();
+
+  let detected = [];
+
+  if(
+    command.includes("excel") ||
+    command.includes("formula") ||
+    command.includes("တွက်")
+  ){
+    detected.push("Excel Formula");
+  }
+
+  if(
+    command.includes("powerpoint") ||
+    command.includes("ppt") ||
+    command.includes("slide") ||
+    command.includes("presentation")
+  ){
+    detected.push("PowerPoint");
+  }
+
+  if(
+    command.includes("word") ||
+    command.includes("report") ||
+    command.includes("စာတမ်း")
+  ){
+    detected.push("Word");
+  }
+
+  if(
+    command.includes("chart") ||
+    command.includes("graph") ||
+    command.includes("ဂရပ်")
+  ){
+    detected.push("Chart");
+  }
+
+  if(!detected.length){
+    detected.push(
+      "Excel Formula",
+      "PowerPoint",
+      "Word"
+    );
+  }
+
+  generateFormulas();
+
+  if(
+    detected.includes("PowerPoint")
+  ){
+    generateSlides();
+  }
+
+  if(
+    detected.includes("Word")
+  ){
+    generateWordReport();
+  }
+
+  document.getElementById("commandStatus")
+    .innerHTML =
+    `<div class="status">
+      Detected: ${detected.join(" • ")}
+    </div>`;
+
+}
 
 
 /* =========================================================
@@ -446,32 +759,37 @@ let salesChart = null;
 
 function parseCSV(text){
 
-  const lines = text.trim().split(/\r?\n/);
+  const lines =
+    text.trim()
+      .split(/\r?\n/)
+      .filter(Boolean);
 
-  if(lines.length < 2) return [];
+  if(lines.length < 2){
+    return [];
+  }
 
-  const headers = lines[0]
-    .split(",")
-    .map(x => x.trim());
+  const headers =
+    lines[0]
+      .split(",")
+      .map(x=>x.trim());
 
-  return lines.slice(1).map(line => {
+  return lines.slice(1).map(line=>{
 
-    const values = line.split(",");
+    const values =
+      line.split(",");
 
     const obj = {};
 
-    headers.forEach((header,index)=>{
+    headers.forEach((h,i)=>{
 
-      let value = values[index] ?? "";
+      let v =
+        (values[i] || "").trim();
 
-      value = value.trim();
+      if(v !== "" && !isNaN(Number(v))){
+        v = Number(v);
+      }
 
-      const numeric = Number(value);
-
-      obj[header] =
-        value !== "" && !isNaN(numeric)
-        ? numeric
-        : value;
+      obj[h] = v;
 
     });
 
@@ -486,16 +804,18 @@ function parseCSV(text){
    LOAD DATA
 ========================================================= */
 
-function parseData(){
+function loadData(){
 
-  const raw =
-    document.getElementById("dataInput").value;
+  rows =
+    parseCSV(
+      document.getElementById("dataInput").value
+    );
 
-  presentationData = parseCSV(raw);
-
-  analyzeData();
+  calculate();
 
   renderTable();
+
+  renderFormulas();
 
   renderChart();
 
@@ -503,46 +823,147 @@ function parseData(){
 
 
 /* =========================================================
-   ANALYSIS
+   CALCULATION ENGINE
 ========================================================= */
 
-function analyzeData(){
+function calculate(){
 
-  if(!presentationData.length) return;
+  let target = 0;
+  let actual = 0;
 
-  let totalTarget = 0;
-  let totalActual = 0;
+  rows.forEach(row=>{
 
-  presentationData.forEach(row=>{
+    target +=
+      Number(row.Target || 0);
 
-    totalTarget += Number(row.Target || 0);
-    totalActual += Number(row.Actual || 0);
+    actual +=
+      Number(row.Actual || 0);
 
   });
 
   const achievement =
-    totalTarget
-    ? (totalActual / totalTarget) * 100
-    : 0;
+    target === 0
+      ? 0
+      : actual / target * 100;
 
   const variance =
-    totalActual - totalTarget;
+    actual - target;
 
-  document.getElementById("totalTarget")
+  document.getElementById("kTarget")
     .textContent =
-    formatNumber(totalTarget);
+    format(target);
 
-  document.getElementById("totalActual")
+  document.getElementById("kActual")
     .textContent =
-    formatNumber(totalActual);
+    format(actual);
 
-  document.getElementById("achievement")
+  document.getElementById("kAchievement")
     .textContent =
     achievement.toFixed(1) + "%";
 
-  document.getElementById("variance")
+  document.getElementById("kVariance")
     .textContent =
-    formatNumber(variance);
+    format(variance);
+
+  document.getElementById("kRows")
+    .textContent =
+    rows.length;
+
+  formulas = {
+
+    totalTarget:
+      "=SUM(B2:B" + (rows.length+1) + ")",
+
+    totalActual:
+      "=SUM(C2:C" + (rows.length+1) + ")",
+
+    achievement:
+      "=IF(B" + (rows.length+2) +
+      "=0,0,C" + (rows.length+2) +
+      "/B" + (rows.length+2) + ")",
+
+    variance:
+      "=C" + (rows.length+2) +
+      "-B" + (rows.length+2)
+
+  };
+
+}
+
+
+/* =========================================================
+   FORMULA ENGINE
+========================================================= */
+
+function generateFormulas(){
+
+  loadData();
+
+}
+
+
+function renderFormulas(){
+
+  const last =
+    rows.length + 1;
+
+  document.getElementById("formulaArea")
+    .innerHTML = `
+
+<div class="formula-box">
+
+<div class="formula-row">
+<span class="formula-name">Total Target</span><br>
+=SUM(B2:B${last})
+</div>
+
+<div class="formula-row">
+<span class="formula-name">Total Actual</span><br>
+=SUM(C2:C${last})
+</div>
+
+<div class="formula-row">
+<span class="formula-name">Achievement %</span><br>
+=IF(B${last+1}=0,0,C${last+1}/B${last+1})
+</div>
+
+<div class="formula-row">
+<span class="formula-name">Variance</span><br>
+=C${last+1}-B${last+1}
+</div>
+
+<div class="formula-row">
+<span class="formula-name">Row Achievement %</span><br>
+=IF(B2=0,0,C2/B2)
+</div>
+
+<div class="formula-row">
+<span class="formula-name">Growth %</span><br>
+=IF(B2=0,0,(C2-B2)/B2)
+</div>
+
+<div class="formula-row">
+<span class="formula-name">Average Actual</span><br>
+=AVERAGE(C2:C${last})
+</div>
+
+<div class="formula-row">
+<span class="formula-name">Maximum Actual</span><br>
+=MAX(C2:C${last})
+</div>
+
+<div class="formula-row">
+<span class="formula-name">Minimum Actual</span><br>
+=MIN(C2:C${last})
+</div>
+
+<div class="formula-row">
+<span class="formula-name">Rank</span><br>
+=RANK(C2,$C$2:$C$${last},0)
+</div>
+
+</div>
+`;
 
 }
 
@@ -553,39 +974,31 @@ function analyzeData(){
 
 function renderTable(){
 
-  const area =
-    document.getElementById("tableArea");
+  if(!rows.length){
 
-  if(!presentationData.length){
-
-    area.innerHTML =
+    document.getElementById("tableArea")
+      .innerHTML =
       "<p class='small'>No data</p>";
 
     return;
+
   }
 
   const headers =
-    Object.keys(presentationData[0]);
+    Object.keys(rows[0]);
 
-  let html = "<table><thead><tr>";
+  let html =
+    "<table><thead><tr>";
 
   headers.forEach(h=>{
-    html += `<th>${escapeHTML(h)}</th>`;
+    html += `<th>${esc(h)}</th>`;
   });
 
   html += "<th>Achievement %</th>";
-
+  html += "<th>Variance</th>";
   html += "</tr></thead><tbody>";
 
-  presentationData.forEach(row=>{
-
-    html += "<tr>";
-
-    headers.forEach(h=>{
-
-      html += `<td>${escapeHTML(row[h])}</td>`;
-
-    });
+  rows.forEach(row=>{
 
     const target =
       Number(row.Target || 0);
@@ -594,12 +1007,24 @@ function renderTable(){
       Number(row.Actual || 0);
 
     const achievement =
-      target
-      ? (actual / target * 100)
-      : 0;
+      target === 0
+        ? 0
+        : actual/target*100;
+
+    const variance =
+      actual-target;
+
+    html += "<tr>";
+
+    headers.forEach(h=>{
+      html += `<td>${esc(row[h])}</td>`;
+    });
 
     html +=
       `<td>${achievement.toFixed(1)}%</td>`;
+
+    html +=
+      `<td>${format(variance)}</td>`;
 
     html += "</tr>";
 
@@ -607,7 +1032,8 @@ function renderTable(){
 
   html += "</tbody></table>";
 
-  area.innerHTML = html;
+  document.getElementById("tableArea")
+    .innerHTML = html;
 
 }
 
@@ -618,123 +1044,219 @@ function renderTable(){
 
 function renderChart(){
 
-  if(!presentationData.length) return;
+  if(chartInstance){
+    chartInstance.destroy();
+  }
+
+  const canvas =
+    document.getElementById("chart");
+
+  if(!rows.length) return;
 
   const labels =
-    presentationData.map(
-      row => row.Region || row.Name || "Item"
+    rows.map(r =>
+      r.Region ||
+      r.Name ||
+      r.Category ||
+      "Item"
     );
 
   const targets =
-    presentationData.map(
-      row => Number(row.Target || 0)
+    rows.map(r =>
+      Number(r.Target || 0)
     );
 
   const actuals =
-    presentationData.map(
-      row => Number(row.Actual || 0)
+    rows.map(r =>
+      Number(r.Actual || 0)
     );
 
-  const ctx =
-    document.getElementById("salesChart");
+  chartInstance =
+    new Chart(
+      canvas,
+      {
+        type:"bar",
 
-  if(salesChart){
+        data:{
+          labels:labels,
 
-    salesChart.destroy();
-
-  }
-
-  salesChart =
-    new Chart(ctx,{
-
-      type:"bar",
-
-      data:{
-        labels,
-
-        datasets:[
-
-          {
-            label:"Target",
-            data:targets
-          },
-
-          {
-            label:"Actual",
-            data:actuals
-          }
-
-        ]
-      },
-
-      options:{
-        responsive:true,
-        maintainAspectRatio:false,
-
-        plugins:{
-          legend:{
-            position:"bottom"
-          }
+          datasets:[
+            {
+              label:"Target",
+              data:targets
+            },
+            {
+              label:"Actual",
+              data:actuals
+            }
+          ]
         },
 
-        scales:{
-          y:{
-            beginAtZero:true
+        options:{
+          responsive:true,
+          maintainAspectRatio:false,
+
+          plugins:{
+            legend:{
+              position:"bottom"
+            }
+          },
+
+          scales:{
+            y:{
+              beginAtZero:true
+            }
           }
         }
       }
-
-    });
+    );
 
 }
 
 
 /* =========================================================
-   AI PRESENTATION GENERATOR
+   POWERPOINT SLIDE ENGINE
 ========================================================= */
 
-function generatePresentation(){
+function generateSlides(){
 
-  parseData();
-
-  const command =
-    document
-      .getElementById("commandInput")
-      .value
-      .trim();
-
-  if(!command){
-
-    alert("Command ရေးပေးပါ");
-
-    return;
-
+  if(!rows.length){
+    loadData();
   }
 
-  const analysis =
-    calculateAnalysis();
+  const totalTarget =
+    rows.reduce(
+      (s,r)=>s+Number(r.Target||0),
+      0
+    );
 
-  presentationJSON = {
+  const totalActual =
+    rows.reduce(
+      (s,r)=>s+Number(r.Actual||0),
+      0
+    );
 
-    version:"2.0",
+  const achievement =
+    totalTarget
+      ? totalActual/totalTarget*100
+      : 0;
 
-    mode:"local-demo",
+  const variance =
+    totalActual-totalTarget;
 
-    command:command,
+  const best =
+    [...rows].sort(
+      (a,b)=>
+        Number(b.Actual||0)-
+        Number(a.Actual||0)
+    )[0];
 
-    data:{
+  const worst =
+    [...rows].sort(
+      (a,b)=>
+        Number(a.Actual||0)-
+        Number(b.Actual||0)
+    )[0];
 
-      source:"User Input",
+  slides = [
 
-      rows:presentationData,
-
-      analysis:analysis
-
+    {
+      title:"Sales Performance",
+      bullets:[
+        "Management Presentation",
+        "Target vs Actual",
+        "Regional Performance"
+      ],
+      notes:
+      "ဒီ presentation မှာ sales performance ကို target, actual နဲ့ regional performance အပေါ်အခြေခံပြီး တင်ပြပါမယ်။"
     },
 
-    slides:buildSlides(command,analysis)
+    {
+      title:"Executive Summary",
+      bullets:[
+        "Total Target: "+format(totalTarget),
+        "Total Actual: "+format(totalActual),
+        "Achievement: "+achievement.toFixed(1)+"%",
+        "Variance: "+format(variance)
+      ],
+      notes:
+      "စုစုပေါင်း target နဲ့ actual ကို နှိုင်းယှဉ်ပြီး overall achievement ကို ရှင်းပြပါ။"
+    },
 
-  };
+    {
+      title:"Target vs Actual",
+      bullets:[
+        "Compare target and actual by region",
+        "Identify performance gaps"
+      ],
+      notes:
+      "ဒီ slide မှာ region တစ်ခုချင်းစီရဲ့ target နဲ့ actual ကို နှိုင်းယှဉ်ပြပါ။"
+    },
+
+    {
+      title:"Regional Performance",
+      bullets:
+        rows.map(r=>{
+          const a =
+            Number(r.Target||0)
+              ? Number(r.Actual||0) /
+                Number(r.Target||0)*100
+              : 0;
+
+          return `${r.Region||"Region"} — ${a.toFixed(1)}%`;
+        }),
+      notes:
+        "Region အလိုက် achievement percentage ကို အသေးစိတ်ရှင်းပြပါ။"
+    },
+
+    {
+      title:"KPI Summary",
+      bullets:[
+        "Achievement: "+achievement.toFixed(1)+"%",
+        "Variance: "+format(variance),
+        "Best Actual: "+(best?.Region||"N/A"),
+        "Lowest Actual: "+(worst?.Region||"N/A")
+      ],
+      notes:
+        "Management အတွက် အဓိက KPI တွေကို ဒီ slide မှာ အကျဉ်းချုပ်တင်ပြပါ။"
+    },
+
+    {
+      title:"Performance Insight",
+      bullets:[
+        `Highest Actual: ${best?.Region||"N/A"}`,
+        `Lowest Actual: ${worst?.Region||"N/A"}`,
+        "Review target gaps by region"
+      ],
+      notes:
+        "Data ထဲမှာ actual performance အမြင့်ဆုံးနဲ့ အနိမ့်ဆုံး region တွေကို ပြသပြီး gap ကို review လုပ်ပါ။"
+    },
+
+    {
+      title:"Action Plan",
+      bullets:[
+        "Review underperforming regions",
+        "Identify root causes",
+        "Set weekly action plan",
+        "Monitor execution"
+      ],
+      notes:
+        "Performance gap ရှိတဲ့ region တွေအတွက် root cause analysis နဲ့ weekly action plan ချမှတ်ဖို့ အကြံပြုထားပါတယ်။"
+    },
+
+    {
+      title:"Conclusion",
+      bullets:[
+        "Review target achievement",
+        "Close performance gaps",
+        "Monitor weekly results",
+        "Adjust execution plan"
+      ],
+      notes:
+        "နိဂုံးချုပ်အနေနဲ့ target achievement နဲ့ performance gap ကို ဆက်လက် monitor လုပ်ပြီး execution plan ကို လိုအပ်သလို ပြင်ဆင်ပါ။"
+    }
+
+  ];
 
   renderSlides();
 
@@ -742,347 +1264,7 @@ function generatePresentation(){
 
 
 /* =========================================================
-   CALCULATE
-========================================================= */
-
-function calculateAnalysis(){
-
-  let target = 0;
-  let actual = 0;
-
-  presentationData.forEach(row=>{
-
-    target += Number(row.Target || 0);
-
-    actual += Number(row.Actual || 0);
-
-  });
-
-  const achievement =
-    target
-    ? actual / target * 100
-    : 0;
-
-  return {
-
-    totalTarget:target,
-
-    totalActual:actual,
-
-    variance:actual-target,
-
-    achievement:Number(
-      achievement.toFixed(2)
-    )
-
-  };
-
-}
-
-
-/* =========================================================
-   SLIDE BUILDER
-========================================================= */
-
-function buildSlides(command,analysis){
-
-  const rows =
-    presentationData;
-
-  const slides = [];
-
-  /* 1 */
-
-  slides.push({
-
-    type:"title",
-
-    title:"2026 Q4 Sales Performance",
-
-    subtitle:"Management Presentation",
-
-    notes:
-      "မင်္ဂလာပါ။ ဒီ presentation မှာ 2026 Q4 sales performance ကို target, actual, achievement နဲ့ regional performance အလိုက် တင်ပြသွားမှာဖြစ်ပါတယ်။"
-
-  });
-
-
-  /* 2 */
-
-  slides.push({
-
-    type:"summary",
-
-    title:"Executive Summary",
-
-    bullets:[
-
-      `Total Target: ${formatNumber(analysis.totalTarget)}`,
-
-      `Total Actual: ${formatNumber(analysis.totalActual)}`,
-
-      `Achievement: ${analysis.achievement}%`,
-
-      `Variance: ${formatNumber(analysis.variance)}`
-
-    ],
-
-    notes:
-      `စုစုပေါင်း target က ${formatNumber(analysis.totalTarget)} ဖြစ်ပြီး actual က ${formatNumber(analysis.totalActual)} ရရှိထားပါတယ်။ Overall achievement က ${analysis.achievement}% ဖြစ်ပါတယ်။`
-
-  });
-
-
-  /* 3 */
-
-  slides.push({
-
-    type:"chart",
-
-    title:"Target vs Actual by Region",
-
-    chart:"bar",
-
-    data:rows,
-
-    notes:
-      "ဒီ slide မှာ region တစ်ခုချင်းစီရဲ့ target နဲ့ actual performance ကို နှိုင်းယှဉ်ပြထားပါတယ်။"
-
-  });
-
-
-  /* 4 */
-
-  slides.push({
-
-    type:"table",
-
-    title:"Regional Performance",
-
-    data:rows,
-
-    notes:
-      "ဒီ table မှာ region အလိုက် target, actual နဲ့ achievement percentage ကို အသေးစိတ်ပြထားပါတယ်။"
-
-  });
-
-
-  /* 5 */
-
-  slides.push({
-
-    type:"kpi",
-
-    title:"Key Performance Indicators",
-
-    bullets:[
-
-      `Target: ${formatNumber(analysis.totalTarget)}`,
-
-      `Actual: ${formatNumber(analysis.totalActual)}`,
-
-      `Achievement: ${analysis.achievement}%`,
-
-      `Variance: ${formatNumber(analysis.variance)}`
-
-    ],
-
-    notes:
-      "Management အနေနဲ့ အဓိကကြည့်ရမယ့် KPI တွေက Target, Actual, Achievement နဲ့ Variance ဖြစ်ပါတယ်။"
-
-  });
-
-
-  /* 6 */
-
-  slides.push({
-
-    type:"insight",
-
-    title:"Performance Insights",
-
-    bullets:getInsights(),
-
-    notes:
-      "ဒီ slide မှာ data အပေါ်အခြေခံပြီး တွေ့ရှိရတဲ့ performance insights တွေကို အကျဉ်းချုပ်တင်ပြထားပါတယ်။"
-
-  });
-
-
-  /* 7 */
-
-  slides.push({
-
-    type:"strategy",
-
-    title:"Recommended Action Areas",
-
-    bullets:[
-
-      "Low achievement regions ကို root cause analysis လုပ်ရန်",
-
-      "High achievement regions မှ best practices ကို replicate လုပ်ရန်",
-
-      "Target gap အပေါ် weekly action plan တည်ဆောက်ရန်",
-
-      "Sales execution နဲ့ follow-up ကို ပိုမိုတင်းကျပ်စွာ monitor လုပ်ရန်"
-
-    ],
-
-    notes:
-      "Performance gap ရှိတဲ့ region တွေမှာ root cause ကိုရှာပြီး action plan ချမှတ်ဖို့လိုပါတယ်။"
-
-  });
-
-
-  /* 8 */
-
-  slides.push({
-
-    type:"action",
-
-    title:"90-Day Action Plan",
-
-    bullets:[
-
-      "Month 1 — Diagnose & Prioritize",
-
-      "Month 2 — Execute & Monitor",
-
-      "Month 3 — Optimize & Scale"
-
-    ],
-
-    notes:
-      "လာမယ့် 90 days အတွင်းမှာ diagnose, execute, optimize ဆိုတဲ့ အဆင့်သုံးဆင့်နဲ့ ဆောင်ရွက်သွားနိုင်ပါတယ်။"
-
-  });
-
-
-  /* 9 */
-
-  slides.push({
-
-    type:"management",
-
-    title:"Management Focus",
-
-    bullets:[
-
-      "Sales Target Achievement",
-
-      "Regional Execution",
-
-      "Customer Coverage",
-
-      "Productivity",
-
-      "Gap Closing"
-
-    ],
-
-    notes:
-      "Management focus အနေနဲ့ target achievement တစ်ခုတည်းမဟုတ်ဘဲ execution quality နဲ့ gap closing ကိုပါ ဆက်လက် monitor လုပ်သင့်ပါတယ်။"
-
-  });
-
-
-  /* 10 */
-
-  slides.push({
-
-    type:"closing",
-
-    title:"Conclusion",
-
-    bullets:[
-
-      `Overall Achievement: ${analysis.achievement}%`,
-
-      "Continue monitoring weekly performance",
-
-      "Close regional gaps with focused actions",
-
-      "Review results and adjust strategy"
-
-    ],
-
-    notes:
-      `နိဂုံးချုပ်အနေနဲ့ overall achievement က ${analysis.achievement}% ဖြစ်ပါတယ်။ လာမယ့်ကာလမှာ gap closing နဲ့ execution monitoring ကို အဓိကထားဆောင်ရွက်နိုင်ပါတယ်။`
-
-  });
-
-
-  return slides;
-
-}
-
-
-/* =========================================================
-   INSIGHTS
-========================================================= */
-
-function getInsights(){
-
-  if(!presentationData.length){
-
-    return ["No data available"];
-
-  }
-
-  const insights = [];
-
-  const sorted =
-    [...presentationData]
-      .sort((a,b)=>{
-
-        const aa =
-          Number(a.Actual || 0) /
-          Number(a.Target || 1);
-
-        const bb =
-          Number(b.Actual || 0) /
-          Number(b.Target || 1);
-
-        return bb-aa;
-
-      });
-
-  const best =
-    sorted[0];
-
-  const worst =
-    sorted[sorted.length-1];
-
-  const bestAchievement =
-    Number(best.Actual || 0) /
-    Number(best.Target || 1) *
-    100;
-
-  const worstAchievement =
-    Number(worst.Actual || 0) /
-    Number(worst.Target || 1) *
-    100;
-
-  insights.push(
-    `${best.Region || "Top region"} has the highest achievement at ${bestAchievement.toFixed(1)}%`
-  );
-
-  insights.push(
-    `${worst.Region || "Lowest region"} requires additional focus at ${worstAchievement.toFixed(1)}%`
-  );
-
-  insights.push(
-    "Regional performance should be reviewed regularly against target"
-  );
-
-  return insights;
-
-}
-
-
-/* =========================================================
-   RENDER SLIDES
+   SLIDE PREVIEW
 ========================================================= */
 
 function renderSlides(){
@@ -1092,84 +1274,43 @@ function renderSlides(){
 
   area.innerHTML = "";
 
-  presentationJSON.slides.forEach((slide,index)=>{
+  slides.forEach((slide,i)=>{
 
-    const box =
-      document.createElement("div");
+    let bullets = "";
 
-    box.className = "slide";
+    slide.bullets.forEach(b=>{
+      bullets += `<li>${esc(b)}</li>`;
+    });
 
-    let body = "";
+    area.innerHTML += `
 
-    if(slide.bullets){
+<div class="slide">
 
-      body += "<ul>";
+<div class="slide-number">
+SLIDE ${i+1}
+</div>
 
-      slide.bullets.forEach(b=>{
+<div class="slide-title">
+${esc(slide.title)}
+</div>
 
-        body +=
-          `<li>${escapeHTML(b)}</li>`;
+<ul>
+${bullets}
+</ul>
 
-      });
+<div class="notes">
 
-      body += "</ul>";
+<strong>🎤 Speaker Notes</strong>
 
-    }
+<br><br>
 
-    if(slide.type === "table"){
+${esc(slide.notes)}
 
-      body += buildSlideTable(slide.data);
+</div>
 
-    }
+</div>
 
-    if(slide.type === "chart"){
-
-      body +=
-        `<div class="small">
-          📊 Chart Data: ${slide.data.length} regions
-        </div>`;
-
-    }
-
-    box.innerHTML = `
-
-      <div class="slide-head">
-
-        <div>
-
-          <div class="slide-number">
-            SLIDE ${index+1}
-          </div>
-
-          <div class="slide-title">
-            ${escapeHTML(slide.title)}
-          </div>
-
-        </div>
-
-        <div class="small">
-          ${slide.type}
-        </div>
-
-      </div>
-
-      <div class="slide-body">
-        ${body}
-      </div>
-
-      <div class="notes">
-
-        <strong>🎤 Speaker Notes</strong>
-
-        <br><br>
-
-        ${escapeHTML(slide.notes)}
-
-      </div>
-
-    `;
-
-    area.appendChild(box);
+`;
 
   });
 
@@ -1177,70 +1318,691 @@ function renderSlides(){
 
 
 /* =========================================================
-   SLIDE TABLE
+   POWERPOINT EXPORT
 ========================================================= */
 
-function buildSlideTable(rows){
+async function exportPPTX(){
 
-  if(!rows || !rows.length) return "";
+  if(!slides.length){
+    generateSlides();
+  }
 
-  const headers =
-    Object.keys(rows[0]);
+  const pptx =
+    new PptxGenJS();
 
-  let html =
-    "<table><thead><tr>";
+  pptx.layout = "LAYOUT_WIDE";
 
-  headers.forEach(h=>{
+  pptx.author =
+    "AUNG OFFICE FORMULA PRO";
 
-    html +=
-      `<th>${escapeHTML(h)}</th>`;
+  pptx.subject =
+    "Data Driven Sales Presentation";
+
+  pptx.title =
+    "Sales Performance";
+
+  slides.forEach((slide,index)=>{
+
+    const s =
+      pptx.addSlide();
+
+    s.background = {
+      color:"F8FAFC"
+    };
+
+    s.addText(
+      `SLIDE ${index+1}`,
+      {
+        x:.6,
+        y:.35,
+        w:2,
+        h:.3,
+        fontSize:10,
+        bold:true,
+        color:"2563EB"
+      }
+    );
+
+    s.addText(
+      slide.title,
+      {
+        x:.6,
+        y:.8,
+        w:11.5,
+        h:.6,
+        fontSize:27,
+        bold:true,
+        color:"111827"
+      }
+    );
+
+    const bulletText =
+      slide.bullets
+        .map(x=>({
+          text:x,
+          options:{
+            bullet:{
+              indent:14
+            },
+            hanging:4
+          }
+        }));
+
+    s.addText(
+      bulletText,
+      {
+        x:.8,
+        y:1.7,
+        w:10.5,
+        h:3.5,
+        fontSize:18,
+        color:"334155",
+        breakLine:false,
+        valign:"top",
+        margin:.05
+      }
+    );
+
+    s.addNotes(
+      slide.notes
+    );
+
+    if(index === 2){
+
+      const chartData = [
+
+        {
+          name:"Target",
+          labels:rows.map(
+            r=>String(
+              r.Region ||
+              r.Name ||
+              "Item"
+            )
+          ),
+          values:rows.map(
+            r=>Number(r.Target||0)
+          )
+        },
+
+        {
+          name:"Actual",
+          labels:rows.map(
+            r=>String(
+              r.Region ||
+              r.Name ||
+              "Item"
+            )
+          ),
+          values:rows.map(
+            r=>Number(r.Actual||0)
+          )
+        }
+
+      ];
+
+      s.addChart(
+        pptx.ChartType.bar,
+        chartData,
+        {
+          x:1,
+          y:4.9,
+          w:11,
+          h:2.2,
+          showLegend:true,
+          showTitle:false,
+          catAxisLabelFontSize:10,
+          valAxisLabelFontSize:9
+        }
+      );
+
+    }
 
   });
 
-  html +=
-    "<th>Achievement</th></tr></thead><tbody>";
+  await pptx.writeFile({
+    fileName:
+      "AUNG_Sales_Presentation.pptx"
+  });
 
-  rows.forEach(row=>{
+}
 
-    html += "<tr>";
 
-    headers.forEach(h=>{
+/* =========================================================
+   WORD REPORT
+========================================================= */
 
-      html +=
-        `<td>${escapeHTML(row[h])}</td>`;
+function generateWordReport(){
 
-    });
+  const totalTarget =
+    rows.reduce(
+      (s,r)=>s+Number(r.Target||0),
+      0
+    );
+
+  const totalActual =
+    rows.reduce(
+      (s,r)=>s+Number(r.Actual||0),
+      0
+    );
+
+  const achievement =
+    totalTarget
+      ? totalActual/totalTarget*100
+      : 0;
+
+  const variance =
+    totalActual-totalTarget;
+
+  wordData = {
+    title:"Sales Performance Management Report",
+
+    summary:[
+      "Total Target: "+format(totalTarget),
+      "Total Actual: "+format(totalActual),
+      "Achievement: "+achievement.toFixed(1)+"%",
+      "Variance: "+format(variance)
+    ],
+
+    rows:rows,
+
+    conclusion:
+      "Sales performance should be reviewed regularly against target and regional gaps should be addressed through focused action plans."
+  };
+
+  let html = `
+
+<div class="report">
+
+<h2>Sales Performance Management Report</h2>
+
+<h3>Executive Summary</h3>
+
+<ul>
+
+<li>Total Target: ${format(totalTarget)}</li>
+
+<li>Total Actual: ${format(totalActual)}</li>
+
+<li>Achievement: ${achievement.toFixed(1)}%</li>
+
+<li>Variance: ${format(variance)}</li>
+
+</ul>
+
+<h3>Regional Performance</h3>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Region</th>
+<th>Target</th>
+<th>Actual</th>
+<th>Achievement</th>
+</tr>
+
+</thead>
+
+<tbody>
+`;
+
+  rows.forEach(r=>{
 
     const target =
-      Number(row.Target || 0);
+      Number(r.Target||0);
 
     const actual =
-      Number(row.Actual || 0);
+      Number(r.Actual||0);
+
+    const ach =
+      target
+        ? actual/target*100
+        : 0;
+
+    html += `
+
+<tr>
+
+<td>${esc(r.Region||"")}</td>
+
+<td>${format(target)}</td>
+
+<td>${format(actual)}</td>
+
+<td>${ach.toFixed(1)}%</td>
+
+</tr>
+
+`;
+
+  });
+
+  html += `
+
+</tbody>
+
+</table>
+
+<h3>Key Findings</h3>
+
+<ul>
+
+<li>Review regional performance against target</li>
+
+<li>Identify target gaps and root causes</li>
+
+<li>Monitor weekly execution</li>
+
+</ul>
+
+<h3>Action Plan</h3>
+
+<ol>
+
+<li>Review underperforming regions</li>
+
+<li>Set corrective actions</li>
+
+<li>Monitor weekly KPI performance</li>
+
+<li>Adjust execution plan</li>
+
+</ol>
+
+<h3>Conclusion</h3>
+
+<p>
+${wordData.conclusion}
+</p>
+
+</div>
+`;
+
+  document.getElementById("wordPreview")
+    .innerHTML = html;
+
+}
+
+
+/* =========================================================
+   DOCX EXPORT
+========================================================= */
+
+async function exportDOCX(){
+
+  if(!wordData.title){
+    generateWordReport();
+  }
+
+  const {
+    Document,
+    Packer,
+    Paragraph,
+    HeadingLevel,
+    Table,
+    TableRow,
+    TableCell,
+    WidthType
+  } = docx;
+
+  const children = [];
+
+  children.push(
+    new Paragraph({
+      text:wordData.title,
+      heading:HeadingLevel.TITLE
+    })
+  );
+
+  children.push(
+    new Paragraph({
+      text:"Executive Summary",
+      heading:HeadingLevel.HEADING_1
+    })
+  );
+
+  wordData.summary.forEach(x=>{
+
+    children.push(
+      new Paragraph({
+        text:x,
+        bullet:{
+          level:0
+        }
+      })
+    );
+
+  });
+
+  children.push(
+    new Paragraph({
+      text:"Regional Performance",
+      heading:HeadingLevel.HEADING_1
+    })
+  );
+
+  const tableRows = [];
+
+  tableRows.push(
+    new TableRow({
+      children:[
+        new TableCell({
+          children:[
+            new Paragraph("Region")
+          ]
+        }),
+        new TableCell({
+          children:[
+            new Paragraph("Target")
+          ]
+        }),
+        new TableCell({
+          children:[
+            new Paragraph("Actual")
+          ]
+        }),
+        new TableCell({
+          children:[
+            new Paragraph("Achievement")
+          ]
+        })
+      ]
+    })
+  );
+
+  rows.forEach(r=>{
+
+    const target =
+      Number(r.Target||0);
+
+    const actual =
+      Number(r.Actual||0);
 
     const achievement =
       target
-      ? actual/target*100
-      : 0;
+        ? actual/target*100
+        : 0;
 
-    html +=
-      `<td>${achievement.toFixed(1)}%</td>`;
-
-    html += "</tr>";
+    tableRows.push(
+      new TableRow({
+        children:[
+          new TableCell({
+            children:[
+              new Paragraph(
+                String(r.Region||"")
+              )
+            ]
+          }),
+          new TableCell({
+            children:[
+              new Paragraph(
+                format(target)
+              )
+            ]
+          }),
+          new TableCell({
+            children:[
+              new Paragraph(
+                format(actual)
+              )
+            ]
+          }),
+          new TableCell({
+            children:[
+              new Paragraph(
+                achievement.toFixed(1)+"%"
+              )
+            ]
+          })
+        ]
+      })
+    );
 
   });
 
-  html += "</tbody></table>";
+  children.push(
+    new Table({
+      width:{
+        size:100,
+        type:WidthType.PERCENTAGE
+      },
+      rows:tableRows
+    })
+  );
 
-  return html;
+  children.push(
+    new Paragraph({
+      text:"Action Plan",
+      heading:HeadingLevel.HEADING_1
+    })
+  );
+
+  [
+    "Review underperforming regions",
+    "Identify root causes",
+    "Set corrective actions",
+    "Monitor weekly KPI performance"
+  ].forEach(x=>{
+
+    children.push(
+      new Paragraph({
+        text:x,
+        bullet:{
+          level:0
+        }
+      })
+    );
+
+  });
+
+  children.push(
+    new Paragraph({
+      text:"Conclusion",
+      heading:HeadingLevel.HEADING_1
+    })
+  );
+
+  children.push(
+    new Paragraph({
+      text:wordData.conclusion
+    })
+  );
+
+  const document =
+    new Document({
+      sections:[
+        {
+          properties:{},
+          children:children
+        }
+      ]
+    });
+
+  const blob =
+    await Packer.toBlob(document);
+
+  downloadBlob(
+    blob,
+    "AUNG_Sales_Management_Report.docx"
+  );
 
 }
 
 
 /* =========================================================
-   EXCEL / CSV
+   EXCEL EXPORT
 ========================================================= */
 
-function handleFile(event){
+async function exportXLSX(){
+
+  if(!rows.length){
+    loadData();
+  }
+
+  const workbook =
+    new ExcelJS.Workbook();
+
+  workbook.creator =
+    "AUNG OFFICE FORMULA PRO";
+
+  const sheet =
+    workbook.addWorksheet(
+      "Sales Data"
+    );
+
+  const headers =
+    Object.keys(rows[0] || {
+      Region:"",
+      Target:"",
+      Actual:""
+    });
+
+  sheet.addRow(
+    headers.concat([
+      "Achievement %",
+      "Variance",
+      "Growth %"
+    ])
+  );
+
+  rows.forEach((row,i)=>{
+
+    const excelRow =
+      i+2;
+
+    sheet.addRow(
+      headers.map(
+        h=>row[h]
+      ).concat([
+
+        {
+          formula:
+            `IF(B${excelRow}=0,0,C${excelRow}/B${excelRow})`
+        },
+
+        {
+          formula:
+            `C${excelRow}-B${excelRow}`
+        },
+
+        {
+          formula:
+            `IF(B${excelRow}=0,0,(C${excelRow}-B${excelRow})/B${excelRow})`
+        }
+
+      ])
+    );
+
+  });
+
+  /* HEADER */
+
+  sheet.getRow(1).font = {
+    bold:true
+  };
+
+  sheet.freezePanes = {
+    ySplit:1
+  };
+
+  /* FORMATS */
+
+  for(
+    let i=2;
+    i<=rows.length+1;
+    i++
+  ){
+
+    sheet.getCell(i,4)
+      .numFmt="0.0%";
+
+    sheet.getCell(i,6)
+      .numFmt="0.0%";
+
+  }
+
+  /* SUMMARY */
+
+  const summary =
+    workbook.addWorksheet(
+      "KPI Summary"
+    );
+
+  summary.addRows([
+
+    ["KPI","Formula"],
+
+    [
+      "Total Target",
+      `=SUM(B2:B${rows.length+1})`
+    ],
+
+    [
+      "Total Actual",
+      `=SUM(C2:C${rows.length+1})`
+    ],
+
+    [
+      "Achievement %",
+      `=IF(B${rows.length+2}=0,0,C${rows.length+2}/B${rows.length+2})`
+    ],
+
+    [
+      "Variance",
+      `=C${rows.length+2}-B${rows.length+2}`
+    ],
+
+    [
+      "Average Actual",
+      `=AVERAGE(C2:C${rows.length+1})`
+    ],
+
+    [
+      "Maximum Actual",
+      `=MAX(C2:C${rows.length+1})`
+    ],
+
+    [
+      "Minimum Actual",
+      `=MIN(C2:C${rows.length+1})`
+    ]
+
+  ]);
+
+  summary.getRow(1).font = {
+    bold:true
+  };
+
+  summary.getColumn(1).width = 25;
+  summary.getColumn(2).width = 55;
+
+  const buffer =
+    await workbook.xlsx.writeBuffer();
+
+  const blob =
+    new Blob(
+      [buffer],
+      {
+        type:
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      }
+    );
+
+  downloadBlob(
+    blob,
+    "AUNG_Sales_Data_Formula.xlsx"
+  );
+
+}
+
+
+/* =========================================================
+   EXCEL / CSV IMPORT
+========================================================= */
+
+function importFile(event){
 
   const file =
     event.target.files[0];
@@ -1250,83 +2012,111 @@ function handleFile(event){
   const reader =
     new FileReader();
 
-  reader.onload =
-    function(e){
+  if(
+    file.name.toLowerCase()
+      .endsWith(".csv")
+  ){
 
-      const data =
-        e.target.result;
+    reader.onload = e=>{
 
-      if(
-        file.name.toLowerCase().endsWith(".csv")
-      ){
+      document.getElementById(
+        "dataInput"
+      ).value = e.target.result;
 
-        document.getElementById("dataInput")
-          .value = data;
-
-        parseData();
-
-        return;
-
-      }
-
-      const workbook =
-        XLSX.read(data,{
-          type:"array"
-        });
-
-      const firstSheet =
-        workbook.Sheets[
-          workbook.SheetNames[0]
-        ];
-
-      const csv =
-        XLSX.utils.sheet_to_csv(
-          firstSheet
-        );
-
-      document.getElementById("dataInput")
-        .value = csv;
-
-      parseData();
+      loadData();
 
     };
 
-  if(
-    file.name.toLowerCase().endsWith(".csv")
-  ){
-
     reader.readAsText(file);
 
-  }else{
-
-    reader.readAsArrayBuffer(file);
-
+    return;
   }
+
+  reader.onload = async e=>{
+
+    const workbook =
+      new ExcelJS.Workbook();
+
+    await workbook.xlsx.load(
+      e.target.result
+    );
+
+    const sheet =
+      workbook.worksheets[0];
+
+    const values = [];
+
+    sheet.eachRow(
+      row=>{
+        values.push(
+          row.values
+            .slice(1)
+            .map(v =>
+              v === null ||
+              v === undefined
+                ? ""
+                : v
+            )
+        );
+      }
+    );
+
+    if(values.length){
+
+      const csv =
+        values
+          .map(row =>
+            row.map(v =>
+              String(v)
+                .replaceAll(","," ")
+            ).join(",")
+          )
+          .join("\n");
+
+      document.getElementById(
+        "dataInput"
+      ).value = csv;
+
+      loadData();
+
+    }
+
+  };
+
+  reader.readAsArrayBuffer(file);
 
 }
 
 
 /* =========================================================
-   DOWNLOAD JSON
+   PROJECT SAVE
 ========================================================= */
 
-function downloadJSON(){
+function saveProject(){
 
-  if(!presentationJSON){
+  const project = {
 
-    alert(
-      "အရင် Generate Presentation လုပ်ပါ"
-    );
+    version:"3.0",
 
-    return;
+    command:
+      document.getElementById(
+        "command"
+      ).value,
 
-  }
+    data:
+      document.getElementById(
+        "dataInput"
+      ).value,
+
+    slides:slides
+
+  };
 
   const blob =
     new Blob(
       [
         JSON.stringify(
-          presentationJSON,
+          project,
           null,
           2
         )
@@ -1336,31 +2126,156 @@ function downloadJSON(){
       }
     );
 
-  const url =
-    URL.createObjectURL(blob);
-
-  const a =
-    document.createElement("a");
-
-  a.href = url;
-
-  a.download =
-    "AI-Presentation-Data.json";
-
-  a.click();
-
-  URL.revokeObjectURL(url);
+  downloadBlob(
+    blob,
+    "AUNG_OFFICE_PROJECT.json"
+  );
 
 }
 
 
 /* =========================================================
-   PRINT
+   PROJECT LOAD
 ========================================================= */
 
-function printPresentation(){
+function loadProject(){
 
-  window.print();
+  const input =
+    document.createElement("input");
+
+  input.type="file";
+  input.accept=".json";
+
+  input.onchange =
+    async e=>{
+
+      const file =
+        e.target.files[0];
+
+      if(!file) return;
+
+      const text =
+        await file.text();
+
+      const project =
+        JSON.parse(text);
+
+      document.getElementById(
+        "command"
+      ).value =
+        project.command || "";
+
+      document.getElementById(
+        "dataInput"
+      ).value =
+        project.data || "";
+
+      slides =
+        project.slides || [];
+
+      loadData();
+
+      renderSlides();
+
+    };
+
+  input.click();
+
+}
+
+
+/* =========================================================
+   EXAMPLE
+========================================================= */
+
+function loadExample(){
+
+  document.getElementById(
+    "command"
+  ).value =
+`Sales Manager Monthly Report လုပ်ပေးပါ။
+Target vs Actual တွက်ပေးပါ။
+Achievement %, Variance နဲ့ Growth % ထည့်ပါ။
+Region အလိုက် chart လုပ်ပါ။
+PowerPoint 8 slides လုပ်ပါ။
+Speaker Notes ထည့်ပါ။
+Word Management Report လုပ်ပါ။
+Excel formula ပါထည့်ပါ။`;
+
+  document.getElementById(
+    "dataInput"
+  ).value =
+`Region,Target,Actual
+Yangon,500,450
+Mandalay,400,360
+Naypyidaw,300,330
+Taunggyi,250,225
+Mawlamyine,200,180`;
+
+  runCommand();
+
+}
+
+
+/* =========================================================
+   CLEAR
+========================================================= */
+
+function clearAll(){
+
+  document.getElementById(
+    "command"
+  ).value="";
+
+  document.getElementById(
+    "dataInput"
+  ).value="";
+
+  rows=[];
+  slides=[];
+  formulas={};
+  wordData={};
+
+  document.getElementById(
+    "tableArea"
+  ).innerHTML="";
+
+  document.getElementById(
+    "formulaArea"
+  ).innerHTML="";
+
+  document.getElementById(
+    "slideArea"
+  ).innerHTML="";
+
+  document.getElementById(
+    "wordPreview"
+  ).innerHTML="";
+
+  document.getElementById(
+    "kTarget"
+  ).textContent="0";
+
+  document.getElementById(
+    "kActual"
+  ).textContent="0";
+
+  document.getElementById(
+    "kAchievement"
+  ).textContent="0%";
+
+  document.getElementById(
+    "kVariance"
+  ).textContent="0";
+
+  document.getElementById(
+    "kRows"
+  ).textContent="0";
+
+  if(chartInstance){
+    chartInstance.destroy();
+    chartInstance=null;
+  }
 
 }
 
@@ -1369,15 +2284,14 @@ function printPresentation(){
    HELPERS
 ========================================================= */
 
-function formatNumber(number){
+function format(n){
 
-  return Number(number || 0)
+  return Number(n||0)
     .toLocaleString();
-
 }
 
 
-function escapeHTML(value){
+function esc(value){
 
   return String(value ?? "")
     .replaceAll("&","&amp;")
@@ -1385,57 +2299,39 @@ function escapeHTML(value){
     .replaceAll(">","&gt;")
     .replaceAll('"',"&quot;")
     .replaceAll("'","&#039;");
-
 }
 
 
-function clearAll(){
+function downloadBlob(blob,name){
 
-  document.getElementById("commandInput")
-    .value = "";
+  const url =
+    URL.createObjectURL(blob);
 
-  document.getElementById("dataInput")
-    .value = "";
+  const a =
+    document.createElement("a");
 
-  document.getElementById("slideArea")
-    .innerHTML = "";
+  a.href=url;
+  a.download=name;
 
-  presentationData = [];
+  document.body.appendChild(a);
 
-  presentationJSON = null;
+  a.click();
 
-  document.getElementById("totalTarget")
-    .textContent = "0";
+  a.remove();
 
-  document.getElementById("totalActual")
-    .textContent = "0";
-
-  document.getElementById("achievement")
-    .textContent = "0%";
-
-  document.getElementById("variance")
-    .textContent = "0";
-
-  document.getElementById("tableArea")
-    .innerHTML =
-    "<p class='small'>Data Load လုပ်ပြီးနောက် table ပြပါမယ်</p>";
-
-  if(salesChart){
-
-    salesChart.destroy();
-
-    salesChart = null;
-
-  }
+  setTimeout(
+    ()=>URL.revokeObjectURL(url),
+    1000
+  );
 
 }
 
 
 /* =========================================================
-   INITIAL DATA
+   INITIAL
 ========================================================= */
 
-parseData();
+loadData();
 
 </script>
 
